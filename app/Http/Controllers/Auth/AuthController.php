@@ -167,59 +167,6 @@ class AuthController extends Controller
         }
     }
 
-    /**
-     * @OA\Post(
-     *     path="/auth/register",
-     *     summary="User register",
-     *     description= "Register a user in the app",
-     *     tags={"AUTH"},
-     *     @OA\RequestBody(
-     *          @OA\MediaType(
-     *              mediaType="application/json",
-     *              @OA\Schema(
-     *                  required={"name","email","password"},
-     *                  @OA\Property(
-     *                      property="name",
-     *                      type="string",
-     *                      format= "text",
-     *                      description="The full name for register an account."
-     *                  ),
-     *                  @OA\Property(
-     *                      property="email",
-     *                      type="string",
-     *                      format= "email",
-     *                      description="The E-mail for register an account."
-     *                  ),
-     *                  @OA\Property(
-     *                      property="password",
-     *                      type="string",
-     *                      format= "password",
-     *                      description="Alphanumeric Password"
-     *                  )
-     *              )
-     *          )
-     *      ),
-     *     @OA\Response(
-     *         @OA\MediaType(mediaType="application/json"),
-     *         response=200,
-     *         description="successful operation",
-     *     ),
-     *     @OA\Response(
-     *         @OA\MediaType(mediaType="application/json"),
-     *         response=400,
-     *         description="Some was wrong"
-     *     ),
-     *     @OA\Response(
-     *         @OA\MediaType(mediaType="application/json"),
-     *         response=500,
-     *         description="an ""unexpected"" error"
-     *     ),
-     *  )
-     * 
-     * Store a newly created resource in storage
-     * 
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function register(RegisterRequest $request): JsonResponse
     {
 
