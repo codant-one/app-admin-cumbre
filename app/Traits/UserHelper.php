@@ -46,8 +46,8 @@ trait UserHelper
             'password' => Hash::make($request->password)
         ]);
 
-        //Si NO es cliente se evalua la existencia del Rol.
-        if (!request('is_client'))
+        //Si NO es App se evalua la existencia del Rol.
+        if (!request('is_app'))
             $user->syncRoles($request->roles);
 
         UserDetails::updateOrCreateUser($request, $user);
@@ -62,8 +62,8 @@ trait UserHelper
             'email' => strtolower($request->email)
         ]);
 
-        //Si NO es cliente se evalua la existencia del Rol.
-        if (!request('is_client')){
+        //Si NO es App se evalua la existencia del Rol.
+        if (!request('is_app')){
             $user->roles()->detach();  
             $user->syncRoles($request->roles);
         }
@@ -88,14 +88,14 @@ trait UserHelper
         return $users;
     }
 
-    public static function updateProfileClient($request, $user) {
+    public static function updateProfileUser($request, $user) {
         $user->update([
             'name' => $request->name,
             'last_name' => $request->last_name,
             'full_profile' => 1
         ]);
 
-        UserDetails::updateOrCreateClient($request, $user);
+        UserDetails::updateOrCreateUser($request, $user);
         
         return $user;
     }

@@ -30,6 +30,15 @@ class LoginRequest extends FormRequest
             ],
             'password' => [
                'required'
+            ],
+            'fcm_token' => [
+               'required'
+            ],
+            'device_type' => [
+               'required'
+            ],
+            'lang' => [
+               'required'
             ]
         ];
 
@@ -40,6 +49,9 @@ class LoginRequest extends FormRequest
         return [
             'email.required' => 'El correo electrónico es requerido.',
             'password.required' => 'La contraseña es requerida.',
+            'fcm_token.required' => 'El token de firebase es requerido.',
+            'device_type.required' => 'El tipo de dispositivo es requerido.',
+            'lang.required' => 'El idioma es requerido.'
         ];
     }
 

@@ -2,7 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "APP CUMBRE PETRÓLEO, GAS Y ENERGÍA",
-        "description": "<img src='https://backend.app-admin-cumbre/images/logo.svg' alt='Logo' width='30'>API oficial de la aplicación 'CUMBRE'<br><br><img src='https://codant.one/img/logos/codant.svg' alt='Logo' width='50'>Hecho por <a href='https://codant.one' target='_blank'>CODANT</a>",
+        "description": "<img src='https://cumbrepetroleoygas.net/images/logo.svg' alt='Logo' width='30'>API oficial de la aplicación 'CUMBRE'<br><br><img src='https://codant.one/img/logos/codant.svg' alt='Logo' width='50'>Hecho por <a href='https://codant.one' target='_blank'>CODANT</a>",
         "version": "1.0.0"
     },
     "servers": [
@@ -26,7 +26,9 @@
                             "schema": {
                                 "required": [
                                     "email",
-                                    "password"
+                                    "password",
+                                    "fcm_token",
+                                    "device_type"
                                 ],
                                 "properties": {
                                     "email": {
@@ -38,67 +40,21 @@
                                         "description": "User alphanumeric password",
                                         "type": "string",
                                         "format": "password"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "successful operation",
-                        "content": {
-                            "application/json": {}
-                        }
-                    },
-                    "400": {
-                        "description": "Some was wrong",
-                        "content": {
-                            "application/json": {}
-                        }
-                    },
-                    "500": {
-                        "description": "an \"unexpected\" error",
-                        "content": {
-                            "application/json": {}
-                        }
-                    }
-                }
-            }
-        },
-        "/auth/register": {
-            "post": {
-                "tags": [
-                    "AUTH"
-                ],
-                "summary": "User register",
-                "description": "Register a user in the app",
-                "operationId": "6703d7156c265a1e7b47e500d2a16304",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "name",
-                                    "email",
-                                    "password"
-                                ],
-                                "properties": {
-                                    "name": {
-                                        "description": "The full name for register an account.",
+                                    },
+                                    "fcm_token": {
+                                        "description": "Firebase Token",
                                         "type": "string",
                                         "format": "text"
                                     },
-                                    "email": {
-                                        "description": "The E-mail for register an account.",
+                                    "device_type": {
+                                        "description": "Device type (ios/android)",
                                         "type": "string",
-                                        "format": "email"
+                                        "format": "text"
                                     },
-                                    "password": {
-                                        "description": "Alphanumeric Password",
+                                    "lang": {
+                                        "description": "App language (es/en)",
                                         "type": "string",
-                                        "format": "password"
+                                        "format": "text"
                                     }
                                 },
                                 "type": "object"

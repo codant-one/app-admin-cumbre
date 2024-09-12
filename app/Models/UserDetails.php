@@ -50,7 +50,7 @@ class UserDetails extends Model
         return $userD;
     }
 
-    public static function updateOrCreateClient($request, $user) {
+    public static function updateOrCreateUserApp($request, $user) {
         $userD = UserDetails::updateOrCreate(
             [    'user_id' => $user->id ],
             [

@@ -38,16 +38,16 @@ class AdminSeeder extends Seeder
 
         $admin->assignRole('Administrador');
 
-        $client = User::create([
-            'name' => 'Cliente',
+        $user_app = User::create([
+            'name' => 'App',
             'last_name' => '',
-            'email' => 'client@gmail.com',
+            'email' => 'app@gmail.com',
             'password' => Hash::make('1234'),
             'created_at' => now()->toDateString(),
             'updated_at' => now()->toDateString()
         ]);
 
-        $client->assignRole('Cliente');
+        $user_app->assignRole('App');
 
         $operator = User::create([
             'name' => 'Operador',

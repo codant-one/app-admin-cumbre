@@ -19,8 +19,11 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('avatar')->nullable();
-            $table->timestamp('online')->nullable();
+            $table->string('lang')->default('es');
             $table->longText('token_2fa')->nullable();
+            $table->longText('fcm_token')->nullable();
+            $table->longText('device_type')->nullable();
+            $table->timestamp('online')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();         
             

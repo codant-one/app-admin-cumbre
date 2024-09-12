@@ -14,6 +14,8 @@ use Illuminate\Support\Str;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest; 
 
+use App\Notifications\PushNotification;
+
 use App\Models\User;
 use App\Models\UserDetails;
 use App\Models\UserRegisterToken;
@@ -42,7 +44,7 @@ class AuthController extends Controller
      *          @OA\MediaType(
      *              mediaType="application/json",
      *              @OA\Schema(
-     *                  required={"email","password"},
+     *                  required={"email","password","fcm_token","device_type"},
      *                  @OA\Property(
      *                      property="email",
      *                      type="string",
@@ -54,6 +56,24 @@ class AuthController extends Controller
      *                      type="string",
      *                      format= "password",
      *                      description="User alphanumeric password"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="fcm_token",
+     *                      type="string",
+     *                      format= "text",
+     *                      description="Firebase Token"
+     *                  ),
+     *                 @OA\Property(
+     *                      property="device_type",
+     *                      type="string",
+     *                      format= "text",
+     *                      description="Device type (ios/android)"
+     *                  ),
+     *                @OA\Property(
+     *                      property="lang",
+     *                      type="string",
+     *                      format= "text",
+     *                      description="App language (es/en)"
      *                  )
      *              )
      *          )
@@ -94,19 +114,26 @@ class AuthController extends Controller
                 ], 400);
             }
 
-            if (empty(Auth::user()->email_verified_at) && (Auth::user()->getRoleNames()[0] === 'Cliente')) {
-                Auth::logout();
+            if (Auth::user()->getRoleNames()[0] === 'App') {//user app
+                $user = Auth::user();
+                $user->online = Carbon::now();
+                $user->fcm_token = $request->fcm_token;
+                $user->device_type = $request->device_type;
+                $user->lang = $request->lang;
+                $user->save();
+    
+                $title = $request->device_type === 'ios' ? 'Notificación iOS' : 'Notificación Android';
+                $body = $request->device_type === 'ios' ? 'Mensaje para {$user->name}' : 'Mensaje para {$user->name}';
+    
+                // Envía la notificación al usuario
+                $user->notify(new PushNotification($title, $body));
 
                 return response()->json([
-                    'success' => false,
-                    'message' => 'not_confirm',
-                    'errors' => 'Correo electrónico no verificado. Revise su correo electrónico donde se le indica los pasos a seguir para verificar el mismo.'
-                ], 400);
+                    'success' => true,
+                    'message' => 'login_success',
+                    'data' => $this->respondWithToken($token)
+                ], 200);
             }
-
-            $user = Auth::user();
-            $user->online = Carbon::now();
-            $user->save();
 
             if (env('APP_DEBUG') || ($user->is_2fa === 0)) {
                 return response()->json([
@@ -191,7 +218,7 @@ class AuthController extends Controller
             $userDetails->user_id = $user->id;
             $userDetails->save();
 
-            $user->assignRole('Cliente');
+            $user->assignRole('App');
             $email = $user->email;
                 
             $info = [
@@ -282,12 +309,18 @@ class AuthController extends Controller
         $permissions = getPermissionsByRole(Auth::user());
         $userData = getUserData(Auth::user()->load(['userDetail']));
 
-        return [
+        $data = [
             'accessToken' => $token,
             'token_type' => 'bearer',
-            'user_data' => $userData,
-            'userAbilities' => $permissions
+            'user_data' => $userData
         ];
+
+        if (Auth::user()->getRoleNames()[0] === 'App') {//user app
+            return $data;
+        }  else {
+            return array_merge($data, ['userAbilities' => $permissions]);
+        }
+    
     }
 
     private function sendMail($info, $id = 1)

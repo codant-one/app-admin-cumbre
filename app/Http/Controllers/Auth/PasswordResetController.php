@@ -39,8 +39,8 @@ class PasswordResetController extends Controller
         );
         
         $email = $user->email;
-        $domain = ($user->getRoleNames()[0] === 'Cliente') ? env('APP_DOMAIN') : env('APP_DOMAIN_ADMIN');
-        $url = $domain.'/clients/reset_password?token='.$passwordReset['token'].'&user='.$email;
+        $domain = ($user->getRoleNames()[0] === 'App') ? env('APP_DOMAIN') : env('APP_DOMAIN_ADMIN');
+        $url = $domain.'/xxx/reset_password?token='.$passwordReset['token'].'&user='.$email;
         
         $info = [
             'subject' => 'Solicitud de cambio de contraseña',
@@ -137,13 +137,13 @@ class PasswordResetController extends Controller
             'buttonText' =>  $info['buttonText'] ?? null
         ];
 
-        $clientEmail = $user->email;
+        $email = $user->email;
         $subject = $info['subject'];
         
         try {
-            \Mail::send($info['email'], $data, function ($message) use ($clientEmail, $subject) {
+            \Mail::send($info['email'], $data, function ($message) use ($email, $subject) {
                     $message->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
-                    $message->to($clientEmail)->subject($subject);
+                    $message->to($email)->subject($subject);
             });
 
             $response['success'] = true;
