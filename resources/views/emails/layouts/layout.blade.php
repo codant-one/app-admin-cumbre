@@ -50,8 +50,6 @@
                 align-items: center !important;
                 height: 30px;
                 width: 30px;
-                line-height: 1;
-                text-align: center;
                 color: #ffffff;
                 border: 1px solid #ffffff;
                 border-radius: 100px;
