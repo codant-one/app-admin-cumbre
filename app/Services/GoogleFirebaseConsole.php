@@ -18,7 +18,7 @@ class GoogleFirebaseConsole
         $this->url = 'https://fcm.googleapis.com/v1/projects/'.env('GOOGLE_FIREBASE_PROJECT_ID').'/messages:send';
         
         $this->client = new Client();
-        $this->client->useApplicationDefaultCredentials();
+        $this->client->setAuthConfig(storage_path('app/google-credentials.json'));
         $this->client->addScope('https://www.googleapis.com/auth/firebase.messaging');
         
         $token =  $this->client->fetchAccessTokenWithAssertion();
