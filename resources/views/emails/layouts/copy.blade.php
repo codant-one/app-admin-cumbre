@@ -11,11 +11,11 @@
                                         <tr>
                                             <td align="center" style="padding:0;margin:0">
                                                 <p style="margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:Inter;line-height:17px;color:#FFFFFF;font-size:14px">
-                                                    Nunca envíes tu clave o datos de tu cuenta por e-mail.<br>
-                                                    Conoce cómo cuidamos tu 
-                                                    <a href="{{ env('APP_DOMAIN') }}/privacy-statement" target="_blank" style="color: #FFFFFF!important;">Privacidad</a>
-                                                    y visita los 
-                                                    <a href="{{ env('APP_DOMAIN') }}/terms-and-conditions" target="_blank" style="color: #FFFFFF!important;">Términos y Condiciones</a>.                                                   
+                                                    @lang('emails.copy_1')<br>
+                                                    @lang('emails.copy_2')
+                                                    <a href="{{ env('APP_DOMAIN') }}/privacy-statement" target="_blank" style="color: #FFFFFF!important;">@lang('emails.copy_3')</a>
+                                                    @lang('emails.copy_4')
+                                                    <a href="{{ env('APP_DOMAIN') }}/terms-and-conditions" target="_blank" style="color: #FFFFFF!important;">@lang('emails.copy_5')</a>.                                                   
                                                 </p>
                                             </td>
                                         </tr>

@@ -6,8 +6,9 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\App;
 
-class RegisterRequest extends FormRequest
+class ChangePasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,31 +26,50 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => [
-                'required',
-                Rule::unique('users', 'name')->ignore($this->user)
-            ],
             'email' => [
                 'required',
-                'email',
-                Rule::unique('users', 'email')->ignore($this->user)
+                'email'
+            ],
+            'token' => [
+                'required'
             ],
             'password' => [
                'required'
+            ],
+            'lang' => [
+               'required',
+               Rule::in(['en', 'es'])
             ]
         ];
 
     }
 
+    /**
+     * Set the language before validation.
+     */
+    protected function prepareForValidation()
+    {
+        // Configura el idioma del sistema basado en el valor de `lang` del request
+        if ($this->has('lang') && ($this->input('lang') === 'es' || $this->input('lang') === 'en'))
+            App::setLocale($this->input('lang'));
+        else
+            App::setLocale('es');
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
     public function messages()
     {
         return [
-            'name.required' => 'El nombre es requerido.',
-            'name.unique' => 'Ya existe un nombre con el nombre ingresado.',
-            'email.required' => 'El correo electrónico es requerido.',
-            'email.email' => 'El formato de correo electrónico no es válido.',
-            'email.unique' => 'Ya existe un usuario con el correo electrónico ingresado.',
-            'password.required' => 'La contraseña es requerida.'
+            'email.required' => __('auth.email_required'),
+            'email.email' => __('auth.invalid_email_format'),
+            'token.required' => __('auth.token_required'),
+            'password.required' => __('auth.password_required'),
+            'lang.required' => __('auth.lang_required'),
+            'lang.in' => __('auth.lang_invalid')
         ];
     }
 

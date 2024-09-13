@@ -27,6 +27,9 @@ Route::group([
 ], function () {
     Route::post('login', [AuthController::class , 'login'])->name('login');
     Route::post('register', [AuthController::class, 'register']);
+    Route::post('forgot-password', [PasswordResetController::class, 'forgot_password'])->name('forgot.password');
+    Route::get('password/find', [PasswordResetController::class, 'find'])->name("find");
+    Route::post('change', [PasswordResetController::class, 'change'])->name("change");
 
     Route::middleware('jwt')->group(function () {
         Route::post('logout', [AuthController::class , 'logout'])->name('logout');
@@ -35,3 +38,5 @@ Route::group([
 
 //Testing Endpoints
 Route::get('notifications', [TestingController::class , 'notifications'])->name('notifications');
+Route::get('forgot_password', [TestingController::class , 'forgot_password'])->name('forgot_password');
+Route::get('reset_password', [TestingController::class , 'reset_password'])->name('reset_password');

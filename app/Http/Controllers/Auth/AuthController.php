@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Auth;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
@@ -14,7 +13,7 @@ use Illuminate\Support\Str;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest; 
 
-use App\Notifications\PushNotification;
+use App\Services\GoogleFirebaseConsole;
 
 use App\Models\User;
 use App\Models\UserDetails;
@@ -22,6 +21,8 @@ use App\Models\UserRegisterToken;
 
 class AuthController extends Controller
 {
+    protected $googleFirebaseConsole;
+
     /**
      * Create a new AuthController instance.
      *
@@ -44,7 +45,7 @@ class AuthController extends Controller
      *          @OA\MediaType(
      *              mediaType="application/json",
      *              @OA\Schema(
-     *                  required={"email","password","fcm_token","device_type"},
+     *                  required={"email","password","fcm_token","device_type","lang"},
      *                  @OA\Property(
      *                      property="email",
      *                      type="string",
@@ -102,6 +103,7 @@ class AuthController extends Controller
     public function login(LoginRequest $request): JsonResponse
     {
         try {
+            $lang = $request->lang ?? 'es';
             $credentials = request(['email', 'password']);
 
             $expired = now()->addHours(24);
@@ -110,7 +112,7 @@ class AuthController extends Controller
                 return response()->json([
                     'success' => false,
                     'message' => 'invalid_credentials',
-                    'errors' => 'Usuario o contraseña invalida'
+                    'errors' =>  __('auth.invalid_credentials', [], $lang)
                 ], 400);
             }
 
@@ -123,15 +125,20 @@ class AuthController extends Controller
                 $user->save();
     
                 $title = $request->device_type === 'ios' ? 'Notificación iOS' : 'Notificación Android';
-                $body = $request->device_type === 'ios' ? 'Mensaje para {$user->name}' : 'Mensaje para {$user->name}';
+                $body = "Mensaje para {$user->name}";
     
+                $this->googleFirebaseConsole = new GoogleFirebaseConsole();
+
                 // Envía la notificación al usuario
-                $user->notify(new PushNotification($title, $body));
+                $data = $this->googleFirebaseConsole->pushNotification($request->fcm_token, $title, $body, $user);
 
                 return response()->json([
                     'success' => true,
                     'message' => 'login_success',
-                    'data' => $this->respondWithToken($token)
+                    'data' => array_merge(
+                        $this->respondWithToken($token),
+                        ['response_firebase_console' => $data]                        
+                    )
                 ], 200);
             }
 
@@ -192,66 +199,6 @@ class AuthController extends Controller
                 'exception' => $ex->getMessage()
             ], 500);
         }
-    }
-
-    public function register(RegisterRequest $request): JsonResponse
-    {
-
-        try {
-
-            $password = $request->input('password');
-            $hashedPassword = Hash::make($password);
-
-            $user = new User();
-            $user->name = $request->name;
-            $user->email = strtolower($request->email);
-            $user->password = $hashedPassword;
-            $user->save();
-
-            //Crear o Actualizar token.
-            $registerConfirm = UserRegisterToken::updateOrCreate(
-                ['user_id' => $user->id],
-                ['token' => Str::random(60)]
-            );
-
-            $userDetails = new UserDetails();
-            $userDetails->user_id = $user->id;
-            $userDetails->save();
-
-            $user->assignRole('App');
-            $email = $user->email;
-                
-            $info = [
-                'text' => '<strong>¡Bienvenido a la VII Cumbre del Petróleo, Gas y Energía!</strong> <br>Tu registro ha sido exitoso. <br>Participa con líderes del sector para discutir innovaciones y sostenibilidad en la industria. <br>Si tienes alguna pregunta, no dudes en contactarnos.',
-                'subject' => 'Bienvenido a la VII Cumbre del Petróleo, Gas y Energía',
-                'email' => 'emails.auth.notifications'
-            ];
-                
-            $responseMail = $this->sendMail($info, $user->id); 
-
-            return response()->json([
-                'success' => true,
-                'message' => 'registration_successful',
-                'data' => [ 
-                    'response_mail' => $responseMail,
-                    'user' => User::with(['userDetail'])->find($user->id)
-                ]
-            ]);
-
-        } catch(\Illuminate\Database\QueryException $ex) {
-            return response()->json([
-                'success' => false,
-                'message' => 'database_error',
-                'exception' => $ex->getMessage()
-            ], 500);
-        } catch(\Exception $ex) {
-            return response()->json([
-                'success' => false,
-                'message' => 'server_error',
-                'exception' => $ex->getMessage()
-            ], 500);
-        }
-
     }
 
     /**
@@ -322,34 +269,4 @@ class AuthController extends Controller
         }
     
     }
-
-    private function sendMail($info, $id = 1)
-    {
-
-        $user = User::find($id);
-        
-        $data = [
-            'name' => $info['name'] ?? null,
-            'title' => $info['title'] ?? null,
-            'user' => $user->name . ' ' . $user->last_name,
-            'text' => $info['text'] ?? null,
-            'buttonLink' =>  $info['buttonLink'] ?? null,
-            'buttonText' =>  $info['buttonText'] ?? null
-        ];
-
-        $email = ($id === 1) ? env('MAIL_TO_CONTACT') : $user->email;
-        $subject = $info['subject'];
-        
-        try {
-            \Mail::send($info['email'], $data, function ($message) use ($email, $subject) {
-                    $message->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
-                    $message->to($email)->subject($subject);
-            });
-
-            return "Tu solicitud se ha procesado satisfactoriamente. Correo electrónico verificado. Le invitamos a que inicie sesion.";
-        } catch (\Exception $e){
-            return "Error al enviar el correo electrónico. ".$e;
-        }
-
-    } 
 }

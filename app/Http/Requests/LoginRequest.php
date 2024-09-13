@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\App;
 
 class LoginRequest extends FormRequest
 {
@@ -26,7 +27,8 @@ class LoginRequest extends FormRequest
     {
         return [
             'email' => [
-                'required'
+                'required',
+                'email'
             ],
             'password' => [
                'required'
@@ -35,23 +37,45 @@ class LoginRequest extends FormRequest
                'required'
             ],
             'device_type' => [
-               'required'
+               'required',
+               Rule::in(['android', 'ios'])
             ],
             'lang' => [
-               'required'
+               'required',
+               Rule::in(['en', 'es'])
             ]
         ];
 
     }
 
+    /**
+     * Set the language before validation.
+     */
+    protected function prepareForValidation()
+    {
+        // Configura el idioma del sistema basado en el valor de `lang` del request
+        if ($this->has('lang') && ($this->input('lang') === 'es' || $this->input('lang') === 'en'))
+            App::setLocale($this->input('lang'));
+        else
+            App::setLocale('es');
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
     public function messages()
     {
         return [
-            'email.required' => 'El correo electrónico es requerido.',
-            'password.required' => 'La contraseña es requerida.',
-            'fcm_token.required' => 'El token de firebase es requerido.',
-            'device_type.required' => 'El tipo de dispositivo es requerido.',
-            'lang.required' => 'El idioma es requerido.'
+            'email.required' => __('auth.email_required'),
+            'email.email' => __('auth.invalid_email_format'),
+            'password.required' => __('auth.password_required'),
+            'fcm_token.required' => __('auth.fcm_token_required'),
+            'device_type.required' => __('auth.device_type_required'),
+            'device_type.in' => __('auth.device_type_invalid'),
+            'lang.required' => __('auth.lang_required'),
+            'lang.in' => __('auth.lang_invalid')
         ];
     }
 

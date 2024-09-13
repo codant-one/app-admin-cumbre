@@ -28,7 +28,8 @@
                                     "email",
                                     "password",
                                     "fcm_token",
-                                    "device_type"
+                                    "device_type",
+                                    "lang"
                                 ],
                                 "properties": {
                                     "email": {
@@ -117,6 +118,206 @@
                         "bearerAuth": []
                     }
                 ]
+            }
+        },
+        "/auth/forgot-password": {
+            "post": {
+                "tags": [
+                    "AUTH"
+                ],
+                "summary": "Forgot password",
+                "description": "Request password change",
+                "operationId": "a10b145e425eeb3cd1dcb4a89f792bd6",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "lang"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "description": "The user's E-mail",
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "lang": {
+                                        "description": "App language (es/en)",
+                                        "type": "string",
+                                        "format": "text"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Some was wrong",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "404": {
+                        "description": "Email Not Found",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "500": {
+                        "description": "an \"unexpected\" error",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/password/find": {
+            "get": {
+                "tags": [
+                    "AUTH"
+                ],
+                "summary": "Find token",
+                "description": "Verify user token",
+                "operationId": "adf138ab0dfa44428e61b794b9c155d5",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "Token sent via email",
+                        "required": true,
+                        "schema": {
+                            "description": "Token",
+                            "type": "string",
+                            "format": "text"
+                        }
+                    },
+                    {
+                        "name": "lang",
+                        "in": "query",
+                        "description": "App language (es/en)",
+                        "required": true,
+                        "schema": {
+                            "description": "Lang",
+                            "type": "string",
+                            "format": "text"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Some was wrong",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "404": {
+                        "description": "Token Not Found",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "410": {
+                        "description": "Token expired",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "500": {
+                        "description": "an \"unexpected\" error",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/change": {
+            "post": {
+                "tags": [
+                    "AUTH"
+                ],
+                "summary": "Change password",
+                "description": "Change password",
+                "operationId": "cf3f6d0d2ab4189126331ab5de5098be",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "token",
+                                    "email",
+                                    "password",
+                                    "lang"
+                                ],
+                                "properties": {
+                                    "token": {
+                                        "description": "Token sent via email",
+                                        "type": "string",
+                                        "format": "text"
+                                    },
+                                    "email": {
+                                        "description": "The user's E-mail",
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "password": {
+                                        "description": "The new password",
+                                        "type": "string",
+                                        "format": "password"
+                                    },
+                                    "lang": {
+                                        "description": "App language (es/en)",
+                                        "type": "string",
+                                        "format": "text"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Some was wrong",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "404": {
+                        "description": "Email Not Found",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "500": {
+                        "description": "an \"unexpected\" error",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
             }
         }
     },

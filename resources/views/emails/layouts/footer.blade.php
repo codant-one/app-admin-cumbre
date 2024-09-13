@@ -8,7 +8,7 @@
                             <tr>
                                 <td colspan="5" style="padding:0;margin:0">
                                     <span style="margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:Inter;line-height:24px;color:#FFFFFF;font-size:16px">
-                                        <strong>Síguenos en</strong>
+                                        <strong>@lang('emails.follow_us')</strong>
                                     </span>
                                 </td>
                             </tr>
