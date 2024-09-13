@@ -45,9 +45,9 @@
             }
 
             .tm-footer-social a {
-                display: flex;
-                justify-content: center;
-                align-items: center;
+                display: flex !important;
+                justify-content: center !important;
+                align-items: center !important;
                 height: 30px;
                 width: 30px;
                 line-height: 1;
