@@ -15,27 +15,27 @@
                             <tr>
                                 <td align="center" valign="top" width="null" style="padding:0;margin:0;">
                                     <a href="https://www.facebook.com/CumbrePetroleoyGas" target="_blank">
-                                        <i class="zmdi zmdi-facebook"></i>
+                                        <img src="{{ url('/images/facebook.png') }}" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic">
                                     </a>
                                 </td>
                                 <td align="center" valign="top" width="null" style="padding:0;margin:0;">
                                     <a href="https://x.com/PetroleoyGasCo" target="_blank">
-                                        <i class="zmdi zmdi-twitter"></i>
+                                        <img src="{{ url('/images/twitter.png') }}" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic">
                                     </a>
                                 </td>
                                 <td align="center" valign="top" width="null" style="padding:0;margin:0;">
                                     <a href="https://www.youtube.com/@cumbredelpetroleoygas7632" target="_blank">
-                                        <i class="zmdi zmdi-youtube-play"></i>
+                                        <img src="{{ url('/images/youtube.png') }}" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic">
                                     </a>
                                 </td>
                                 <td align="center" valign="top" width="null" style="padding:0;margin:0;">
                                     <a href="https://www.linkedin.com/company/cumbrepetroleoygas/" target="_blank">
-                                        <i class="zmdi zmdi-linkedin"></i>
+                                        <img src="{{ url('/images/linkedin.png') }}" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic">
                                     </a>
                                 </td>
                                 <td align="center" valign="top" width="null" style="padding:0;margin:0;">
                                     <a href="https://www.instagram.com/cumbredelpetroleoygas/" target="_blank">
-                                        <i class="zmdi zmdi-instagram"></i>
+                                        <img src="{{ url('/images/instagram.png') }}" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic">
                                     </a>
                                 </td>
                             </tr>
