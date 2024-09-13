@@ -49,6 +49,18 @@ class AdminSeeder extends Seeder
 
         $user_app->assignRole('App');
 
+        $user_app_2 = User::create([
+            'name' => 'Steffani',
+            'last_name' => 'Castro',
+            'email' => 'steffani.castro.useche@gmail.com',
+            'password' => Hash::make('1234'),
+            'created_at' => now()->toDateString(),
+            'updated_at' => now()->toDateString()
+        ]);
+
+        $user_app_2->assignRole('App');
+
+
         $operator = User::create([
             'name' => 'Operador',
             'last_name' => '',
