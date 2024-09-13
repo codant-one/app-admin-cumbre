@@ -4,7 +4,7 @@
 <table cellpadding="0" cellspacing="0" width="100%" bgcolor="#FFFFFF" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:separate;border-spacing:0px;border-width:10px;border-style:solid;border-color:transparent;background-color:#ffffff;border-radius:32px">
     <tr>
         <td align="center" style="padding:0;margin:0;padding-bottom:15px;padding-top:40px;font-size:0px">
-            <img src="{{ asset('/images/lock.png') }}" alt="icon-lock" title="Lock" width="48" height="48" style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic">
+            <img src="{{ url('/images/lock.png') }}" alt="icon-lock" title="Lock" width="48" height="48" style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic">
         </td>   
     </tr>
     <tr>

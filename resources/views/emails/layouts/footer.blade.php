@@ -52,7 +52,7 @@
             <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                 <tr>
                     <td align="right" style="padding:0;margin:0;font-size:0px">
-                        <img src="{{ asset('/images/peoples.png') }}" width="200px">
+                        <img src="{{ url('/images/peoples.png') }}" width="200px">
                     </td>
                 </tr>
             </table>
