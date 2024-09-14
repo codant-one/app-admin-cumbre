@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
             CategoryTypeSeeder::class,
             CategorySeeder::class,
 
-            SponsorSeeder::class
+            SponsorSeeder::class,
+            PlaceSeeder::class
         ]);
     }
 }

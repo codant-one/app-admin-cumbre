@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Requests\LangRequest;
 
 use App\Models\Sponsor;
+use App\Models\Place;
 
 class MiscellaneousController extends Controller
 {
@@ -73,6 +74,171 @@ class MiscellaneousController extends Controller
             return response()->json([
                 'success' => true,
                 'data' => $groupedSponsors
+            ], 200);
+
+        } catch(\Illuminate\Database\QueryException $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'database_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *   path="/places",
+     *   summary="Get all places",
+     *   description= "Show list of places",
+     *   tags={"Places"},
+     *   @OA\Parameter(
+     *      name="lang",
+     *      in="query",
+     *      description="App language (es/en)",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string",
+     *          format="text",
+     *          description="Lang"
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=200,
+     *      description="Show list of all places",
+     *    ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=400,
+     *      description="Some was wrong"
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=500,
+     *      description="an ""unexpected"" error"
+     *   ),
+     * )
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function places(LangRequest $request): JsonResponse
+    {
+        try {
+            
+            $lang = $request->lang;
+            $places = Place::with(['category'])->get();
+
+            $groupedPlaces = $places->groupBy(function($place) use ($lang) {
+                $response = ($lang === 'es') ? $place->category->name_es : $place->category->name_en;
+                return $response; 
+            })->map(function($placesGroup) use ($lang) {
+                return $placesGroup->map(function($place) use ($lang) {
+                    return [
+                        'id' => $place->id,
+                        'title' => ($lang === 'es') ? $place->title_es : $place->title_en,
+                        'image' => env('APP_URL').'/storage/'.$place->image
+                    ];
+                });
+            });
+
+            return response()->json([
+                'success' => true,
+                'data' => $groupedPlaces
+            ], 200);
+
+        } catch(\Illuminate\Database\QueryException $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'database_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *   path="/places/{id}",
+     *   summary="Get a place",
+     *   description= "Show place details",
+     *   tags={"Places"},
+     *   @OA\Parameter(
+     *      name="lang",
+     *      in="query",
+     *      description="App language (es/en)",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string",
+     *          format="text",
+     *          description="Lang"
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="id",
+     *      in="path",
+     *      description="Place ID",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="integer",
+     *          format="int64",
+     *          description="Unique Place Identifier"
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=200,
+     *      description="Show list of all places",
+     *    ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=400,
+     *      description="Some was wrong"
+     *   ),
+     *  @OA\Response(
+     *     @OA\MediaType(mediaType="application/json"),
+     *     response=404,
+     *     description="Place Not Found."
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=500,
+     *      description="an ""unexpected"" error"
+     *   ),
+     * )
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function place_details(LangRequest $request, $id): JsonResponse
+    {
+        try {
+            
+            $lang = $request->lang;
+            $place = Place::with(['images'])->find($id);
+
+            if (!$place)
+                return response()->json([
+                    'success' => false,
+                    'message' => 'not_found',
+                    'errors' =>  __('api.place_not_found', [], $lang)
+                ], 404);
+
+            $formattedPlace = [
+                'id' => $place->id,
+                'title' => ($lang === 'es') ? $place->title_es : $place->title_en,
+                'description' => ($lang === 'es') ? $place->description_es : $place->description_en,
+                'image' => env('APP_URL').'/storage/'.$place->image,
+                'link' => $place->link,
+                'gallery' => $place->images->map(function($image) {
+                    return [
+                        'id' => $image->id,
+                        'place_id' => $image->place_id,
+                        'image' => env('APP_URL').'/storage/'.$image->image,
+                    ];
+                })
+            ];
+
+            return response()->json([
+                'success' => true,
+                'data' => $formattedPlace
             ], 200);
 
         } catch(\Illuminate\Database\QueryException $ex) {

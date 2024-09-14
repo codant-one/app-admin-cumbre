@@ -47,3 +47,5 @@ Route::get('reset_password', [TestingController::class , 'reset_password'])->nam
 
 //public Endpoints
 Route::get('sponsors', [MiscellaneousController::class , 'sponsors'])->name('sponsors');
+Route::get('places', [MiscellaneousController::class , 'places'])->name('places');
+Route::get('places/{id}', [MiscellaneousController::class , 'place_details'])->name('place_details');

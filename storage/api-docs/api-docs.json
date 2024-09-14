@@ -362,6 +362,109 @@
                     }
                 }
             }
+        },
+        "/places": {
+            "get": {
+                "tags": [
+                    "Places"
+                ],
+                "summary": "Get all places",
+                "description": "Show list of places",
+                "operationId": "cc820820810956b5300eb93e687d3a80",
+                "parameters": [
+                    {
+                        "name": "lang",
+                        "in": "query",
+                        "description": "App language (es/en)",
+                        "required": true,
+                        "schema": {
+                            "description": "Lang",
+                            "type": "string",
+                            "format": "text"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Show list of all places",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Some was wrong",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "500": {
+                        "description": "an \"unexpected\" error",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/places/{id}": {
+            "get": {
+                "tags": [
+                    "Places"
+                ],
+                "summary": "Get a place",
+                "description": "Show place details",
+                "operationId": "de254e3ee4f4d07eab318d4092e0abb0",
+                "parameters": [
+                    {
+                        "name": "lang",
+                        "in": "query",
+                        "description": "App language (es/en)",
+                        "required": true,
+                        "schema": {
+                            "description": "Lang",
+                            "type": "string",
+                            "format": "text"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Place ID",
+                        "required": true,
+                        "schema": {
+                            "description": "Unique Place Identifier",
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Show list of all places",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Some was wrong",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "404": {
+                        "description": "Place Not Found.",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "500": {
+                        "description": "an \"unexpected\" error",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -383,6 +486,10 @@
         {
             "name": "Sponsors",
             "description": "Sponsors"
+        },
+        {
+            "name": "Places",
+            "description": "Places"
         }
     ]
 }
