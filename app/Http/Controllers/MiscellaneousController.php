@@ -12,6 +12,7 @@ use App\Http\Requests\LangRequest;
 
 use App\Models\Sponsor;
 use App\Models\Place;
+use App\Models\News;
 
 class MiscellaneousController extends Controller
 {
@@ -239,6 +240,166 @@ class MiscellaneousController extends Controller
             return response()->json([
                 'success' => true,
                 'data' => $formattedPlace
+            ], 200);
+
+        } catch(\Illuminate\Database\QueryException $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'database_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *   path="/news",
+     *   summary="Get all news",
+     *   description= "Show list of news",
+     *   tags={"News"},
+     *   @OA\Parameter(
+     *      name="lang",
+     *      in="query",
+     *      description="App language (es/en)",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string",
+     *          format="text",
+     *          description="Lang"
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=200,
+     *      description="Show list of all news",
+     *    ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=400,
+     *      description="Some was wrong"
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=500,
+     *      description="an ""unexpected"" error"
+     *   ),
+     * )
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function news(LangRequest $request): JsonResponse
+    {
+        try {
+            
+            $lang = $request->lang;
+            $news = News::with(['category'])->get();
+
+            $groupedNews = $news->groupBy(function($new) use ($lang) {
+                $response = ($lang === 'es') ? $new->category->name_es : $new->category->name_en;
+                return $response; 
+            })->map(function($newsGroup) use ($lang) {
+                return $newsGroup->map(function($new) use ($lang) {
+                    return [
+                        'id' => $new->id,
+                        'title' => ($lang === 'es') ? $new->title_es : $new->title_en,
+                        'date' => $new->date,
+                        'image' => env('APP_URL').'/storage/'.$new->image
+                    ];
+                });
+            });
+
+            return response()->json([
+                'success' => true,
+                'data' => $groupedNews
+            ], 200);
+
+        } catch(\Illuminate\Database\QueryException $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'database_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *   path="/news/{id}",
+     *   summary="Get a new",
+     *   description= "Show new details",
+     *   tags={"News"},
+     *   @OA\Parameter(
+     *      name="lang",
+     *      in="query",
+     *      description="App language (es/en)",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string",
+     *          format="text",
+     *          description="Lang"
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="id",
+     *      in="path",
+     *      description="New ID",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="integer",
+     *          format="int64",
+     *          description="Unique New Identifier"
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=200,
+     *      description="Show list of all news",
+     *    ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=400,
+     *      description="Some was wrong"
+     *   ),
+     *  @OA\Response(
+     *     @OA\MediaType(mediaType="application/json"),
+     *     response=404,
+     *     description="New Not Found."
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=500,
+     *      description="an ""unexpected"" error"
+     *   ),
+     * )
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function new_details(LangRequest $request, $id): JsonResponse
+    {
+        try {
+            
+            $lang = $request->lang;
+            $new = News::with(['category'])->find($id);
+
+            if (!$new)
+                return response()->json([
+                    'success' => false,
+                    'message' => 'not_found',
+                    'errors' =>  __('api.new_not_found', [], $lang)
+                ], 404);
+
+            $formattedNew = [
+                'id' => $new->id,
+                'title' => ($lang === 'es') ? $new->title_es : $new->title_en,
+                'content' => ($lang === 'es') ? $new->content_es : $new->content_en,
+                'category' => ($lang === 'es') ? $new->category->name_es : $new->category->name_en,
+                'date' => $new->date,
+                'image' => env('APP_URL').'/storage/'.$new->image
+            ];
+
+            return response()->json([
+                'success' => true,
+                'data' => $formattedNew
             ], 200);
 
         } catch(\Illuminate\Database\QueryException $ex) {

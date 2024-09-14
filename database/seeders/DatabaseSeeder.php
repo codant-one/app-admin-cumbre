@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
 
             SponsorSeeder::class,
-            PlaceSeeder::class
+            PlaceSeeder::class,
+            NewSeeder::class
         ]);
     }
 }

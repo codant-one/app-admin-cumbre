@@ -14,5 +14,6 @@ return [
     */
 
     //Not found
-    'place_not_found' => 'Lugar no encontrado'
+    'place_not_found' => 'Lugar no encontrado',
+    'new_not_found' => 'Última actualización no encontrada'
 ];

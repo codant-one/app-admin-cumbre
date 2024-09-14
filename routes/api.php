@@ -49,3 +49,5 @@ Route::get('reset_password', [TestingController::class , 'reset_password'])->nam
 Route::get('sponsors', [MiscellaneousController::class , 'sponsors'])->name('sponsors');
 Route::get('places', [MiscellaneousController::class , 'places'])->name('places');
 Route::get('places/{id}', [MiscellaneousController::class , 'place_details'])->name('place_details');
+Route::get('news', [MiscellaneousController::class , 'news'])->name('news');
+Route::get('news/{id}', [MiscellaneousController::class , 'new_details'])->name('new_details');

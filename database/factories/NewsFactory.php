@@ -3,18 +3,18 @@
 namespace Database\Factories;
 
 use Str;
-use App\Models\Place;
+use App\Models\News;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Carbon\Carbon;
 
-class PlaceFactory extends Factory
+class NewsFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Place::class;
+    protected $model = News::class;
 
 
     /**
@@ -25,13 +25,13 @@ class PlaceFactory extends Factory
     public function definition()
     {
         return [
-            'category_id' => rand(5, 6),
+            'category_id' => rand(7, 9),
             'title_es' => $this->faker->text,
             'title_en' => $this->faker->text,
-            'description_es' => $this->faker->paragraph,
-            'description_en' => $this->faker->paragraph,
-            'image' => 'places/' . $this->faker->file(public_path('images/places/model1'), storage_path('app/public/places'), false),
-            'link' => $this->faker->url,
+            'content_es' => $this->faker->randomHtml,
+            'content_en' => $this->faker->randomHtml,
+            'date' => now(),
+            'image' => 'news/' . $this->faker->file(public_path('images/news'), storage_path('app/public/news'), false),
             'is_popular' => rand(0,1),
             'created_at' => now(),
             'updated_at' => now()

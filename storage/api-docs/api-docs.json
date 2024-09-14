@@ -465,6 +465,109 @@
                     }
                 }
             }
+        },
+        "/news": {
+            "get": {
+                "tags": [
+                    "News"
+                ],
+                "summary": "Get all news",
+                "description": "Show list of news",
+                "operationId": "69808881bdf8b5b95c59d671901f910f",
+                "parameters": [
+                    {
+                        "name": "lang",
+                        "in": "query",
+                        "description": "App language (es/en)",
+                        "required": true,
+                        "schema": {
+                            "description": "Lang",
+                            "type": "string",
+                            "format": "text"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Show list of all news",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Some was wrong",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "500": {
+                        "description": "an \"unexpected\" error",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/news/{id}": {
+            "get": {
+                "tags": [
+                    "News"
+                ],
+                "summary": "Get a new",
+                "description": "Show new details",
+                "operationId": "1b676cd9133ff9a19746069df9be9a2e",
+                "parameters": [
+                    {
+                        "name": "lang",
+                        "in": "query",
+                        "description": "App language (es/en)",
+                        "required": true,
+                        "schema": {
+                            "description": "Lang",
+                            "type": "string",
+                            "format": "text"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "New ID",
+                        "required": true,
+                        "schema": {
+                            "description": "Unique New Identifier",
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Show list of all news",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Some was wrong",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "404": {
+                        "description": "New Not Found.",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "500": {
+                        "description": "an \"unexpected\" error",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -490,6 +593,10 @@
         {
             "name": "Places",
             "description": "Places"
+        },
+        {
+            "name": "News",
+            "description": "News"
         }
     ]
 }
