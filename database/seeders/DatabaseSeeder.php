@@ -15,6 +15,11 @@ class DatabaseSeeder extends Seeder
             RolSeeder::class,
             PermissionSeeder::class,
             AdminSeeder::class,
+
+            CategoryTypeSeeder::class,
+            CategorySeeder::class,
+
+            SponsorSeeder::class
         ]);
     }
 }

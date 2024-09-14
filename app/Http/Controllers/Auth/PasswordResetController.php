@@ -69,8 +69,6 @@ class PasswordResetController extends Controller
      *     ),
      *  )
      * 
-     * Store a newly created resource in storage
-     * 
      * @return \Illuminate\Http\JsonResponse
      */
     public function forgot_password(ForgotPasswordRequest $request)
@@ -189,8 +187,6 @@ class PasswordResetController extends Controller
      *     ),
      *  )
      * 
-     * Store a newly created resource in storage
-     * 
      * @return \Illuminate\Http\JsonResponse
      */
     public function find(FindTokenRequest $request)
@@ -302,8 +298,6 @@ class PasswordResetController extends Controller
      *         description="an ""unexpected"" error"
      *     ),
      *  )
-     * 
-     * Store a newly created resource in storage
      * 
      * @return \Illuminate\Http\JsonResponse
      */

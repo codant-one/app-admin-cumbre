@@ -319,6 +319,49 @@
                     }
                 }
             }
+        },
+        "/sponsors": {
+            "get": {
+                "tags": [
+                    "Sponsors"
+                ],
+                "summary": "Get all sponsors",
+                "description": "Show list of sponsors",
+                "operationId": "989f3cdb84bb96fb446277fad0e1460d",
+                "parameters": [
+                    {
+                        "name": "lang",
+                        "in": "query",
+                        "description": "App language (es/en)",
+                        "required": true,
+                        "schema": {
+                            "description": "Lang",
+                            "type": "string",
+                            "format": "text"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Show list of all sponsors",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Some was wrong",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "500": {
+                        "description": "an \"unexpected\" error",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -336,6 +379,10 @@
         {
             "name": "AUTH",
             "description": "AUTH"
+        },
+        {
+            "name": "Sponsors",
+            "description": "Sponsors"
         }
     ]
 }

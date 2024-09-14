@@ -96,8 +96,6 @@ class AuthController extends Controller
      *     ),
      *  )
      * 
-     * Store a newly created resource in storage
-     * 
      * @return \Illuminate\Http\JsonResponse
      */
     public function login(LoginRequest $request): JsonResponse
@@ -224,8 +222,6 @@ class AuthController extends Controller
      *         description="an ""unexpected"" error"
      *     ),
      *  )
-     *
-     * Log the user out (Invalidate the token).
      * 
      * @return \Illuminate\Http\JsonResponse
      */

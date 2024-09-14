@@ -10,6 +10,10 @@ use App\Http\Controllers\Auth\{
     PasswordResetController
 };
 
+use App\Http\Controllers\{
+    MiscellaneousController
+};
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -40,3 +44,6 @@ Route::group([
 Route::get('notifications', [TestingController::class , 'notifications'])->name('notifications');
 Route::get('forgot_password', [TestingController::class , 'forgot_password'])->name('forgot_password');
 Route::get('reset_password', [TestingController::class , 'reset_password'])->name('reset_password');
+
+//public Endpoints
+Route::get('sponsors', [MiscellaneousController::class , 'sponsors'])->name('sponsors');
