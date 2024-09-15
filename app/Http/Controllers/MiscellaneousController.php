@@ -15,6 +15,7 @@ use App\Models\Place;
 use App\Models\News;
 use App\Models\Schedule;
 use App\Models\Speaker;
+use App\Models\Talk;
 
 class MiscellaneousController extends Controller
 {
@@ -528,4 +529,262 @@ class MiscellaneousController extends Controller
         }
     }
     
+    /**
+     * @OA\Get(
+     *   path="/schedules",
+     *   summary="Get all schedules",
+     *   description= "Show all schedules",
+     *   tags={"Schedules"},
+     *   @OA\Parameter(
+     *      name="lang",
+     *      in="query",
+     *      description="App language (es/en)",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string",
+     *          format="text",
+     *          description="Lang"
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=200,
+     *      description="Show list of all sponsors",
+     *    ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=400,
+     *      description="Some was wrong"
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=500,
+     *      description="an ""unexpected"" error"
+     *   ),
+     * )
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function schedules(LangRequest $request): JsonResponse
+    {
+        try {
+            
+            $lang = $request->lang;
+
+            $schedules = Schedule::all()->map(function($schedule) use ($lang) {
+                return [
+                    'id' => $schedule->id,
+                    'name' => ($lang === 'es') ? $schedule->name_es : $schedule->name_en,
+                    'image' => env('APP_URL').'/storage/'.$schedule->image,
+                ];
+            });
+            
+            return response()->json([
+                'success' => true,
+                'data' => $schedules
+            ], 200);
+
+        } catch(\Illuminate\Database\QueryException $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'database_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *   path="/schedules/{id}",
+     *   summary="Get all talks by schedule Id",
+     *   description= "Show all talks by schedule Id",
+     *   tags={"Schedules"},
+     *   @OA\Parameter(
+     *      name="lang",
+     *      in="query",
+     *      description="App language (es/en)",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string",
+     *          format="text",
+     *          description="Lang"
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="id",
+     *      in="path",
+     *      description="Schedule ID",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="integer",
+     *          format="int64",
+     *          description="Unique New Identifier"
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=200,
+     *      description="Show list of all sponsors",
+     *    ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=400,
+     *      description="Some was wrong"
+     *   ),
+     *   @OA\Response(
+     *     @OA\MediaType(mediaType="application/json"),
+     *     response=404,
+     *     description="Schedule Not Found."
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=500,
+     *      description="an ""unexpected"" error"
+     *   ),
+     * )
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function schedule_details(LangRequest $request, $id): JsonResponse
+    {
+        try {
+            
+            $lang = $request->lang;
+            $schedule = Schedule::find($id);
+
+            if (!$schedule)
+                return response()->json([
+                    'success' => false,
+                    'message' => 'not_found',
+                    'errors' =>  __('api.schedule_not_found', [], $lang)
+                ], 404);
+
+            $talks = Talk::with(['category'])->where('schedule_id', $id)->orderBy('date')->get();
+
+            $groupedTalks = $talks->groupBy(function($talk) {
+                return $talk->date; // Primero agrupamos por fecha
+            })->map(function($talksByDate) use ($lang) {
+                return $talksByDate->groupBy(function($talk) use ($lang) {
+                    // Luego agrupamos por categoría dentro de cada fecha
+                    return ($lang === 'es') ? $talk->category->name_es : $talk->category->name_en;
+                })->map(function($talksGroup) use ($lang) {
+                    return $talksGroup->map(function($talk) use ($lang) {
+                        return [
+                            'id' => $talk->id,
+                            'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
+                            'hour' => $talk->hour
+                        ];
+                    });
+                });
+            });
+
+            return response()->json([
+                'success' => true,
+                'data' => $groupedTalks
+            ], 200);
+            
+        } catch(\Illuminate\Database\QueryException $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'database_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *   path="/talk/{id}",
+     *   summary="Get a talk",
+     *   description= "Show talk details",
+     *   tags={"Schedules"},
+     *   @OA\Parameter(
+     *      name="lang",
+     *      in="query",
+     *      description="App language (es/en)",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string",
+     *          format="text",
+     *          description="Lang"
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="id",
+     *      in="path",
+     *      description="Talk ID",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="integer",
+     *          format="int64",
+     *          description="Unique New Identifier"
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=200,
+     *      description="Show list of all news",
+     *    ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=400,
+     *      description="Some was wrong"
+     *   ),
+     *  @OA\Response(
+     *     @OA\MediaType(mediaType="application/json"),
+     *     response=404,
+     *     description="Talk Not Found."
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=500,
+     *      description="an ""unexpected"" error"
+     *   ),
+     * )
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function talk_details(LangRequest $request, $id): JsonResponse
+    {
+        try {
+            
+            $lang = $request->lang;
+            $talk = Talk::with(['speakers.speaker'])->find($id);
+
+            if (!$talk)
+                return response()->json([
+                    'success' => false,
+                    'message' => 'not_found',
+                    'errors' =>  __('api.talk_not_found', [], $lang)
+                ], 404);
+
+            $formattedTalk = [
+                'id' => $talk->id,
+                'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
+                'hour' => $talk->hour,
+                'image' => env('APP_URL') . '/storage/' . $talk->image,
+                'speakers' => $talk->speakers->map(function($speakerWrapper) use ($lang) {
+                    $speaker = $speakerWrapper->speaker; // Accedemos al modelo 'speaker'
+                    return [
+                        'id' => $speaker->id,
+                        'fullname' => $speaker->name . ' ' . $speaker->last_name,
+                        'position' => ($lang === 'es') ? $speaker->position->name_es : $speaker->position->name_en,
+                        'avatar' => env('APP_URL') . '/storage/' . $speaker->avatar
+                    ];
+                })
+            ];
+
+            return response()->json([
+                'success' => true,
+                'data' => $formattedTalk
+            ], 200);
+
+        } catch(\Illuminate\Database\QueryException $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'database_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        }
+    }
 }

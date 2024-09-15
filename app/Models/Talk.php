@@ -19,4 +19,7 @@ class Talk extends Model
     public function schedule() {
         return $this->belongsTo(Schedule::class, 'schedule_id', 'id');
     }
+    public function speakers() {
+        return $this->hasMany(TalkSpeaker::class, 'talk_id', 'id');
+    }
 }

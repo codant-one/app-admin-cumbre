@@ -15,5 +15,7 @@ return [
 
     //Not found
     'place_not_found' => 'Lugar no encontrado',
-    'new_not_found' => 'Última actualización no encontrada'
+    'new_not_found' => 'Última actualización no encontrada',
+    'schedule_not_found' => 'Agenda no encontrada',
+    'talk_not_found' => 'Charla no encontrada'
 ];

@@ -52,3 +52,6 @@ Route::get('places', [MiscellaneousController::class , 'places'])->name('places'
 Route::get('places/{id}', [MiscellaneousController::class , 'place_details'])->name('place_details');
 Route::get('news', [MiscellaneousController::class , 'news'])->name('news');
 Route::get('news/{id}', [MiscellaneousController::class , 'new_details'])->name('new_details');
+Route::get('schedules', [MiscellaneousController::class , 'schedules'])->name('schedules');
+Route::get('schedules/{id}', [MiscellaneousController::class , 'schedule_details'])->name('schedule_details');
+Route::get('talk/{id}', [MiscellaneousController::class , 'talk_details'])->name('talk_details');
