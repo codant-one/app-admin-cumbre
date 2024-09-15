@@ -15,4 +15,12 @@ class Speaker extends Model
     public function position() {
         return $this->belongsTo(Position::class, 'position_id', 'id');
     }
+
+    public function social_links() {
+        return $this->hasMany(SocialLink::class, 'speaker_id', 'id');
+    }
+
+    public function talk_speaker() {
+        return $this->hasMany(TalkSpeaker::class, 'speaker_id', 'id');
+    }
 }

@@ -131,6 +131,12 @@ class MiscellaneousController extends Controller
                 'message' => 'database_error',
                 'exception' => $ex->getMessage()
             ], 500);
+        } catch(\Exception $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'server_error',
+                'exception' => $ex->getMessage()
+            ], 500);
         }
     }
 
@@ -201,6 +207,12 @@ class MiscellaneousController extends Controller
                 'message' => 'database_error',
                 'exception' => $ex->getMessage()
             ], 500);
+        } catch(\Exception $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'server_error',
+                'exception' => $ex->getMessage()
+            ], 500);
         }
     }
 
@@ -269,6 +281,12 @@ class MiscellaneousController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'database_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        } catch(\Exception $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'server_error',
                 'exception' => $ex->getMessage()
             ], 500);
         }
@@ -366,6 +384,12 @@ class MiscellaneousController extends Controller
                 'message' => 'database_error',
                 'exception' => $ex->getMessage()
             ], 500);
+        } catch(\Exception $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'server_error',
+                'exception' => $ex->getMessage()
+            ], 500);
         }
     }
 
@@ -435,6 +459,12 @@ class MiscellaneousController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'database_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        } catch(\Exception $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'server_error',
                 'exception' => $ex->getMessage()
             ], 500);
         }
@@ -526,6 +556,12 @@ class MiscellaneousController extends Controller
                 'message' => 'database_error',
                 'exception' => $ex->getMessage()
             ], 500);
+        } catch(\Exception $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'server_error',
+                'exception' => $ex->getMessage()
+            ], 500);
         }
     }
     
@@ -588,6 +624,12 @@ class MiscellaneousController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'database_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        } catch(\Exception $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'server_error',
                 'exception' => $ex->getMessage()
             ], 500);
         }
@@ -689,6 +731,12 @@ class MiscellaneousController extends Controller
                 'message' => 'database_error',
                 'exception' => $ex->getMessage()
             ], 500);
+        } catch(\Exception $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'server_error',
+                'exception' => $ex->getMessage()
+            ], 500);
         }
     }
 
@@ -783,6 +831,194 @@ class MiscellaneousController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'database_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        } catch(\Exception $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'server_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        }
+    }
+
+     /**
+     * @OA\Get(
+     *   path="/speakers",
+     *   summary="Get all speakers",
+     *   description= "Show list of speakers",
+     *   tags={"Speakers"},
+     *   @OA\Parameter(
+     *      name="lang",
+     *      in="query",
+     *      description="App language (es/en)",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string",
+     *          format="text",
+     *          description="Lang"
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=200,
+     *      description="Show list of all news",
+     *    ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=400,
+     *      description="Some was wrong"
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=500,
+     *      description="an ""unexpected"" error"
+     *   ),
+     * )
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function speakers(LangRequest $request): JsonResponse
+    {
+        try {
+            
+            $lang = $request->lang;
+            $speakers = Speaker::with(['position'])->get();
+
+            $groupedSpeakers = $speakers->map(function($speaker) use ($lang) {
+                return [
+                    'id' => $speaker->id,
+                    'fullname' => $speaker->name . ' ' . $speaker->last_name,
+                    'position' => ($lang === 'es') ? $speaker->position->name_es : $speaker->position->name_en,
+                    'avatar' => env('APP_URL').'/storage/'.$speaker->avatar
+                ];
+            });
+
+            return response()->json([
+                'success' => true,
+                'data' => $groupedSpeakers
+            ], 200);
+
+        } catch(\Illuminate\Database\QueryException $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'database_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        } catch(\Exception $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'server_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *   path="/speakers/{id}",
+     *   summary="Get a speaker",
+     *   description= "Show speaker details",
+     *   tags={"Speakers"},
+     *   @OA\Parameter(
+     *      name="lang",
+     *      in="query",
+     *      description="App language (es/en)",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string",
+     *          format="text",
+     *          description="Lang"
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="id",
+     *      in="path",
+     *      description="Speaker ID",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="integer",
+     *          format="int64",
+     *          description="Unique New Identifier"
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=200,
+     *      description="Show list of all news",
+     *    ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=400,
+     *      description="Some was wrong"
+     *   ),
+     *  @OA\Response(
+     *     @OA\MediaType(mediaType="application/json"),
+     *     response=404,
+     *     description="Speaker Not Found."
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=500,
+     *      description="an ""unexpected"" error"
+     *   ),
+     * )
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function speaker_details(LangRequest $request, $id): JsonResponse
+    {
+        try {
+            
+            $lang = $request->lang;
+            $speaker = Speaker::with(['position','social_links.social_network', 'talk_speaker.talk' ])->find($id);
+
+            if (!$speaker)
+                return response()->json([
+                    'success' => false,
+                    'message' => 'not_found',
+                    'errors' =>  __('api.speaker_not_found', [], $lang)
+                ], 404);
+
+            $formattedSpeaker = [
+                'id' => $speaker->id,
+                'fullname' => $speaker->name . ' ' . $speaker->last_name,
+                'position' => ($lang === 'es') ? $speaker->position->name_es : $speaker->position->name_en,
+                'avatar' => env('APP_URL').'/storage/'.$speaker->avatar,
+                'description' => ($lang === 'es') ? $speaker->description_es : $speaker->description_en,
+                'social_links' => $speaker->social_links->map(function($speakerWraper) use ($lang) {
+                    $social_network = $speakerWraper->social_network;
+                    return [
+                        'social_network_id' => $social_network->id,
+                        'social_network' => $social_network->name,
+                        'link' => $speakerWraper->link
+                    ];
+                }),
+                'talks' => $speaker->talk_speaker->map(function($speakerWraper) use ($lang) {
+                    $talk = $speakerWraper->talk;
+                    return [
+                        'id' => $talk->id,
+                        'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
+                        'hour' => $talk->hour
+                    ];
+                }),
+            ];
+
+            return response()->json([
+                'success' => true,
+                'data' => $formattedSpeaker
+            ], 200);
+
+        } catch(\Illuminate\Database\QueryException $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'database_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        } catch(\Exception $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'server_error',
                 'exception' => $ex->getMessage()
             ], 500);
         }

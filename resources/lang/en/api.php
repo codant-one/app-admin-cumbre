@@ -17,5 +17,6 @@ return [
     'place_not_found' => 'Place not found',
     'new_not_found' => 'Last update not found',
     'schedule_not_found' => 'Schedule not found',
-    'talk_not_found' => 'Talk not found'
+    'talk_not_found' => 'Talk not found',
+    'speaker_not_found' => 'Speaker not found'
 ];
