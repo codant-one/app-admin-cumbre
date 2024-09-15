@@ -21,7 +21,13 @@ class DatabaseSeeder extends Seeder
 
             SponsorSeeder::class,
             PlaceSeeder::class,
-            NewSeeder::class
+            NewSeeder::class,
+
+            PositionSeeder::class,
+            SocialNetworkSeeder::class,
+            ScheduleSeeder::class,
+            TalkSeeder::class,
+            SpeakerSeeder::class
         ]);
     }
 }

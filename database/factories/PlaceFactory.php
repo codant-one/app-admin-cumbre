@@ -32,7 +32,7 @@ class PlaceFactory extends Factory
             'description_en' => $this->faker->paragraph,
             'image' => 'places/' . $this->faker->file(public_path('images/places/model1'), storage_path('app/public/places'), false),
             'link' => $this->faker->url,
-            'is_popular' => rand(0,1),
+            'is_popular' => rand(0, 1),
             'created_at' => now(),
             'updated_at' => now()
         ];

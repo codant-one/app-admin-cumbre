@@ -320,6 +320,49 @@
                 }
             }
         },
+        "/home": {
+            "get": {
+                "tags": [
+                    "Home"
+                ],
+                "summary": "Get all the details for the app home page",
+                "description": "Show all the details for the app home page",
+                "operationId": "3585f422e75eb4ff8cd26bf4de20c4a7",
+                "parameters": [
+                    {
+                        "name": "lang",
+                        "in": "query",
+                        "description": "App language (es/en)",
+                        "required": true,
+                        "schema": {
+                            "description": "Lang",
+                            "type": "string",
+                            "format": "text"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Show list of all sponsors",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Some was wrong",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "500": {
+                        "description": "an \"unexpected\" error",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
         "/sponsors": {
             "get": {
                 "tags": [
@@ -585,6 +628,10 @@
         {
             "name": "AUTH",
             "description": "AUTH"
+        },
+        {
+            "name": "Home",
+            "description": "Home"
         },
         {
             "name": "Sponsors",

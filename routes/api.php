@@ -46,6 +46,7 @@ Route::get('forgot_password', [TestingController::class , 'forgot_password'])->n
 Route::get('reset_password', [TestingController::class , 'reset_password'])->name('reset_password');
 
 //public Endpoints
+Route::get('home', [MiscellaneousController::class , 'home'])->name('home');
 Route::get('sponsors', [MiscellaneousController::class , 'sponsors'])->name('sponsors');
 Route::get('places', [MiscellaneousController::class , 'places'])->name('places');
 Route::get('places/{id}', [MiscellaneousController::class , 'place_details'])->name('place_details');

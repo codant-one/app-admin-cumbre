@@ -3,18 +3,18 @@
 namespace Database\Factories;
 
 use Str;
-use App\Models\News;
+use App\Models\Talk;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Carbon\Carbon;
 
-class NewsFactory extends Factory
+class TalkFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = News::class;
+    protected $model = Talk::class;
 
 
     /**
@@ -24,15 +24,16 @@ class NewsFactory extends Factory
      */
     public function definition()
     {
+        $rand = rand(1, 4);
+
         return [
-            'category_id' => rand(7, 9),
+            'category_id' => rand(10, 19),
+            'schedule_id' => $rand,
             'title_es' => $this->faker->text,
             'title_en' => $this->faker->text,
-            'content_es' => $this->faker->randomHtml,
-            'content_en' => $this->faker->randomHtml,
-            'date' => now(),
-            'image' => 'news/' . $this->faker->file(public_path('images/news'), storage_path('app/public/news'), false),
-            'is_popular' => rand(0, 1),
+            'date' => now()->toDateString(),
+            'hour' => now()->toTimeString(),
+            'image' => 'talks/' . $this->faker->file(public_path('images/schedules/model'.$rand), storage_path('app/public/talks'), false),
             'created_at' => now(),
             'updated_at' => now()
         ];

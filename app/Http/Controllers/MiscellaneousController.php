@@ -13,9 +13,126 @@ use App\Http\Requests\LangRequest;
 use App\Models\Sponsor;
 use App\Models\Place;
 use App\Models\News;
+use App\Models\Schedule;
+use App\Models\Speaker;
 
 class MiscellaneousController extends Controller
 {
+    /**
+     * @OA\Get(
+     *   path="/home",
+     *   summary="Get all the details for the app home page",
+     *   description= "Show all the details for the app home page",
+     *   tags={"Home"},
+     *   @OA\Parameter(
+     *      name="lang",
+     *      in="query",
+     *      description="App language (es/en)",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string",
+     *          format="text",
+     *          description="Lang"
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=200,
+     *      description="Show list of all sponsors",
+     *    ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=400,
+     *      description="Some was wrong"
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=500,
+     *      description="an ""unexpected"" error"
+     *   ),
+     * )
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function home(LangRequest $request): JsonResponse
+    {
+        try {
+            
+            $lang = $request->lang;
+
+            $places = Place::where('is_popular', 1)->get();
+
+            $groupedPlaces = $places->map(function($place) use ($lang) {
+                return [
+                    'id' => $place->id,
+                    'title' => ($lang === 'es') ? $place->title_es : $place->title_en,
+                    'image' => env('APP_URL').'/storage/'.$place->image,
+                    'label' => ($lang === 'es') ? 'Conoce Cartagena de Indias' : 'Get to know Cartagena de Indias'
+                ];
+            });
+
+            $news = News::where('is_popular', 1)->get();
+
+            $groupedNews = $news->map(function($new) use ($lang) {
+                return [
+                    'id' => $new->id,
+                    'title' => ($lang === 'es') ? $new->title_es : $new->title_en,
+                    'image' => env('APP_URL').'/storage/'.$new->image,
+                    'label' => $new->date
+                ];
+            });
+
+            $sliders = array_merge($groupedNews->toArray(), $groupedPlaces->toArray());
+
+            $schedules = Schedule::all()->map(function($schedule) use ($lang) {
+                return [
+                    'id' => $schedule->id,
+                    'name' => ($lang === 'es') ? $schedule->name_es : $schedule->name_en,
+                    'image' => env('APP_URL').'/storage/'.$schedule->image,
+                ];
+            });
+
+            $speakers = Speaker::with(['position'])->where('is_popular', 1)->get();
+
+            $groupedSpeakers = $speakers->map(function($speaker) use ($lang) {
+                return [
+                    'id' => $speaker->id,
+                    'fullname' => $speaker->name . ' ' . $speaker->last_name,
+                    'position' => ($lang === 'es') ? $speaker->position->name_es : $speaker->position->name_en,
+                    'avatar' => env('APP_URL').'/storage/'.$speaker->avatar
+                ];
+            });
+
+            $news = News::orderBy('date', 'desc')->limit(3)->get();
+
+            $groupedNews = $news->map(function($new) use ($lang) {
+                return [
+                    'id' => $new->id,
+                    'title' => ($lang === 'es') ? $new->title_es : $new->title_en,
+                    'image' => env('APP_URL').'/storage/'.$new->image,
+                    'date' => $new->date
+                ];
+            });
+            
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'sliders' => $sliders,
+                    'schedules' => $schedules,
+                    'speakers' => $groupedSpeakers,
+                    'news' => $groupedNews
+                ]
+            ], 200);
+
+        } catch(\Illuminate\Database\QueryException $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'database_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        }
+    }
+
     /**
      * @OA\Get(
      *   path="/sponsors",
