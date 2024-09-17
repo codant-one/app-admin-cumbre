@@ -13,9 +13,9 @@
                                                 <p style="margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:Inter;line-height:17px;color:#FFFFFF;font-size:14px">
                                                     @lang('emails.copy_1')<br>
                                                     @lang('emails.copy_2')
-                                                    <a href="{{ env('APP_DOMAIN') }}/privacy-statement" target="_blank" style="color: #FFFFFF!important;">@lang('emails.copy_3')</a>
+                                                    <a href="{{ env('APP_DOMAIN') }}/policy" target="_blank" style="color: #FFFFFF!important;">@lang('emails.copy_3')</a>
                                                     @lang('emails.copy_4')
-                                                    <a href="{{ env('APP_DOMAIN') }}/terms-and-conditions" target="_blank" style="color: #FFFFFF!important;">@lang('emails.copy_5')</a>.                                                   
+                                                    <a href="{{ env('APP_DOMAIN') }}/terms" target="_blank" style="color: #FFFFFF!important;">@lang('emails.copy_5')</a>.                                                   
                                                 </p>
                                             </td>
                                         </tr>

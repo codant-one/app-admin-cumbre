@@ -67,8 +67,18 @@ class MiscellaneousController extends Controller
                 return [
                     'id' => $place->id,
                     'title' => ($lang === 'es') ? $place->title_es : $place->title_en,
+                    'description' => ($lang === 'es') ? $place->description_es : $place->description_en,
                     'image' => env('APP_URL').'/storage/'.$place->image,
-                    'label' => ($lang === 'es') ? 'Conoce Cartagena de Indias' : 'Get to know Cartagena de Indias'
+                    'link' => $place->link,
+                    'gallery' => $place->images->map(function($image) {
+                        return [
+                            'id' => $image->id,
+                            'place_id' => $image->place_id,
+                            'image' => env('APP_URL').'/storage/'.$image->image,
+                        ];
+                    }),
+                    'label' => ($lang === 'es') ? 'Conoce Cartagena de Indias' : 'Get to know Cartagena de Indias',
+                    'type' => 'place'
                 ];
             });
 
@@ -78,8 +88,12 @@ class MiscellaneousController extends Controller
                 return [
                     'id' => $new->id,
                     'title' => ($lang === 'es') ? $new->title_es : $new->title_en,
+                    'content' => ($lang === 'es') ? $new->content_es : $new->content_en,
+                    'category' => ($lang === 'es') ? $new->category->name_es : $new->category->name_en,
+                    'date' => $new->date,
                     'image' => env('APP_URL').'/storage/'.$new->image,
-                    'label' => $new->date
+                    'label' => $new->date,
+                    'type' => 'new'
                 ];
             });
 
@@ -100,7 +114,24 @@ class MiscellaneousController extends Controller
                     'id' => $speaker->id,
                     'fullname' => $speaker->name . ' ' . $speaker->last_name,
                     'position' => ($lang === 'es') ? $speaker->position->name_es : $speaker->position->name_en,
-                    'avatar' => env('APP_URL').'/storage/'.$speaker->avatar
+                    'avatar' => env('APP_URL').'/storage/'.$speaker->avatar,
+                    'description' => ($lang === 'es') ? $speaker->description_es : $speaker->description_en,
+                    'social_links' => $speaker->social_links->map(function($speakerWraper) use ($lang) {
+                        $social_network = $speakerWraper->social_network;
+                        return [
+                            'social_network_id' => $social_network->id,
+                            'social_network' => $social_network->name,
+                            'link' => $speakerWraper->link
+                        ];
+                    }),
+                    'talks' => $speaker->talk_speaker->map(function($speakerWraper) use ($lang) {
+                        $talk = $speakerWraper->talk;
+                        return [
+                            'id' => $talk->id,
+                            'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
+                            'hour' => $talk->hour
+                        ];
+                    })
                 ];
             });
 
@@ -110,8 +141,10 @@ class MiscellaneousController extends Controller
                 return [
                     'id' => $new->id,
                     'title' => ($lang === 'es') ? $new->title_es : $new->title_en,
-                    'image' => env('APP_URL').'/storage/'.$new->image,
-                    'date' => $new->date
+                    'content' => ($lang === 'es') ? $new->content_es : $new->content_en,
+                    'category' => ($lang === 'es') ? $new->category->name_es : $new->category->name_en,
+                    'date' => $new->date,
+                    'image' => env('APP_URL').'/storage/'.$new->image
                 ];
             });
             
@@ -267,7 +300,16 @@ class MiscellaneousController extends Controller
                     return [
                         'id' => $place->id,
                         'title' => ($lang === 'es') ? $place->title_es : $place->title_en,
-                        'image' => env('APP_URL').'/storage/'.$place->image
+                        'description' => ($lang === 'es') ? $place->description_es : $place->description_en,
+                        'image' => env('APP_URL').'/storage/'.$place->image,
+                        'link' => $place->link,
+                        'gallery' => $place->images->map(function($image) {
+                            return [
+                                'id' => $image->id,
+                                'place_id' => $image->place_id,
+                                'image' => env('APP_URL').'/storage/'.$image->image,
+                            ];
+                        })
                     ];
                 });
             });
@@ -444,6 +486,8 @@ class MiscellaneousController extends Controller
                     return [
                         'id' => $new->id,
                         'title' => ($lang === 'es') ? $new->title_es : $new->title_en,
+                        'content' => ($lang === 'es') ? $new->content_es : $new->content_en,
+                        'category' => ($lang === 'es') ? $new->category->name_es : $new->category->name_en,
                         'date' => $new->date,
                         'image' => env('APP_URL').'/storage/'.$new->image
                     ];
@@ -842,7 +886,7 @@ class MiscellaneousController extends Controller
         }
     }
 
-     /**
+    /**
      * @OA\Get(
      *   path="/speakers",
      *   summary="Get all speakers",
@@ -890,7 +934,24 @@ class MiscellaneousController extends Controller
                     'id' => $speaker->id,
                     'fullname' => $speaker->name . ' ' . $speaker->last_name,
                     'position' => ($lang === 'es') ? $speaker->position->name_es : $speaker->position->name_en,
-                    'avatar' => env('APP_URL').'/storage/'.$speaker->avatar
+                    'avatar' => env('APP_URL').'/storage/'.$speaker->avatar,
+                    'description' => ($lang === 'es') ? $speaker->description_es : $speaker->description_en,
+                    'social_links' => $speaker->social_links->map(function($speakerWraper) use ($lang) {
+                        $social_network = $speakerWraper->social_network;
+                        return [
+                            'social_network_id' => $social_network->id,
+                            'social_network' => $social_network->name,
+                            'link' => $speakerWraper->link
+                        ];
+                    }),
+                    'talks' => $speaker->talk_speaker->map(function($speakerWraper) use ($lang) {
+                        $talk = $speakerWraper->talk;
+                        return [
+                            'id' => $talk->id,
+                            'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
+                            'hour' => $talk->hour
+                        ];
+                    })
                 ];
             });
 
@@ -1001,7 +1062,7 @@ class MiscellaneousController extends Controller
                         'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
                         'hour' => $talk->hour
                     ];
-                }),
+                })
             ];
 
             return response()->json([

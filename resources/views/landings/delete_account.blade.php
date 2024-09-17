@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
   <style>
+    .card {
+        border-radius: 16px !important;
+    }
+
     .button-form-app
         {
             border: 1px solid #E6641C;
@@ -9,6 +13,7 @@
             font-family: Inter;
             padding-right: 40px;
             padding-left: 40px;
+            border-radius: 56px;
         }
 
         .button-form-app:hover
@@ -52,12 +57,12 @@
                         <h1 class="text-center text-white">Solicitar eliminación mis datos almacenados dentro de la App</h1>
                         
                         <div class="row mt-5 align-items-center">
-                            <div class="col-md-6 text-center">
+                            <div class="col-md-6 text-center d-none d-md-block">
                                 <img src="{{asset('images/app-grande.png')}}" alt="appcumbre mobile" style="max-width:300px;">
                             </div>
                             <div class="col-md-6">
                                 <div class="card">
-                                    <div class="card-body">
+                                    <div class="card-body p-5">
                                         <h4 class="card-title text-center">Ingresa datos de inicio de sesión de la App</h4>
                                         <p class="text-center alert-message mb-3">**Los datos seran eliminados 30 días despues de la validación de la solicitud</p>
                                         @if(session('success'))
