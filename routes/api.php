@@ -56,6 +56,9 @@ Route::middleware('jwt')->group(function () {
     Route::get('favorites', [MiscellaneousController::class , 'allFavorites'])->name('allFavorites');
     Route::post('favorites', [MiscellaneousController::class , 'favorite'])->name('favorite');
 
+    // Translations
+    Route::get('translations', [MiscellaneousController::class , 'translations'])->name('translations');
+
 });
 
 //Testing Endpoints

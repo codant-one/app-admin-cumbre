@@ -1381,6 +1381,35 @@
                     }
                 ]
             }
+        },
+        "/translations": {
+            "get": {
+                "tags": [
+                    "Translations"
+                ],
+                "summary": "Get translations links",
+                "description": "Show translations links",
+                "operationId": "fabae20f0fec75f07c957f852c717ef5",
+                "responses": {
+                    "200": {
+                        "description": "Show translations links",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "500": {
+                        "description": "an \"unexpected\" error",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -1434,6 +1463,10 @@
         {
             "name": "Favorites",
             "description": "Favorites"
+        },
+        {
+            "name": "Translations",
+            "description": "Translations"
         }
     ]
 }

@@ -22,6 +22,7 @@ use App\Models\Talk;
 use App\Models\Question;
 use App\Models\Review;
 use App\Models\Favorite;
+use App\Models\Translation;
 
 class MiscellaneousController extends Controller
 {
@@ -1807,6 +1808,51 @@ class MiscellaneousController extends Controller
 
             return response()->json([
                 'success' => true
+            ], 200);
+
+        } catch(\Illuminate\Database\QueryException $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'database_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        } catch(\Exception $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'server_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *   path="/translations",
+     *   summary="Get translations links",
+     *   description= "Show translations links",
+     *   tags={"Translations"},
+     *   security={{"bearerAuth": {} }},
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=200,
+     *      description="Show translations links",
+     *    ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=500,
+     *      description="an ""unexpected"" error"
+     *   ),
+     * )
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function translations(): JsonResponse
+    {
+        try {
+            
+            return response()->json([
+                'success' => true,
+                'data' => Translation::select(['link_es', 'link_en'])->first()
             ], 200);
 
         } catch(\Illuminate\Database\QueryException $ex) {
