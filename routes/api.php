@@ -51,6 +51,11 @@ Route::middleware('jwt')->group(function () {
     Route::get('reviews/talk/{id}', [MiscellaneousController::class , 'allReviews'])->name('allReviews');
     Route::post('reviews', [MiscellaneousController::class , 'review'])->name('review');
     Route::get('reviews/{id}', [MiscellaneousController::class , 'review_details'])->name('review_details');
+
+    // Favorites
+    Route::get('favorites', [MiscellaneousController::class , 'allFavorites'])->name('allFavorites');
+    Route::post('favorites', [MiscellaneousController::class , 'favorite'])->name('favorite');
+
 });
 
 //Testing Endpoints

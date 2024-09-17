@@ -27,4 +27,8 @@ class Talk extends Model
     public function questions() {
         return $this->hasMany(Question::class, 'talk_id', 'id');
     }
+
+    public function favorite() {
+        return $this->hasOne(Favorite::class, 'talk_id', 'id');
+    }
 }

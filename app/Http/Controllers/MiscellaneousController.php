@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Requests\LangRequest;
 use App\Http\Requests\QuestionRequest;
 use App\Http\Requests\ReviewRequest;
+use App\Http\Requests\FavoriteRequest;
 
 use App\Models\Sponsor;
 use App\Models\Place;
@@ -20,6 +21,7 @@ use App\Models\Speaker;
 use App\Models\Talk;
 use App\Models\Question;
 use App\Models\Review;
+use App\Models\Favorite;
 
 class MiscellaneousController extends Controller
 {
@@ -749,7 +751,7 @@ class MiscellaneousController extends Controller
                     'errors' =>  __('api.schedule_not_found', [], $lang)
                 ], 404);
 
-            $talks = Talk::with(['category'])->where('schedule_id', $id)->orderBy('date')->get();
+            $talks = Talk::with(['category', 'favorite'])->where('schedule_id', $id)->orderBy('date')->get();
 
             $groupedTalks = $talks->groupBy(function($talk) {
                 return $talk->date; // Primero agrupamos por fecha
@@ -759,10 +761,12 @@ class MiscellaneousController extends Controller
                     return ($lang === 'es') ? $talk->category->name_es : $talk->category->name_en;
                 })->map(function($talksGroup) use ($lang) {
                     return $talksGroup->map(function($talk) use ($lang) {
+                        $favorite = $talk->favorite;
                         return [
                             'id' => $talk->id,
                             'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
-                            'hour' => $talk->hour
+                            'hour' => $talk->hour,
+                            'is_favorite' => Auth::check() ? ($favorite ? 1 : 0): 0
                         ];
                     });
                 });
@@ -845,7 +849,7 @@ class MiscellaneousController extends Controller
         try {
             
             $lang = $request->lang;
-            $talk = Talk::with(['speakers.speaker'])->find($id);
+            $talk = Talk::with(['speakers.speaker', 'favorite'])->find($id);
 
             if (!$talk)
                 return response()->json([
@@ -859,6 +863,7 @@ class MiscellaneousController extends Controller
                 'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
                 'hour' => $talk->hour,
                 'image' => env('APP_URL') . '/storage/' . $talk->image,
+                'is_favorite' => Auth::check() ? ($talk->favorite ? 1 : 0): 0,
                 'speakers' => $talk->speakers->map(function($speakerWrapper) use ($lang) {
                     $speaker = $speakerWrapper->speaker; // Accedemos al modelo 'speaker'
                     return [
@@ -953,7 +958,8 @@ class MiscellaneousController extends Controller
                         return [
                             'id' => $talk->id,
                             'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
-                            'hour' => $talk->hour
+                            'hour' => $talk->hour,
+                            'is_favorite' => Auth::check() ? ($talk->favorite ? 1 : 0): 0
                         ];
                     })
                 ];
@@ -1064,7 +1070,8 @@ class MiscellaneousController extends Controller
                     return [
                         'id' => $talk->id,
                         'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
-                        'hour' => $talk->hour
+                        'hour' => $talk->hour,
+                        'is_favorite' => Auth::check() ? ($talk->favorite ? 1 : 0): 0
                     ];
                 })
             ];
@@ -1628,6 +1635,178 @@ class MiscellaneousController extends Controller
             return response()->json([
                 'success' => true,
                 'data' => Review::where([['user_id', Auth::user()->id],['talk_id', $id]])->first()
+            ], 200);
+
+        } catch(\Illuminate\Database\QueryException $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'database_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        } catch(\Exception $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'server_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *   path="/favorites",
+     *   summary="Get all favorites by userId",
+     *   description= "Show all favorites by userId",
+     *   tags={"Favorites"},
+     *   security={{"bearerAuth": {} }},
+     *   @OA\Parameter(
+     *      name="lang",
+     *      in="query",
+     *      description="App language (es/en)",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string",
+     *          format="text",
+     *          description="Lang"
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=200,
+     *      description="Show list of all favprites",
+     *    ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=400,
+     *      description="Some was wrong"
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=500,
+     *      description="an ""unexpected"" error"
+     *   ),
+     * )
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function allFavorites(LangRequest $request): JsonResponse
+    {
+        try {
+            
+            $lang = $request->lang;
+            $favorites = Favorite::with(['talk'])->where('user_id', Auth::user()->id)->get();
+
+            $groupedFavorites = $favorites->map(function($favorite) use ($lang) {
+                $talk = $favorite->talk;
+
+                return [
+                    'id' => $talk->id,
+                    'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
+                    'hour' => $talk->hour,
+                    'image' => env('APP_URL') . '/storage/' . $talk->image,
+                    'speakers' => $talk->speakers->map(function($speakerWrapper) use ($lang) {
+                        $speaker = $speakerWrapper->speaker; // Accedemos al modelo 'speaker'
+                        return [
+                            'id' => $speaker->id,
+                            'fullname' => $speaker->name . ' ' . $speaker->last_name,
+                            'position' => ($lang === 'es') ? $speaker->position->name_es : $speaker->position->name_en,
+                            'avatar' => $speaker->avatar ? env('APP_URL') . '/storage/' . $speaker->avatar : null
+                        ];
+                    })
+                ];
+            });
+            
+            return response()->json([
+                'success' => true,
+                'data' => $groupedFavorites
+            ], 200);
+
+        } catch(\Illuminate\Database\QueryException $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'database_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        } catch(\Exception $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'server_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * @OA\Post(
+     *   path="/favorites",
+     *   summary="Create a favorite",
+     *   description= "Add a favorite by user to the talk",
+     *   tags={"Favorites"},
+     *   security={{"bearerAuth": {} }},
+     *   @OA\RequestBody(
+     *      @OA\MediaType(
+     *          mediaType="application/json",
+     *          @OA\Schema(
+     *              required={"talk_id","lang"},
+     *               @OA\Property(
+     *                  property="talk_id",
+     *                  type="integer",
+     *                  format= "int64",
+     *                  description="The talk id"
+     *              ),
+     *              @OA\Property(
+     *                  property="lang",
+     *                  type="string",
+     *                  format= "text",
+     *                  description="App language (es/en)"
+     *              )
+     *          )
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=200,
+     *      description="successful operation",
+     *    ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=400,
+     *      description="Some was wrong"
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=500,
+     *      description="an ""unexpected"" error"
+     *   ),
+     * )
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function favorite(FavoriteRequest $request): JsonResponse
+    {
+        try {
+
+            $exists = 
+                Favorite::where([
+                    ['user_id', Auth::user()->id],
+                    ['talk_id', $request->talk_id]
+                ])->exists();
+            
+            if ($exists)
+                Favorite::where([
+                    ['user_id', Auth::user()->id],
+                    ['talk_id', $request->talk_id]
+                ])->delete();
+            else
+                Favorite::insert([    
+                    'user_id' => Auth::user()->id,
+                    'talk_id' => $request->talk_id,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+
+            return response()->json([
+                'success' => true
             ], 200);
 
         } catch(\Illuminate\Database\QueryException $ex) {
