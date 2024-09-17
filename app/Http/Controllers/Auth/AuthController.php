@@ -114,33 +114,23 @@ class AuthController extends Controller
                 ], 400);
             }
 
-            if (Auth::user()->getRoleNames()[0] === 'App') {//user app
-                $user = Auth::user();
+            $user = Auth::user();
+
+            if (Auth::user()->getRoleNames()[0] === 'App' || Auth::user()->getRoleNames()[0] === 'Panelista') {//user app    
                 $user->online = Carbon::now();
                 $user->fcm_token = $request->fcm_token;
                 $user->device_type = $request->device_type;
                 $user->lang = $request->lang;
                 $user->save();
     
-                $title = $request->device_type === 'ios' ? 'Notificación iOS' : 'Notificación Android';
-                $body = "Mensaje para {$user->name}";
+                // $title = $request->device_type === 'ios' ? 'Notificación iOS' : 'Notificación Android';
+                // $body = "Mensaje para {$user->name}";
     
-                $this->googleFirebaseConsole = new GoogleFirebaseConsole();
+                // $this->googleFirebaseConsole = new GoogleFirebaseConsole();
 
-                // Envía la notificación al usuario
-                $data = $this->googleFirebaseConsole->pushNotification($request->fcm_token, $title, $body, $user);
+                // // Envía la notificación al usuario
+                // $data = $this->googleFirebaseConsole->pushNotification($request->fcm_token, $title, $body, $user);
 
-                return response()->json([
-                    'success' => true,
-                    'message' => 'login_success',
-                    'data' => array_merge(
-                        $this->respondWithToken($token),
-                        ['response_firebase_console' => $data]                        
-                    )
-                ], 200);
-            }
-
-            if (env('APP_DEBUG') || ($user->is_2fa === 0)) {
                 return response()->json([
                     'success' => true,
                     'message' => 'login_success',
@@ -148,42 +138,50 @@ class AuthController extends Controller
                 ], 200);
             }
 
-            if (empty($user->token_2fa)) {
-                $google2fa = app('pragmarx.google2fa');
-                $token2FA = $google2fa->generateSecretKey();
+            // if (env('APP_DEBUG') || ($user->is_2fa === 0)) {
+            //     return response()->json([
+            //         'success' => true,
+            //         'message' => 'login_success',
+            //         'data' => $this->respondWithToken($token)
+            //     ], 200);
+            // }
 
-                $user->token_2fa = $token2FA;
-                $user->update();
+            // if (empty($user->token_2fa)) {
+            //     $google2fa = app('pragmarx.google2fa');
+            //     $token2FA = $google2fa->generateSecretKey();
 
-                $qr = $google2fa->getQRCodeUrl(
-                    config('app.name'),
-                    $user->email,
-                    $token2FA
-                );
+            //     $user->token_2fa = $token2FA;
+            //     $user->update();
 
-                $data = [
-                    'qr' => $qr,
-                    'token' => $token2FA
-                ];
+            //     $qr = $google2fa->getQRCodeUrl(
+            //         config('app.name'),
+            //         $user->email,
+            //         $token2FA
+            //     );
 
-                return response()->json([
-                    'success' => true,
-                    'message' => '2fa-generate',
-                    'data' => array_merge($data, $this->respondWithToken($token))
-                ], 200);
+            //     $data = [
+            //         'qr' => $qr,
+            //         'token' => $token2FA
+            //     ];
 
-            } else {
+            //     return response()->json([
+            //         'success' => true,
+            //         'message' => '2fa-generate',
+            //         'data' => array_merge($data, $this->respondWithToken($token))
+            //     ], 200);
 
-                $data = [
-                    'token' => $user->token_2fa
-                ];
+            // } else {
 
-                return response()->json([
-                    'success' => true,
-                    'message' => '2fa',
-                    'data' => array_merge($data, $this->respondWithToken($token))
-                ], 200);
-            }
+            //     $data = [
+            //         'token' => $user->token_2fa
+            //     ];
+
+            //     return response()->json([
+            //         'success' => true,
+            //         'message' => '2fa',
+            //         'data' => array_merge($data, $this->respondWithToken($token))
+            //     ], 200);
+            // }
         } catch(\Illuminate\Database\QueryException $ex) {
             return response()->json([
                 'success' => false,

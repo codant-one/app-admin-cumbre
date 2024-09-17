@@ -27,7 +27,9 @@ class DatabaseSeeder extends Seeder
             SocialNetworkSeeder::class,
             ScheduleSeeder::class,
             TalkSeeder::class,
-            SpeakerSeeder::class
+            SpeakerSeeder::class,
+
+            QuestionSeeder::class
         ]);
     }
 }

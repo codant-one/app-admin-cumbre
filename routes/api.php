@@ -40,6 +40,14 @@ Route::group([
     });
 });
 
+//private Endpoints
+Route::middleware('jwt')->group(function () {
+    // Questions
+    Route::get('questions/talk/{id}', [MiscellaneousController::class , 'allQuestions'])->name('allQuestions');
+    Route::post('questions', [MiscellaneousController::class , 'question'])->name('question');
+    Route::get('questions/{id}', [MiscellaneousController::class , 'question_details'])->name('question_details');
+});
+
 //Testing Endpoints
 Route::get('notifications', [TestingController::class , 'notifications'])->name('notifications');
 Route::get('forgot_password', [TestingController::class , 'forgot_password'])->name('forgot_password');

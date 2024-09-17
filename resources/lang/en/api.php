@@ -18,5 +18,22 @@ return [
     'new_not_found' => 'Last update not found',
     'schedule_not_found' => 'Schedule not found',
     'talk_not_found' => 'Talk not found',
-    'speaker_not_found' => 'Speaker not found'
+    'speaker_not_found' => 'Speaker not found',
+    'question_not_found' => 'Question not found',
+
+    // invalid
+    'invalid_rol' => 'You do not have permissions for this action',
+
+    // required
+    'user_id_required' => 'User id is required.',
+    'talk_id_required' => 'Talk id is required.',
+    'question_required' => 'Question is required.',
+
+    // integer
+    'user_id_integer' => 'User format must be integer.',
+    'talk_id' => 'Talk format must be integer.',
+
+    // exists
+    'user_id_exists' => 'The entered user does not exist.',
+    'talk_id_exists' => 'The entered talk does not exist.'
 ];

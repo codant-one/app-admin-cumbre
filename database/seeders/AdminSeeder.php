@@ -62,15 +62,15 @@ class AdminSeeder extends Seeder
 
 
         $operator = User::create([
-            'name' => 'Operador',
+            'name' => 'Panelista',
             'last_name' => '',
-            'email' => 'operator@gmail.com',
+            'email' => 'panelista@gmail.com',
             'password' => Hash::make('1234'),
             'created_at' => now()->toDateString(),
             'updated_at' => now()->toDateString()
         ]);
 
-        $operator->assignRole('Operador');
+        $operator->assignRole('Panelista');
         
     }
 }

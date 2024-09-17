@@ -877,6 +877,191 @@
                     }
                 }
             }
+        },
+        "/questions/talk/{id}": {
+            "get": {
+                "tags": [
+                    "Questions"
+                ],
+                "summary": "Get all questions by talkId",
+                "description": "Show all questions by talkId",
+                "operationId": "8c91d082c550ddc9d66a70cfb3e8b27d",
+                "parameters": [
+                    {
+                        "name": "lang",
+                        "in": "query",
+                        "description": "App language (es/en)",
+                        "required": true,
+                        "schema": {
+                            "description": "Lang",
+                            "type": "string",
+                            "format": "text"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Show list of all questions",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Some was wrong",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "404": {
+                        "description": "Talk Not Found.",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "500": {
+                        "description": "an \"unexpected\" error",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/questions": {
+            "post": {
+                "tags": [
+                    "Questions"
+                ],
+                "summary": "Create a question",
+                "description": "Create a question by user to the talk",
+                "operationId": "a6bd5391497f95821d55a97a3d9b3ce3",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_id",
+                                    "talk_id",
+                                    "question",
+                                    "lang"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "description": "The user id",
+                                        "type": "integer",
+                                        "format": "int64"
+                                    },
+                                    "talk_id": {
+                                        "description": "The talk id",
+                                        "type": "integer",
+                                        "format": "int64"
+                                    },
+                                    "question": {
+                                        "description": "The question",
+                                        "type": "string",
+                                        "format": "text"
+                                    },
+                                    "lang": {
+                                        "description": "App language (es/en)",
+                                        "type": "string",
+                                        "format": "text"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Some was wrong",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "500": {
+                        "description": "an \"unexpected\" error",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/questions/{id}": {
+            "get": {
+                "tags": [
+                    "Questions"
+                ],
+                "summary": "Get a question",
+                "description": "Show question details by user and talk",
+                "operationId": "02aff3c8a81ac0d7fda1544f98b79fba",
+                "parameters": [
+                    {
+                        "name": "lang",
+                        "in": "query",
+                        "description": "App language (es/en)",
+                        "required": true,
+                        "schema": {
+                            "description": "Lang",
+                            "type": "string",
+                            "format": "text"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Talk ID",
+                        "required": true,
+                        "schema": {
+                            "description": "Unique New Identifier",
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Show question details",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Some was wrong",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "500": {
+                        "description": "an \"unexpected\" error",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -918,6 +1103,10 @@
         {
             "name": "Speakers",
             "description": "Speakers"
+        },
+        {
+            "name": "Questions",
+            "description": "Questions"
         }
     ]
 }
