@@ -23,6 +23,7 @@ use App\Models\Question;
 use App\Models\Review;
 use App\Models\Favorite;
 use App\Models\Translation;
+use App\Models\Map;
 
 class MiscellaneousController extends Controller
 {
@@ -1853,6 +1854,53 @@ class MiscellaneousController extends Controller
             return response()->json([
                 'success' => true,
                 'data' => Translation::select(['link_es', 'link_en'])->first()
+            ], 200);
+
+        } catch(\Illuminate\Database\QueryException $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'database_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        } catch(\Exception $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'server_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *   path="/maps",
+     *   summary="Get sitemap",
+     *   description= "Show sitemap",
+     *   tags={"Maps"},
+     *   security={{"bearerAuth": {} }},
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=200,
+     *      description="Show sitemap",
+     *    ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=500,
+     *      description="an ""unexpected"" error"
+     *   ),
+     * )
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function maps(): JsonResponse
+    {
+        try {
+            
+            $map = Map::select(['image'])->first();
+
+            return response()->json([
+                'success' => true,
+                'data' => env('APP_URL').'/storage/'.$map->image
             ], 200);
 
         } catch(\Illuminate\Database\QueryException $ex) {

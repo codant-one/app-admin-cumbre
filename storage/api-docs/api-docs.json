@@ -1410,6 +1410,35 @@
                     }
                 ]
             }
+        },
+        "/maps": {
+            "get": {
+                "tags": [
+                    "Maps"
+                ],
+                "summary": "Get sitemap",
+                "description": "Show sitemap",
+                "operationId": "80eb5525a716cf60a72b1b210eb2b738",
+                "responses": {
+                    "200": {
+                        "description": "Show sitemap",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "500": {
+                        "description": "an \"unexpected\" error",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -1467,6 +1496,10 @@
         {
             "name": "Translations",
             "description": "Translations"
+        },
+        {
+            "name": "Maps",
+            "description": "Maps"
         }
     ]
 }

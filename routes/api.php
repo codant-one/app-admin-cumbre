@@ -59,6 +59,8 @@ Route::middleware('jwt')->group(function () {
     // Translations
     Route::get('translations', [MiscellaneousController::class , 'translations'])->name('translations');
 
+    // Maps
+    Route::get('maps', [MiscellaneousController::class , 'maps'])->name('maps');
 });
 
 //Testing Endpoints

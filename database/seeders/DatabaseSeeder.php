@@ -32,7 +32,8 @@ class DatabaseSeeder extends Seeder
             QuestionSeeder::class,
             ReviewSeeder::class,
             FavoriteSeeder::class,
-            TranslationSeeder::class
+            TranslationSeeder::class,
+            MapSeeder::class
         ]);
     }
 }
