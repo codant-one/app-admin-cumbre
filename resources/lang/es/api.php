@@ -28,6 +28,8 @@ return [
     'user_id_required' => 'El Id del usuario es requerido.',
     'talk_id_required' => 'El Id de la charla es requerida.',
     'question_required' => 'La pregunta es requerida.',
+    'comment_required' => 'El comentario es requerido.',
+    'rating_required' => 'El rating es requerido.',
 
     // integer
     'user_id_integer' => 'El formato de usuario debe ser entero.',

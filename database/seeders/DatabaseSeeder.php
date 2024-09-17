@@ -29,7 +29,8 @@ class DatabaseSeeder extends Seeder
             TalkSeeder::class,
             SpeakerSeeder::class,
 
-            QuestionSeeder::class
+            QuestionSeeder::class,
+            ReviewSeeder::class
         ]);
     }
 }

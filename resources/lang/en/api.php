@@ -28,6 +28,8 @@ return [
     'user_id_required' => 'User id is required.',
     'talk_id_required' => 'Talk id is required.',
     'question_required' => 'Question is required.',
+    'comment_required' => 'Comment is required.',
+    'rating_required' => 'Rating is required.',
 
     // integer
     'user_id_integer' => 'User format must be integer.',

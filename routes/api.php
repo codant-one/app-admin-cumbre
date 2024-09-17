@@ -46,6 +46,11 @@ Route::middleware('jwt')->group(function () {
     Route::get('questions/talk/{id}', [MiscellaneousController::class , 'allQuestions'])->name('allQuestions');
     Route::post('questions', [MiscellaneousController::class , 'question'])->name('question');
     Route::get('questions/{id}', [MiscellaneousController::class , 'question_details'])->name('question_details');
+
+    // Reviews
+    Route::get('reviews/talk/{id}', [MiscellaneousController::class , 'allReviews'])->name('allReviews');
+    Route::post('reviews', [MiscellaneousController::class , 'review'])->name('review');
+    Route::get('reviews/{id}', [MiscellaneousController::class , 'review_details'])->name('review_details');
 });
 
 //Testing Endpoints

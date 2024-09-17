@@ -884,7 +884,7 @@
                     "Questions"
                 ],
                 "summary": "Get all questions by talkId",
-                "description": "Show all questions by talkId",
+                "description": "Show all questions by talkId (Only the `panelist` role can see it)",
                 "operationId": "8c91d082c550ddc9d66a70cfb3e8b27d",
                 "parameters": [
                     {
@@ -896,6 +896,17 @@
                             "description": "Lang",
                             "type": "string",
                             "format": "text"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Talk ID",
+                        "required": true,
+                        "schema": {
+                            "description": "Unique Talk Identifier",
+                            "type": "integer",
+                            "format": "int64"
                         }
                     }
                 ],
@@ -1062,6 +1073,208 @@
                     }
                 ]
             }
+        },
+        "/reviews/talk/{id}": {
+            "get": {
+                "tags": [
+                    "Reviews"
+                ],
+                "summary": "Get all reviews by talkId",
+                "description": "Show all reviews by talkId (Only the `panelist` role can see it)",
+                "operationId": "9a75cfd34c0e99f9d86976f258c2bde8",
+                "parameters": [
+                    {
+                        "name": "lang",
+                        "in": "query",
+                        "description": "App language (es/en)",
+                        "required": true,
+                        "schema": {
+                            "description": "Lang",
+                            "type": "string",
+                            "format": "text"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Talk ID",
+                        "required": true,
+                        "schema": {
+                            "description": "Unique Talk Identifier",
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Show list of all reviews",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Some was wrong",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "404": {
+                        "description": "Talk Not Found.",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "500": {
+                        "description": "an \"unexpected\" error",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/reviews": {
+            "post": {
+                "tags": [
+                    "Reviews"
+                ],
+                "summary": "Create a review",
+                "description": "Create a review by user to the talk",
+                "operationId": "fd53e78369b9814019d69dd8205ab3b9",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_id",
+                                    "talk_id",
+                                    "comment",
+                                    "rating",
+                                    "lang"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "description": "The user id",
+                                        "type": "integer",
+                                        "format": "int64"
+                                    },
+                                    "talk_id": {
+                                        "description": "The talk id",
+                                        "type": "integer",
+                                        "format": "int64"
+                                    },
+                                    "comment": {
+                                        "description": "The comment",
+                                        "type": "string",
+                                        "format": "text"
+                                    },
+                                    "rating": {
+                                        "description": "The rating",
+                                        "type": "string",
+                                        "format": "text"
+                                    },
+                                    "lang": {
+                                        "description": "App language (es/en)",
+                                        "type": "string",
+                                        "format": "text"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Some was wrong",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "500": {
+                        "description": "an \"unexpected\" error",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/reviews/{id}": {
+            "get": {
+                "tags": [
+                    "Reviews"
+                ],
+                "summary": "Get a review",
+                "description": "Show review details by user and talk",
+                "operationId": "a5f2d47334bbd1db690b67d08138d238",
+                "parameters": [
+                    {
+                        "name": "lang",
+                        "in": "query",
+                        "description": "App language (es/en)",
+                        "required": true,
+                        "schema": {
+                            "description": "Lang",
+                            "type": "string",
+                            "format": "text"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Talk ID",
+                        "required": true,
+                        "schema": {
+                            "description": "Unique New Identifier",
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Show reviews details",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Some was wrong",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "500": {
+                        "description": "an \"unexpected\" error",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -1107,6 +1320,10 @@
         {
             "name": "Questions",
             "description": "Questions"
+        },
+        {
+            "name": "Reviews",
+            "description": "Reviews"
         }
     ]
 }

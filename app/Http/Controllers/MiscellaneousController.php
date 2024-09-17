@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 
 use App\Http\Requests\LangRequest;
 use App\Http\Requests\QuestionRequest;
+use App\Http\Requests\ReviewRequest;
 
 use App\Models\Sponsor;
 use App\Models\Place;
@@ -18,6 +19,7 @@ use App\Models\Schedule;
 use App\Models\Speaker;
 use App\Models\Talk;
 use App\Models\Question;
+use App\Models\Review;
 
 class MiscellaneousController extends Controller
 {
@@ -1105,6 +1107,17 @@ class MiscellaneousController extends Controller
      *          description="Lang"
      *      )
      *   ),
+     *   @OA\Parameter(
+     *      name="id",
+     *      in="path",
+     *      description="Talk ID",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="integer",
+     *          format="int64",
+     *          description="Unique Talk Identifier"
+     *      )
+     *   ),
      *   @OA\Response(
      *      @OA\MediaType(mediaType="application/json"),
      *      response=200,
@@ -1332,6 +1345,289 @@ class MiscellaneousController extends Controller
             return response()->json([
                 'success' => true,
                 'data' => Question::where([['user_id', Auth::user()->id],['talk_id', $id]])->first()
+            ], 200);
+
+        } catch(\Illuminate\Database\QueryException $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'database_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        } catch(\Exception $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'server_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *   path="/reviews/talk/{id}",
+     *   summary="Get all reviews by talkId",
+     *   description= "Show all reviews by talkId (Only the `panelist` role can see it)",
+     *   tags={"Reviews"},
+     *   security={{"bearerAuth": {} }},
+     *   @OA\Parameter(
+     *      name="lang",
+     *      in="query",
+     *      description="App language (es/en)",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string",
+     *          format="text",
+     *          description="Lang"
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="id",
+     *      in="path",
+     *      description="Talk ID",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="integer",
+     *          format="int64",
+     *          description="Unique Talk Identifier"
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=200,
+     *      description="Show list of all reviews",
+     *    ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=400,
+     *      description="Some was wrong"
+     *   ),
+     *  @OA\Response(
+     *     @OA\MediaType(mediaType="application/json"),
+     *     response=404,
+     *     description="Talk Not Found."
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=500,
+     *      description="an ""unexpected"" error"
+     *   ),
+     * )
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function allReviews(LangRequest $request, $id): JsonResponse
+    {
+        try {
+            
+            $lang = $request->lang;
+            
+            if (Auth::user()->getRoleNames()[0] !== 'Panelista') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'invalid_rol',
+                    'errors' =>  __('api.invalid_rol', [], $lang)
+                ], 400);
+
+            }
+
+            $talk = Talk::find($id);
+
+            if (!$talk)
+                return response()->json([
+                    'success' => false,
+                    'message' => 'not_found',
+                    'errors' =>  __('api.talk_not_found', [], $lang)
+                ], 404);
+
+            $reviews = Review::with(['user'])->where('talk_id', $id)->get();
+
+            $groupedReviews = $reviews->map(function($review) {
+                $user = $review->user;
+
+                return [
+                    'id' => $review->id,
+                    'rating' => $review->rating,
+                    'comment' => $review->comment,
+                    'user_id' => $review->user_id,
+                    'full_name' => $user->name . ' ' . $user->last_name,
+                    'avatar' => $user->avatar ? env('APP_URL').'/storage/'.$user->avatar : null
+                ];
+            });
+            
+            return response()->json([
+                'success' => true,
+                'data' => $groupedReviews
+            ], 200);
+
+        } catch(\Illuminate\Database\QueryException $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'database_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        } catch(\Exception $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'server_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * @OA\Post(
+     *   path="/reviews",
+     *   summary="Create a review",
+     *   description= "Create a review by user to the talk",
+     *   tags={"Reviews"},
+     *   security={{"bearerAuth": {} }},
+     *   @OA\RequestBody(
+     *      @OA\MediaType(
+     *          mediaType="application/json",
+     *          @OA\Schema(
+     *              required={"user_id","talk_id","comment","rating","lang"},
+     *               @OA\Property(
+     *                  property="user_id",
+     *                  type="integer",
+     *                  format="int64",
+     *                  description="The user id"
+     *               ),
+     *               @OA\Property(
+     *                  property="talk_id",
+     *                  type="integer",
+     *                  format= "int64",
+     *                  description="The talk id"
+     *              ),
+     *              @OA\Property(
+     *                  property="comment",
+     *                  type="string",
+     *                  format= "text",
+     *                  description="The comment"
+     *              ),
+     *              @OA\Property(
+     *                  property="rating",
+     *                  type="string",
+     *                  format= "text",
+     *                  description="The rating"
+     *              ),
+     *              @OA\Property(
+     *                  property="lang",
+     *                  type="string",
+     *                  format= "text",
+     *                  description="App language (es/en)"
+     *              )
+     *          )
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=200,
+     *      description="successful operation",
+     *    ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=400,
+     *      description="Some was wrong"
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=500,
+     *      description="an ""unexpected"" error"
+     *   ),
+     * )
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function review(ReviewRequest $request): JsonResponse
+    {
+        try {
+
+            $review = Review::updateOrCreate(
+                [    
+                    'user_id' => $request->user_id,
+                    'talk_id' => $request->talk_id
+                ],
+                [   
+                    'comment' => $request->comment,
+                    'rating' => $request->rating
+                ]
+            );
+
+            return response()->json([
+                'success' => true,
+                'data' => $review
+            ], 200);
+
+        } catch(\Illuminate\Database\QueryException $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'database_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        } catch(\Exception $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'server_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *   path="/reviews/{id}",
+     *   summary="Get a review",
+     *   description= "Show review details by user and talk",
+     *   tags={"Reviews"},
+     *   security={{"bearerAuth": {} }},
+     *   @OA\Parameter(
+     *      name="lang",
+     *      in="query",
+     *      description="App language (es/en)",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string",
+     *          format="text",
+     *          description="Lang"
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="id",
+     *      in="path",
+     *      description="Talk ID",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="integer",
+     *          format="int64",
+     *          description="Unique New Identifier"
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=200,
+     *      description="Show reviews details",
+     *    ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=400,
+     *      description="Some was wrong"
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=500,
+     *      description="an ""unexpected"" error"
+     *   ),
+     * )
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function review_details(LangRequest $request, $id): JsonResponse
+    {
+        try {
+
+            return response()->json([
+                'success' => true,
+                'data' => Review::where([['user_id', Auth::user()->id],['talk_id', $id]])->first()
             ], 200);
 
         } catch(\Illuminate\Database\QueryException $ex) {
