@@ -42,18 +42,49 @@ class LandingController extends Controller
 
                 if ($user && Hash::check($validated['password'], $user->password)) {
                     
-                    Mail::send([], [], function($message) use ($user) {
-                        $message->to('app.cumbredelpetroleo@gmail.com')
-                                ->subject('Solicitud eliminación de datos')
-                                ->setBody(
-                                    "{$user->email}. Credenciales validades correctamente",
-                                    'text/html'
-                                );
-                    });
+                    $info = [
+                        'text' => 'Credenciales evaluadas con exito',
+                        'subject' => 'Solicitud de eliminación de datos',
+                        'email' => 'emails.landing_email'
+                    ];    
+                    $responseMail = $this->sendMail($info, $user->id); 
                     return redirect()->back()->with('success', 'Solicitud enviada con éxito');
                 } else {
 
                     return redirect()->back()->with('error', 'Las credenciales no son válidas');
                 }
     }
+
+
+    
+    /**
+     * Send mail to users
+     */
+    private function sendMail($info, $id)
+    {
+
+        $user = User::find($id);
+        
+        $data = [
+            'name' => $info['name'] ?? null,
+            'title' => $info['title'] ?? null,
+            'user' => $user->name . ' ' . $user->last_name,
+            'text' => $info['text'] ?? null,
+        ];
+
+        $email = ($id === 1) ? env('MAIL_TO_CONTACT') : $user->email;
+        $subject = $info['subject'];
+        
+        try {
+            \Mail::send($info['email'], $data, function ($message) use ($email, $subject) {
+                    $message->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
+                    $message->to('app.cumbredelpetroleo@gmail.com')->subject($subject);
+            });
+
+            return "Tu solicitud se ha procesado satisfactoriamente.";
+        } catch (\Exception $e){
+            return "Error al enviar el correo electrónico. ".$e;
+        }
+
+    } 
 }
