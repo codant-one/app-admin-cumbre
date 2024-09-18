@@ -1439,6 +1439,48 @@
                     }
                 ]
             }
+        },
+        "/notifications": {
+            "get": {
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "Get all notifications by user",
+                "description": "Show notifications",
+                "operationId": "6a2547c0b75f597c0123d00f56759c8f",
+                "parameters": [
+                    {
+                        "name": "lang",
+                        "in": "query",
+                        "description": "App language (es/en)",
+                        "required": true,
+                        "schema": {
+                            "description": "Lang",
+                            "type": "string",
+                            "format": "text"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Show sitemap",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "500": {
+                        "description": "an \"unexpected\" error",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -1500,6 +1542,10 @@
         {
             "name": "Maps",
             "description": "Maps"
+        },
+        {
+            "name": "Notifications",
+            "description": "Notifications"
         }
     ]
 }

@@ -24,6 +24,9 @@ use App\Models\Review;
 use App\Models\Favorite;
 use App\Models\Translation;
 use App\Models\Map;
+use App\Models\Notification;
+
+use Carbon\Carbon;
 
 class MiscellaneousController extends Controller
 {
@@ -1916,5 +1919,105 @@ class MiscellaneousController extends Controller
                 'exception' => $ex->getMessage()
             ], 500);
         }
+    }
+
+    /**
+     * @OA\Get(
+     *   path="/notifications",
+     *   summary="Get all notifications by user",
+     *   description= "Show notifications",
+     *   tags={"Notifications"},
+     *   security={{"bearerAuth": {} }},
+     *   @OA\Parameter(
+     *      name="lang",
+     *      in="query",
+     *      description="App language (es/en)",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string",
+     *          format="text",
+     *          description="Lang"
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=200,
+     *      description="Show sitemap",
+     *    ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=500,
+     *      description="an ""unexpected"" error"
+     *   ),
+     * )
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function notifications(LangRequest $request): JsonResponse
+    {
+        try {
+            
+            $lang = $request->lang;
+            $today = Carbon::today();
+            $yesterday = Carbon::yesterday();
+        
+            if ($lang === 'es') {
+                $labels = [
+                    'today' => 'hoy',
+                    'yesterday' => 'ayer',
+                    'ancients' => 'antiguas',
+                ];
+            } else {
+                $labels = [
+                    'today' => 'today',
+                    'yesterday' => 'yesterday',
+                    'ancients' => 'ancients',
+                ];
+            }
+
+            // Consultar notificaciones por fecha
+            $todayNotifications = Notification::where('user_id', Auth::user()->id)->whereDate('date', $today)->get();
+            $yesterdayNotifications = Notification::where('user_id', Auth::user()->id)->whereDate('date', $yesterday)->get();
+            $ancientNotifications = Notification::where('user_id', Auth::user()->id)->whereDate('date', '<', $yesterday)->get();
+
+            // Mapeo de notificaciones
+            $notifications = [
+                $labels['today'] => $this->mapNotifications($todayNotifications, $lang),
+                $labels['yesterday'] => $this->mapNotifications($yesterdayNotifications, $lang),
+                $labels['ancients'] => $this->mapNotifications($ancientNotifications, $lang),
+            ];
+            
+            return response()->json([
+                'success' => true,
+                'data' => $notifications
+            ], 200);
+
+        } catch(\Illuminate\Database\QueryException $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'database_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        } catch(\Exception $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'server_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        }
+    }
+
+    // Helper para mapear las notificaciones
+    function mapNotifications($notifications, $lang) {
+        return $notifications->map(function($notification) use ($lang) {
+            return [
+                'id' => $notification->id,
+                'notification_type_id' => $notification->notification_type_id,
+                'talk_id' => $notification->talk_id,
+                'title' => ($lang === 'es') ? $notification->title_es : $notification->title_en,
+                'description' => ($lang === 'es') ? $notification->description_es : $notification->description_en,
+                'date' => Carbon::parse($notification->date)->format('H:i'),
+            ];
+        });
     }
 }

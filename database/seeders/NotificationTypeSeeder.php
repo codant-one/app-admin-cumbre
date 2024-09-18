@@ -17,12 +17,12 @@ class NotificationTypeSeeder extends Seeder
     {
         $notificationy_types = [
             [
-                'name_es' => 'Patrocinadores',
+                'name' => 'Agenda',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
             [
-                'name_es' => 'Lugares',
+                'name' => 'General',
                 'created_at' => now(),
                 'updated_at' => now()
             ]           

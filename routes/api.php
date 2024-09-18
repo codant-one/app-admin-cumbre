@@ -61,10 +61,13 @@ Route::middleware('jwt')->group(function () {
 
     // Maps
     Route::get('maps', [MiscellaneousController::class , 'maps'])->name('maps');
+
+    // Notifications
+    Route::get('notifications', [MiscellaneousController::class , 'notifications'])->name('notifications');
 });
 
 //Testing Endpoints
-Route::get('notifications', [TestingController::class , 'notifications'])->name('notifications');
+Route::get('notifications_', [TestingController::class , 'notifications'])->name('notifications');
 Route::get('forgot_password', [TestingController::class , 'forgot_password'])->name('forgot_password');
 Route::get('reset_password', [TestingController::class , 'reset_password'])->name('reset_password');
 

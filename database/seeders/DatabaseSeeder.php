@@ -33,7 +33,10 @@ class DatabaseSeeder extends Seeder
             ReviewSeeder::class,
             FavoriteSeeder::class,
             TranslationSeeder::class,
-            MapSeeder::class
+            MapSeeder::class,
+
+            NotificationTypeSeeder::class,
+            NotificationSeeder::class
         ]);
     }
 }
