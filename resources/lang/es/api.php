@@ -30,6 +30,9 @@ return [
     'question_required' => 'La pregunta es requerida.',
     'comment_required' => 'El comentario es requerido.',
     'rating_required' => 'El rating es requerido.',
+    'name_required' => 'El nombre es requerido.',
+    'last_name_required' => 'El apellido es requerido.',
+    'password_required' => 'La contraseña es requerida.',
 
     // integer
     'user_id_integer' => 'El formato de usuario debe ser entero.',

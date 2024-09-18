@@ -30,6 +30,9 @@ return [
     'question_required' => 'Question is required.',
     'comment_required' => 'Comment is required.',
     'rating_required' => 'Rating is required.',
+    'name_required' => 'Name is required.',
+    'last_name_required' => 'Last name is required.',
+    'password_required' => 'Password is required.',
 
     // integer
     'user_id_integer' => 'User format must be integer.',

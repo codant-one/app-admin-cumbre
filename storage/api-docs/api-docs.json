@@ -1481,6 +1481,136 @@
                     }
                 ]
             }
+        },
+        "/auth/profile/user": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Save profile",
+                "description": "Save info user",
+                "operationId": "1d767cdf60367b0540fd0de2a67242fe",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "last_name",
+                                    "lang"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "The user name",
+                                        "type": "string",
+                                        "format": "text"
+                                    },
+                                    "last_name": {
+                                        "description": "The user last name",
+                                        "type": "string",
+                                        "format": "text"
+                                    },
+                                    "avatar": {
+                                        "description": "The user avatar",
+                                        "type": "file"
+                                    },
+                                    "lang": {
+                                        "description": "App language (es/en)",
+                                        "type": "string",
+                                        "format": "text"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Some was wrong",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "500": {
+                        "description": "an \"unexpected\" error",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/auth/profile/user/updatePassword": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Update password",
+                "description": "Update user password",
+                "operationId": "385c918c3f776a6621bfe0d8ad3030f1",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "password",
+                                    "lang"
+                                ],
+                                "properties": {
+                                    "password": {
+                                        "description": "The password",
+                                        "type": "string",
+                                        "format": "text"
+                                    },
+                                    "lang": {
+                                        "description": "App language (es/en)",
+                                        "type": "string",
+                                        "format": "text"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Some was wrong",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "500": {
+                        "description": "an \"unexpected\" error",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -1546,6 +1676,10 @@
         {
             "name": "Notifications",
             "description": "Notifications"
+        },
+        {
+            "name": "Users",
+            "description": "Users"
         }
     ]
 }

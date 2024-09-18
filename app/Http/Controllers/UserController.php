@@ -11,6 +11,8 @@ use Illuminate\Support\Str;
 
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest; 
+use App\Http\Requests\ProfileRequest;
+use App\Http\Requests\PasswordRequest;
 
 use App\Models\User;
 use App\Models\UserDetails;
@@ -19,6 +21,177 @@ use App\Models\UserRegisterToken;
 class UserController extends Controller
 {
    
+    /**
+     * @OA\Post(
+     *   path="/auth/profile/user",
+     *   summary="Save profile",
+     *   description= "Save info user",
+     *   tags={"Users"},
+     *   security={{"bearerAuth": {} }},
+     *   @OA\RequestBody(
+     *      @OA\MediaType(
+     *          mediaType="multipart/form-data",
+     *          @OA\Schema(
+     *              required={"name","last_name","lang"},
+     *               @OA\Property(
+     *                  property="name",
+     *                  type="string",
+     *                  format="text",
+     *                  description="The user name"
+     *               ),
+     *               @OA\Property(
+     *                  property="last_name",
+     *                  type="string",
+     *                  format= "text",
+     *                  description="The user last name"
+     *              ),
+     *              @OA\Property(
+     *                  property="avatar",
+     *                  type="file",
+     *                  description="The user avatar"
+     *              ),
+     *              @OA\Property(
+     *                  property="lang",
+     *                  type="string",
+     *                  format= "text",
+     *                  description="App language (es/en)"
+     *              )
+     *          )
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=200,
+     *      description="successful operation",
+     *    ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=400,
+     *      description="Some was wrong"
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=500,
+     *      description="an ""unexpected"" error"
+     *   ),
+     * )
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function profile(ProfileRequest $request){
+
+        try {
+            $user = User::find(auth()->user()->id);
+            $user->name = $request->name;
+            $user->last_name = $request->last_name;
+            $user->save();
+
+            if ($request->hasFile('avatar')) {
+                $image = $request->file('avatar');
+
+                $path = 'avatars/';
+
+                $file_data = uploadFile($image, $path, $user->avatar);
+
+                $user->avatar = $file_data['filePath'];
+                $user->save();
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => $user
+            ], 200);
+
+        } catch(\Illuminate\Database\QueryException $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'database_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        } catch(\Exception $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'server_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        }
+        
+    }
+
+    /**
+     * @OA\Post(
+     *   path="/auth/profile/user/updatePassword",
+     *   summary="Update password",
+     *   description= "Update user password",
+     *   tags={"Users"},
+     *   security={{"bearerAuth": {} }},
+     *   @OA\RequestBody(
+     *      @OA\MediaType(
+     *          mediaType="application/json",
+     *          @OA\Schema(
+     *              required={"password","lang"},
+     *              @OA\Property(
+     *                  property="password",
+     *                  type="string",
+     *                  format= "text",
+     *                  description="The password"
+     *              ),
+     *              @OA\Property(
+     *                  property="lang",
+     *                  type="string",
+     *                  format= "text",
+     *                  description="App language (es/en)"
+     *              )
+     *          )
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=200,
+     *      description="successful operation",
+     *    ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=400,
+     *      description="Some was wrong"
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=500,
+     *      description="an ""unexpected"" error"
+     *   ),
+     * )
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updatePassword(PasswordRequest $request){
+
+        try {
+            $user = User::find(auth()->user()->id);
+            $user->password = Hash::make($request->password);
+            $user->update();
+
+            return response()->json([
+                'success' => true,
+                'data' => $user
+            ], 200);
+
+        } catch(\Illuminate\Database\QueryException $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'database_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        } catch(\Exception $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'server_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        }
+        
+    }
+
     public function register(RegisterRequest $request): JsonResponse
     {
 
@@ -78,7 +251,6 @@ class UserController extends Controller
         }
 
     }
-
 
     /**
      * Send mail to users

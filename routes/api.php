@@ -11,7 +11,8 @@ use App\Http\Controllers\Auth\{
 };
 
 use App\Http\Controllers\{
-    MiscellaneousController
+    MiscellaneousController,
+    UserController
 };
 
 /*
@@ -37,6 +38,9 @@ Route::group([
 
     Route::middleware('jwt')->group(function () {
         Route::post('logout', [AuthController::class , 'logout'])->name('logout');
+
+        Route::post('/profile/user', [UserController::class, 'profile'])->name('profile');
+        Route::post('/profile/user/updatePassword', [UserController::class, 'updatePassword'])->name('updatePassword');
     });
 });
 
