@@ -36,7 +36,7 @@ class NotificationFactory extends Factory
         return [
             'user_id' => 3,
             'notification_type_id' => $notification_type_id,
-            'talk_id' => $notification_type_id === 1 ? rand(1,50) : null,
+            'talk_id' => $notification_type_id === 1 ? 1 : null,
             'is_read' => rand(0, 1),
             'title_es' => $this->faker->text,
             'title_en' => $this->faker->text,
