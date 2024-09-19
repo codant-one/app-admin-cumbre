@@ -25,6 +25,7 @@ use App\Models\Favorite;
 use App\Models\Translation;
 use App\Models\Map;
 use App\Models\Notification;
+use App\Models\NotificationUser;
 
 use Carbon\Carbon;
 
@@ -696,6 +697,7 @@ class MiscellaneousController extends Controller
      *   summary="Get all talks by schedule Id",
      *   description= "Show all talks by schedule Id",
      *   tags={"Schedules"},
+     *   security={}, 
      *   @OA\Parameter(
      *      name="lang",
      *      in="query",
@@ -756,7 +758,7 @@ class MiscellaneousController extends Controller
                     'errors' =>  __('api.schedule_not_found', [], $lang)
                 ], 404);
 
-            $talks = Talk::with(['category', 'favorite'])->where('schedule_id', $id)->orderBy('date')->get();
+            $talks = Talk::with(['category', 'favorite', 'notification'])->where('schedule_id', $id)->orderBy('date')->get();
 
             $groupedTalks = $talks->groupBy(function($talk) {
                 return $talk->date; // Primero agrupamos por fecha
@@ -767,11 +769,13 @@ class MiscellaneousController extends Controller
                 })->map(function($talksGroup) use ($lang) {
                     return $talksGroup->map(function($talk) use ($lang) {
                         $favorite = $talk->favorite;
+                        $notification = $talk->notification;
                         return [
                             'id' => $talk->id,
                             'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
                             'hour' => $talk->hour,
-                            'is_favorite' => Auth::check() ? ($favorite ? 1 : 0): 0
+                            'is_favorite' => Auth::check() ? ($favorite ? 1 : 0): 0,
+                            'is_notification' => Auth::check() ? ($notification ? 1 : 0): 0
                         ];
                     });
                 });
@@ -803,6 +807,7 @@ class MiscellaneousController extends Controller
      *   summary="Get a talk",
      *   description= "Show talk details",
      *   tags={"Schedules"},
+     *   security={}, 
      *   @OA\Parameter(
      *      name="lang",
      *      in="query",
@@ -854,7 +859,7 @@ class MiscellaneousController extends Controller
         try {
             
             $lang = $request->lang;
-            $talk = Talk::with(['speakers.speaker', 'favorite'])->find($id);
+            $talk = Talk::with(['speakers.speaker', 'favorite', 'notification'])->find($id);
 
             if (!$talk)
                 return response()->json([
@@ -869,6 +874,7 @@ class MiscellaneousController extends Controller
                 'hour' => $talk->hour,
                 'image' => env('APP_URL') . '/storage/' . $talk->image,
                 'is_favorite' => Auth::check() ? ($talk->favorite ? 1 : 0): 0,
+                'is_notification' => Auth::check() ? ($talk->notification ? 1 : 0): 0,
                 'speakers' => $talk->speakers->map(function($speakerWrapper) use ($lang) {
                     $speaker = $speakerWrapper->speaker; // Accedemos al modelo 'speaker'
                     return [
@@ -906,6 +912,7 @@ class MiscellaneousController extends Controller
      *   summary="Get all speakers",
      *   description= "Show list of speakers",
      *   tags={"Speakers"},
+     *   security={}, 
      *   @OA\Parameter(
      *      name="lang",
      *      in="query",
@@ -964,7 +971,8 @@ class MiscellaneousController extends Controller
                             'id' => $talk->id,
                             'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
                             'hour' => $talk->hour,
-                            'is_favorite' => Auth::check() ? ($talk->favorite ? 1 : 0): 0
+                            'is_favorite' => Auth::check() ? ($talk->favorite ? 1 : 0): 0,
+                            'is_notification' => Auth::check() ? ($talk->notification ? 1 : 0): 0,
                         ];
                     })
                 ];
@@ -996,6 +1004,7 @@ class MiscellaneousController extends Controller
      *   summary="Get a speaker",
      *   description= "Show speaker details",
      *   tags={"Speakers"},
+     *   security={}, 
      *   @OA\Parameter(
      *      name="lang",
      *      in="query",
@@ -1076,7 +1085,8 @@ class MiscellaneousController extends Controller
                         'id' => $talk->id,
                         'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
                         'hour' => $talk->hour,
-                        'is_favorite' => Auth::check() ? ($talk->favorite ? 1 : 0): 0
+                        'is_favorite' => Auth::check() ? ($talk->favorite ? 1 : 0): 0,
+                        'is_notification' => Auth::check() ? ($talk->notification ? 1 : 0): 0
                     ];
                 })
             ];
@@ -1976,9 +1986,9 @@ class MiscellaneousController extends Controller
             }
 
             // Consultar notificaciones por fecha
-            $todayNotifications = Notification::where('user_id', Auth::user()->id)->whereDate('date', $today)->get();
-            $yesterdayNotifications = Notification::where('user_id', Auth::user()->id)->whereDate('date', $yesterday)->get();
-            $ancientNotifications = Notification::where('user_id', Auth::user()->id)->whereDate('date', '<', $yesterday)->get();
+            $todayNotifications = Notification::with(['notification_user'])->where('user_id', Auth::user()->id)->whereDate('date', $today)->get();
+            $yesterdayNotifications = Notification::with(['notification_user'])->where('user_id', Auth::user()->id)->whereDate('date', $yesterday)->get();
+            $ancientNotifications = Notification::with(['notification_user'])->where('user_id', Auth::user()->id)->whereDate('date', '<', $yesterday)->get();
 
             // Mapeo de notificaciones
             $notifications = [
@@ -2007,13 +2017,101 @@ class MiscellaneousController extends Controller
         }
     }
 
+    /**
+     * @OA\Post(
+     *   path="/notifications",
+     *   summary="Create a notification",
+     *   description= "Guardar talk para enviar notificación",
+     *   tags={"Notifications"},
+     *   security={{"bearerAuth": {} }},
+     *   @OA\RequestBody(
+     *      @OA\MediaType(
+     *          mediaType="application/json",
+     *          @OA\Schema(
+     *              required={"talk_id","lang"},
+     *               @OA\Property(
+     *                  property="talk_id",
+     *                  type="integer",
+     *                  format= "int64",
+     *                  description="The talk id"
+     *              ),
+     *              @OA\Property(
+     *                  property="lang",
+     *                  type="string",
+     *                  format= "text",
+     *                  description="App language (es/en)"
+     *              )
+     *          )
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=200,
+     *      description="successful operation",
+     *    ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=400,
+     *      description="Some was wrong"
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=500,
+     *      description="an ""unexpected"" error"
+     *   ),
+     * )
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function notification(FavoriteRequest $request): JsonResponse
+    {
+        try {
+
+            $exists = 
+                NotificationUser::where([
+                    ['user_id', Auth::user()->id],
+                    ['talk_id', $request->talk_id]
+                ])->exists();
+            
+            if ($exists)
+                NotificationUser::where([
+                    ['user_id', Auth::user()->id],
+                    ['talk_id', $request->talk_id]
+                ])->delete();
+            else
+                NotificationUser::insert([    
+                    'user_id' => Auth::user()->id,
+                    'talk_id' => $request->talk_id,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+
+            return response()->json([
+                'success' => true
+            ], 200);
+
+        } catch(\Illuminate\Database\QueryException $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'database_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        } catch(\Exception $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'server_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        }
+    }
+
     // Helper para mapear las notificaciones
     function mapNotifications($notifications, $lang) {
         return $notifications->map(function($notification) use ($lang) {
             return [
                 'id' => $notification->id,
                 'notification_type_id' => $notification->notification_type_id,
-                'talk_id' => $notification->talk_id,
+                'talk_id' => $notification->notification_user ? $notification->notification_user->talk_id : null,
                 'title' => ($lang === 'es') ? $notification->title_es : $notification->title_en,
                 'description' => ($lang === 'es') ? $notification->description_es : $notification->description_en,
                 'date' => Carbon::parse($notification->date)->format('H:i'),

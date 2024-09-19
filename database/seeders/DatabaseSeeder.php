@@ -36,6 +36,7 @@ class DatabaseSeeder extends Seeder
             MapSeeder::class,
 
             NotificationTypeSeeder::class,
+            NotificationUserSeeder::class,
             NotificationSeeder::class
         ]);
     }

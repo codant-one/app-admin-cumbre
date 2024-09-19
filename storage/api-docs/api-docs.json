@@ -19,7 +19,7 @@
                 ],
                 "summary": "User login",
                 "description": "Give a user access to the page",
-                "operationId": "a5385ffca73f113abef00ea604d1ca58",
+                "operationId": "900a0725c9a3c04b803f7a16d0ccaa03",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -92,7 +92,7 @@
                 ],
                 "summary": "Logout",
                 "description": "Logout User",
-                "operationId": "0f6715df0d22b69c7e35bd32b4c1fc92",
+                "operationId": "68aeabf52061079f82be02e10cbf9d30",
                 "responses": {
                     "200": {
                         "description": "successful operation",
@@ -127,7 +127,7 @@
                 ],
                 "summary": "Forgot password",
                 "description": "Request password change",
-                "operationId": "a10b145e425eeb3cd1dcb4a89f792bd6",
+                "operationId": "a4036329d9b9c3d9565dd9062cdcc573",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -188,7 +188,7 @@
                 ],
                 "summary": "Find token",
                 "description": "Verify user token",
-                "operationId": "adf138ab0dfa44428e61b794b9c155d5",
+                "operationId": "827ddf87acb6f2e3cbacc91da54d828d",
                 "parameters": [
                     {
                         "name": "token",
@@ -254,7 +254,7 @@
                 ],
                 "summary": "Change password",
                 "description": "Change password",
-                "operationId": "cf3f6d0d2ab4189126331ab5de5098be",
+                "operationId": "765ee1f55324a4907211fdfc7d87fda7",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -712,7 +712,8 @@
                             "application/json": {}
                         }
                     }
-                }
+                },
+                "security": []
             }
         },
         "/talk/{id}": {
@@ -772,7 +773,8 @@
                             "application/json": {}
                         }
                     }
-                }
+                },
+                "security": []
             }
         },
         "/speakers": {
@@ -815,7 +817,8 @@
                             "application/json": {}
                         }
                     }
-                }
+                },
+                "security": []
             }
         },
         "/speakers/{id}": {
@@ -875,7 +878,8 @@
                             "application/json": {}
                         }
                     }
-                }
+                },
+                "security": []
             }
         },
         "/questions/talk/{id}": {
@@ -1464,6 +1468,64 @@
                 "responses": {
                     "200": {
                         "description": "Show sitemap",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "500": {
+                        "description": "an \"unexpected\" error",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "Create a notification",
+                "description": "Guardar talk para enviar notificación",
+                "operationId": "98f0995c7f4ccfc620a0dc7cd0c7a840",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "talk_id",
+                                    "lang"
+                                ],
+                                "properties": {
+                                    "talk_id": {
+                                        "description": "The talk id",
+                                        "type": "integer",
+                                        "format": "int64"
+                                    },
+                                    "lang": {
+                                        "description": "App language (es/en)",
+                                        "type": "string",
+                                        "format": "text"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Some was wrong",
                         "content": {
                             "application/json": {}
                         }

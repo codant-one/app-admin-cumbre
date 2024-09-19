@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Testing\TestingController;
 
-use App\Http\Controllers\Auth\{
+use App\Http\Controllers\Auth\Api\ {
     AuthController,
     PasswordResetController
 };
@@ -68,6 +68,7 @@ Route::middleware('jwt')->group(function () {
 
     // Notifications
     Route::get('notifications', [MiscellaneousController::class , 'notifications'])->name('notifications');
+    Route::post('notifications', [MiscellaneousController::class , 'notification'])->name('notification');
 });
 
 //Testing Endpoints

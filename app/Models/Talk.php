@@ -31,4 +31,8 @@ class Talk extends Model
     public function favorite() {
         return $this->hasOne(Favorite::class, 'talk_id', 'id');
     }
+
+    public function notification() {
+        return $this->hasOne(NotificationUser::class, 'talk_id', 'id');
+    }
 }
