@@ -695,7 +695,7 @@ class MiscellaneousController extends Controller
      * @OA\Get(
      *   path="/schedules/{id}",
      *   summary="Get all talks by schedule Id",
-     *   description= "Show all talks by schedule Id",
+     *   description= "Show all talks by schedule Id (Optional `token` to bring favorites and notifications information)",
      *   tags={"Schedules"},
      *   security={}, 
      *   @OA\Parameter(
@@ -805,7 +805,7 @@ class MiscellaneousController extends Controller
      * @OA\Get(
      *   path="/talk/{id}",
      *   summary="Get a talk",
-     *   description= "Show talk details",
+     *   description= "Show talk details (Optional `token` to bring favorites and notifications information)",
      *   tags={"Schedules"},
      *   security={}, 
      *   @OA\Parameter(
@@ -910,7 +910,7 @@ class MiscellaneousController extends Controller
      * @OA\Get(
      *   path="/speakers",
      *   summary="Get all speakers",
-     *   description= "Show list of speakers",
+     *   description= "Show list of speakers (Optional `token` to bring favorites and notifications information)",
      *   tags={"Speakers"},
      *   security={}, 
      *   @OA\Parameter(
@@ -1002,7 +1002,7 @@ class MiscellaneousController extends Controller
      * @OA\Get(
      *   path="/speakers/{id}",
      *   summary="Get a speaker",
-     *   description= "Show speaker details",
+     *   description= "Show speaker details (Optional `token` to bring favorites and notifications information)",
      *   tags={"Speakers"},
      *   security={}, 
      *   @OA\Parameter(

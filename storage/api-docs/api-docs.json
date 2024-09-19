@@ -661,7 +661,7 @@
                     "Schedules"
                 ],
                 "summary": "Get all talks by schedule Id",
-                "description": "Show all talks by schedule Id",
+                "description": "Show all talks by schedule Id (Optional `token` to bring favorites and notifications information)",
                 "operationId": "b8c966a2ff716d976bc6458b351d38ff",
                 "parameters": [
                     {
@@ -722,7 +722,7 @@
                     "Schedules"
                 ],
                 "summary": "Get a talk",
-                "description": "Show talk details",
+                "description": "Show talk details (Optional `token` to bring favorites and notifications information)",
                 "operationId": "72ab06bea3f63139b11c5a23f48f757a",
                 "parameters": [
                     {
@@ -783,7 +783,7 @@
                     "Speakers"
                 ],
                 "summary": "Get all speakers",
-                "description": "Show list of speakers",
+                "description": "Show list of speakers (Optional `token` to bring favorites and notifications information)",
                 "operationId": "bfd173ecaae892f5f2fcc8279eb5060e",
                 "parameters": [
                     {
@@ -827,7 +827,7 @@
                     "Speakers"
                 ],
                 "summary": "Get a speaker",
-                "description": "Show speaker details",
+                "description": "Show speaker details (Optional `token` to bring favorites and notifications information)",
                 "operationId": "91ecea17dbbaf972f4b978ca9e8d5555",
                 "parameters": [
                     {
