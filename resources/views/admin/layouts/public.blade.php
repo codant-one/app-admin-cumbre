@@ -43,7 +43,7 @@
         }
 
         .text-link:hover {
-            color: var(--secondary) !important;
+            color: var(--pelorous) !important;
         }
 
         .main-header{

@@ -18,7 +18,7 @@
          data-kt-image-input-action="change"
          data-bs-toggle="tooltip"
          data-bs-dismiss="click"
-         title="@lang('components.image_edit')">
+         title="Actualizar imagen">
    
          <i class="bi bi-pencil-fill fs-7"></i>
    
@@ -31,7 +31,7 @@
          data-kt-image-input-action="cancel"
          data-bs-toggle="tooltip"
          data-bs-dismiss="click"
-         title="@lang('components.image_remove')">
+         title="Remover imagen">
          <i class="bi bi-x fs-2"></i>
       </span>
    
@@ -39,7 +39,7 @@
          data-kt-image-input-action="remove"
          data-bs-toggle="tooltip"
          data-bs-dismiss="click"
-         title="@lang('components.image_remove')"
+         title="Remover imagen"
          id="{{ $name }}_remove">
          <i class="bi bi-x fs-2"></i>
       </span>

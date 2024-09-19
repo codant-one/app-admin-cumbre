@@ -229,7 +229,7 @@
 
 	@if (\Session::has('register_success'))
         Swal.fire({
-            text: "Te hemos enviado un email con los detalles para el restablecimiento de tu contraseña",
+            text: "{{ Session::get('register_success') }}",
             icon: "success",
             buttonsStyling: !1,
             confirmButtonText: "¡Entendido!",

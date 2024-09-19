@@ -17,7 +17,7 @@
     <tr>
         <td align="center" style="padding:0;margin:0;padding-bottom:15px;padding-top:30px;">
             <p style="margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:19px;color:#0a1b33;font-size:16px">
-                {{ $text }}
+                {!! $text !!}
             </p>
         </td>
     </tr>

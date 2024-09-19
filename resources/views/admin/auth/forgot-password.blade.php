@@ -4,11 +4,11 @@
 
 <div class="bg-dark d-flex flex-column flex-column-fluid bgi-position-y-bottom position-x-center bgi-no-repeat bgi-size-contain bgi-attachment-fixed">
 	<div class="d-flex flex-center flex-column flex-column-fluid p-10 pb-lg-20">
-		<div class="w-lg-500px bg-body rounded shadow-sm p-10 p-lg-20 mx-auto ">
+		<div class="w-lg-500px bg-body rounded shadow-sm p-10 p-lg-20 mx-auto" style="border-radius: 16px !important">
 			{!! Form::open(['route' => 'auth.admin.confirm', 'id'=>'formSubmit', 'class' => 'w-100', 'method' => 'POST']) !!}
             <div class="text-center mb-10">
                 <a href="{{route('auth.admin.login')}}">
-                    <img src="{{ asset(env('DOMAIN_LOGO_URL')) }}" alt="" width="200px">
+                    <img src="{{ asset(env('DOMAIN_LOGO_URL_WHITE')) }}" alt="" width="100px">
                 </a>
                 <div class="text-gray-400 fw-bold fs-4">
                     Restablecer Contraseña
@@ -23,7 +23,7 @@
                 </div>
                 @endif
                 <div class="mt-6 mb-6">
-                    <span class="alert alert-danger" id="error-message" style="display: none;">
+                    <span class="alert alert-danger w-100" id="error-message" style="display: none;">
                         Por favor, ingrese un correo electrónico válido.
                     </span>
                 </div>

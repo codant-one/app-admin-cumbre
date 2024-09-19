@@ -4,11 +4,11 @@
 
 <div class="bg-dark d-flex flex-column flex-column-fluid bgi-position-y-bottom position-x-center bgi-no-repeat bgi-size-contain bgi-attachment-fixed">
 	<div class="d-flex flex-center flex-column flex-column-fluid p-10 pb-lg-20">
-		<div class="w-lg-500px bg-body rounded shadow-sm p-10 p-lg-20 mx-auto ">
+		<div class="w-lg-500px bg-body rounded shadow-sm p-10 p-lg-20 mx-auto" style="border-radius: 16px !important">
 			{!! Form::open(['route' => 'auth.admin.change','id'=>'formCreate', 'class' => 'w-100', 'method' => 'POST']) !!}
             <div class="text-center mb-10">
                 <a href="{{route('auth.admin.login')}}">
-                    <img src="{{ asset(env('DOMAIN_LOGO_URL')) }}" alt="" width="200px">
+                    <img src="{{ asset(env('DOMAIN_LOGO_URL_WHITE')) }}" alt="" width="100px">
                 </a>
                 <div class="text-gray-400 fw-bold fs-4">
                     Restablecer Contraseña
@@ -26,7 +26,7 @@
             </div>
             <div class="mb-10 fv-row" data-kt-password-meter="true">
                 <div class="mb-1">
-                    <label class="form-label fw-bolder-auth auth-text" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('auth.combination_password')" style="font-weight:bold">
+                    <label class="form-label fw-bolder-auth auth-text" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Use 8 o mas caracteres con una combinación de letras (al menos una mayúscula), números y símbolos." style="font-weight:bold">
                         Contraseña
                         <i class="fa fa-info-circle fs-5"></i>
                     </label>
@@ -68,8 +68,8 @@
                 <div class="col-12">
                     <button type="submit" id="kt_sign_up_submit" class="btn btn-lg btn-info w-100 mb-5">
                         <span class="indicator-label">Enviar</span>
-                        <span class="indicator-progress">Espere..
-                        <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                        <span class="indicator-progress">
+                        <span class="spinner-border spinner-border-md align-middle ms-2"></span></span>
                     </button>
                 </div>
             </div>   
@@ -87,7 +87,7 @@
     var token = @json($token);
 
     $.ajax({
-        url: `{{ route("password.find", ['token' => $token]) }}`,
+        url: `{{ route("auth.admin.find", ['token' => $token]) }}`,
         type: 'GET',
         success: function (response) {
             $("#password").prop("disabled",false);
@@ -96,7 +96,7 @@
         },
         error: function (response) {
             Swal.fire({
-             text: "Token invalido",
+             text: "Token inválido",
              icon: "error",
              buttonsStyling: !1,
              confirmButtonText: "Entendido",

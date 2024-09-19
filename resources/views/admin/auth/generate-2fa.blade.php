@@ -4,7 +4,7 @@
 
 <div class="bg-dark d-flex flex-column flex-column-fluid bgi-position-y-bottom position-x-center bgi-no-repeat bgi-size-contain bgi-attachment-fixed">
 	<div class="d-flex flex-center flex-column flex-column-fluid p-10">
-		<div class="w-lg-500px bg-body rounded shadow-sm p-15 mx-auto">
+		<div class="w-lg-500px bg-body rounded shadow-sm p-15 mx-auto" style="border-radius: 16px !important">
 			<div class="text-center"> {!! $qr !!} </div>
             {!! Form::open(['route' => 'auth.admin.2fa.validate', 'id' => 'formSubmit', 'method' => 'POST']) !!}
 			<div class="text-center mb-10">

@@ -95,8 +95,7 @@ class PasswordResetController extends Controller
             );
 
             $email = $user->email;
-            $domain = ($user->getRoleNames()[0] === 'App') ? env('APP_STORE') : env('APP_DOMAIN');
-            $url = $domain.'/reset_password?token='.$passwordReset['token'].'&email='.$email;
+            $url = env('APP_STORE').'/reset_password?token='.$passwordReset['token'].'&email='.$email;
             
             $info = [
                 'subject' => __('emails.password_change_request', [], $lang),
@@ -341,13 +340,11 @@ class PasswordResetController extends Controller
             $user->token_2fa = null;
             $user->update();
         
-            $url = ($user->getRoleNames()[0] === 'App') ? env('APP_STORE') : env('APP_DOMAIN');
-            
             $info = [
                 'subject' => __('emails.hi', [], $lang) . $user->name. ' '. $user->last_name . __('emails.reset_password_request', [], $lang),
                 'title' =>  __('emails.reset_password_title', [], $lang),
                 'text' => __('emails.reset_password_text', [], $lang),
-                'buttonLink' =>  $url ?? null,
+                'buttonLink' =>  env('APP_STORE') ?? null,
                 'buttonText' =>  __('emails.reset_password_button', [], $lang) ?? null,
                 'email' => 'emails.auth.reset_password'
             ];     

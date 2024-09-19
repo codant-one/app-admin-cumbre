@@ -157,6 +157,7 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
 .btn-check:active+.btn.btn-info, .btn-check:checked+.btn.btn-info, .btn.btn-info.active, .btn.btn-info.show, 
 .btn.btn-info:active:not(.btn-active), .btn.btn-info:focus:not(.btn-active), .btn.btn-info:hover:not(.btn-active), .show>.btn.btn-info{
     background-color: var(--primary) !important;
+    /* border-radius: 48px; */
 }
 
 /* .aside {
@@ -190,11 +191,16 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
 }
 
 .aside-dark .menu .menu-item .menu-link.active,
-.aside-dark .menu .menu-item .menu-link:hover:not(.disabled):not(.active), .aside-dark .menu .menu-item.hover>.menu-link:not(.disabled):not(.active),
+.aside-dark .menu .menu-item .menu-link:hover:not(.disabled):not(.active), .aside-dark .menu .menu-item.hover>.menu-link:not(.disabled):not(.active) {
+    background-color: var(--secondary) !important;
+    border-radius: 8px;
+    filter: brightness(100%) !important;
+}
+
 .btn-check:active+.btn.btn-light-info, .btn-check:checked+.btn.btn-light-info, .btn.btn-light-info.active, .btn.btn-light-info.show, .btn.btn-light-info:active:not(.btn-active), .btn.btn-light-info:focus:not(.btn-active), .btn.btn-light-info:hover:not(.btn-active), .show>.btn.btn-light-info,
 .btn-check:active+.btn.btn-info, .btn-check:checked+.btn.btn-info, .btn.btn-info.active, .btn.btn-info.show, .btn.btn-info:active:not(.btn-active), .btn.btn-info:focus:not(.btn-active), .btn.btn-info:hover:not(.btn-active), .show>.btn.btn-info  {
     background-color: var(--secondary) !important;
-    border-radius: 8px;
+    border-radius: 48px;
     filter: brightness(100%) !important;
 }
 
@@ -226,7 +232,7 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
 }
 
 .btn {
-    border-radius: 8px;
+    border-radius: 48px;
 }
 
 body {

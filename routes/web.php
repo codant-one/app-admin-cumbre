@@ -28,22 +28,15 @@ Route::middleware([
     'web'
 ])->group(function () {
 
-    Route::group(['namespace' => 'Auth', 'as'=>'password.'], function () {
-        Route::post('reset-confirm', [PasswordResetController::class, 'email_confirmation'])->name('confirm');
-        Route::get('password/find/{token}', [PasswordResetController::class, 'find'])->name("find");
-        Route::post('change', [PasswordResetController::class, 'change'])->name("change");
-        Route::get('forgot-password', [PasswordResetController::class, 'forgot_password'])->name('client.forgot.password');
-        Route::get('reset-password', [PasswordResetController::class, 'reset_password'])->name('client.reset.password');
-    });
-
     Route::name('auth.')->group(function () {
         Route::get('/admin', [AuthController::class, 'login'])->name('admin.login');
         Route::get('/admin/logout', [AuthController::class, 'logout'])->name('admin.logout');
-        Route::get('/admin/forgot-password', [PasswordResetController::class, 'forgot_adminpassword'])->name('admin.forgot.password');
-        Route::post('/admin/reset-confirm', [PasswordResetController::class, 'email_adminconfirmation'])->name('admin.confirm');
-        Route::get('/admin/reset-password', [PasswordResetController::class, 'reset_adminpassword'])->name('admin.reset.password');
-        Route::post('/admin/change', [PasswordResetController::class, 'admin_change'])->name("admin.change");
+        Route::get('/admin/forgot-password', [PasswordResetController::class, 'forgot_password'])->name('admin.forgot.password');
+        Route::post('/admin/reset-confirm', [PasswordResetController::class, 'email_confirmation'])->name('admin.confirm');
+        Route::get('/admin/reset-password', [PasswordResetController::class, 'reset_password'])->name('admin.reset.password');
+        Route::post('/admin/change', [PasswordResetController::class, 'change'])->name("admin.change");
         Route::post('/admin/login', [AuthController::class, 'authenticate'])->name('admin.authenticate');
+        Route::get('/admin/find/{token}', [PasswordResetController::class, 'find'])->name("admin.find");
     });
 
     Route::name('auth.admin.')->middleware(['auth'])->group(function () {

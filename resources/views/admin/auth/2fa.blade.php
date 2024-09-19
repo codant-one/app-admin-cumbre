@@ -4,7 +4,7 @@
 
 <div class="bg-dark d-flex flex-column flex-column-fluid bgi-position-y-bottom position-x-center bgi-no-repeat bgi-size-contain bgi-attachment-fixed">
 	<div class="d-flex flex-center flex-column flex-column-fluid p-10">
-		<div class="w-lg-500px bg-body-public rounded shadow-sm p-10 p-lg-20 mx-auto ">
+		<div class="w-lg-500px bg-body rounded shadow-sm p-10 p-lg-20 mx-auto" style="border-radius: 16px !important">
 			<div class="text-center"> <img alt="Logo" class="mh-125px" src="{{ asset('/images/smartphone.svg') }}" /> </div>
             {!! Form::open(['route' => 'auth.admin.2fa.validate', 'id' => 'formSubmit', 'method' => 'POST']) !!}
 			<div class="text-center mb-10">
