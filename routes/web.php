@@ -84,7 +84,6 @@ Route::middleware([
         exit();
     })->name('assets.lang');
 
-
     // Public
     Route::get('/', [LandingController::class, 'index'])->name('welcome');
     Route::get('/policy', [LandingController::class, 'policy'])->name('policy');

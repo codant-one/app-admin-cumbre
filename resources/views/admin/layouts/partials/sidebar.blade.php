@@ -1,7 +1,8 @@
 <div id="kt_aside" class="aside aside-dark aside-hoverable" data-kt-drawer="true" data-kt-drawer-name="aside" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'200px', '300px': '250px'}" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_aside_mobile_toggle">
 	<div class="aside-logo flex-column-auto" id="kt_aside_logo">
-		<a href="{{ route('dashboard.index') }}">
+		<a href="{{ route('dashboard.index') }}" class="d-flex justify-content-start align-end">
 			<img alt="Logo"  src="{{ asset(env('DOMAIN_LOGO_URL_WHITE')) }}" class="logo" style="height: 35px" />
+			<span class="text-white logo ms-3 title-sidebar">VII CUMBRE<span/>
 		</a>
 		<div id="kt_aside_toggle" class="btn btn-icon w-auto px-0 btn-active-color-info aside-toggle" data-kt-toggle="true" data-kt-toggle-state="active" data-kt-toggle-target="body" data-kt-toggle-name="aside-minimize">
 			 <span class="svg-icon svg-icon-1 rotate-180">
@@ -141,42 +142,6 @@
 					</div>
 				</div>
 
-				<!-- TENANT -->
-				<div class="menu-item">
-					<div class="menu-content pt-8 pb-2">
-						<span class="menu-section text-muted text-uppercase fs-8 ls-1">TENANT</span>
-					</div>
-				</div>
-
-				<!-- DOMINIOS -->
-				<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-					<span class="menu-link">
-						<span class="menu-icon">
-							<i class="fa fas fa-globe-americas fs-4"></i>
-						</span>
-						<span class="menu-title">Dominios</span>
-						<span class="menu-arrow"></span>
-					</span>
-
-					<div class="menu-sub menu-sub-accordion menu-active-bg mt-1">
-						<div class="menu-item">
-							<a class="menu-link" href="{{ route('tenants.create') }}">
-								<span class="menu-icon">
-									<i class="fa fa-plus-circle"></i>
-								</span>
-								<span class="menu-title">Agregar Nuevo</span>
-							</a>
-						</div>
-						<div class="menu-item">
-							<a class="menu-link" href="{{ route('tenants.index') }}">
-								<span class="menu-icon">
-									<i class="fa fa-list-ol"></i>
-								</span>
-								<span class="menu-title">Ver Todos</span>
-							</a>
-						</div>
-					</div>
-				</div>
 			</div>
 		</div>
 	</div>

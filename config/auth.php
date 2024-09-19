@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'api',
+        'guard' => 'web',  // Usar 'web' para las rutas web, pero 'api' para las rutas API
         'passwords' => 'users',
     ],
 
@@ -36,9 +36,15 @@ return [
     */
 
     'guards' => [
-        'api' => [
-            'driver' => 'jwt',
+        'web' => [
+            'driver' => 'session',  // Guard para rutas web, con sesiones
             'provider' => 'users',
+        ],
+
+        'api' => [
+            'driver' => 'jwt',  // Guard para rutas API, con JWT
+            'provider' => 'users',
+            'hash' => false,
         ],
     ],
 

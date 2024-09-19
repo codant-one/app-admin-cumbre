@@ -21,33 +21,6 @@ use App\Models\UserRegisterToken;
 
 class AuthController extends Controller
 {
-    public function logout(): JsonResponse
-    {
-        try {
-            Auth::logout();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'log_out_successfully'
-            ], 200);
-
-        } catch(\Exception $ex) {
-            return response()->json([
-                'success' => false,
-                'message' => 'server_error',
-                'exception' => $ex->getMessage()
-            ], 500);
-        }
-    }
-
-    public function login(Request $request)
-    {
-        if (Auth::check() && session()->get('login') === 'admin')
-            return redirect()->route('dashboard.index');
-
-        return view('admin.auth.login');
-    }
-
     /**
      * Handle an authentication attempt.
      *
@@ -80,6 +53,22 @@ class AuthController extends Controller
         return redirect()->route('auth.admin.login')->withErrors([
             'email' => 'Las credenciales no coindicen.',
         ]);
+    }
+
+    public function login(Request $request)
+    {
+        if (Auth::check() && session()->get('login') === 'admin')
+            return redirect()->route('dashboard.index');
+
+        return view('admin.auth.login');
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        session()->flush();
+
+        return redirect()->route('auth.admin.login');
     }
 
     public function validate_double_factor_auth(Request $request)

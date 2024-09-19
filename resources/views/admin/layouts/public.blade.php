@@ -10,7 +10,7 @@
     <!--begin::Fonts-->
 	<link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" as="style">
     <!--end::Fonts-->
 
     <!--begin::Global Stylesheets Bundle(used by all pages)-->
@@ -29,12 +29,7 @@
         :root {
             --primary: {{ env('DOMAIN_PRIMARY_COLOR')  }};
             --secondary: {{ env('DOMAIN_SECONDARY_COLOR') }};
-            --claret-050: #FEF2F4;
-            --claret-200: #F9D2D9;
-            --claret-400: #EE7E93;
-            --claret-600: #CE305B;
-            --claret-800: #8A1E41;
-            --claret-950: #450C1F;
+            --pelorous: #EFFBFC;
             --neptune-050: #F2F9F9;
             --neptune-200: #BFE0E2;
             --neptune-400: #6AB0B5;

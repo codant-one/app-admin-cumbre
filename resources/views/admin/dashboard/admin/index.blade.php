@@ -9,7 +9,7 @@
 @section('content')
 
 <div class="container">
-   DASHBOARD ADMIN TENANT
+   DASHBOARD ADMIN
 </div>
    
 @endsection

@@ -43,11 +43,11 @@
                                         @endif
                                     </div>
                                     <!-- <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-										<div class="symbol-label fs-3 bg-light-primary text-primary">{{ auth()->user()->firstname[0] }}</div>
+										<div class="symbol-label fs-3 bg-light-primary text-primary">{{ auth()->user()->name[0] }}</div>
 									</div> -->
                                     <div class="d-flex flex-column">
                                         <div class="fw-bolder d-flex align-items-center fs-5">
-                                            {{ auth()->user()->firstname }}
+                                            {{ auth()->user()->name }}
                                         </div>
                                         <span class="fw-bold text-muted fs-7" style="word-break: break-all;"> {{ auth()->user()->email }}</span>
                                     </div>
@@ -59,7 +59,7 @@
 							</div>
                             <div class="separator my-2"></div>
                             <div class="menu-item px-5">
-                                <a href="{{ route('auth.logout') }}" class="menu-link px-5">Cerrar sesión</a>
+                                <a href="{{ route('auth.admin.logout') }}" class="menu-link px-5">Cerrar sesión</a>
                             </div>
                         </div>
                     </div>
