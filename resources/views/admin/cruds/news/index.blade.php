@@ -1,22 +1,22 @@
 @extends('admin.layouts.master', [
-    'title' => 'Lugares',
+    'title' => 'Noticias',
     'breadcrumbs' => [
         route('dashboard.index') => 'Inicio',
-        route('places.index') => 'Lugares',
+        route('news.index') => 'Noticias',
     ]
 ])
 
 @section('content')
 
-    @include('admin.cruds.places.partials.table-list')
+    @include('admin.cruds.news.partials.table-list')
 
 @endsection
 
 @section('scripts')
 
 @php
-    $edit_route = route("places.edit", ["place" => 'id-here']);
-    $delete_route = route("places.destroy", ["place" => 'id-here']);
+    $edit_route = route("news.edit", ["news" => 'id-here']);
+    $delete_route = route("news.destroy", ["news" => 'id-here']);
 @endphp
 
 <script>
@@ -41,7 +41,7 @@
             serverSide: true,
             orderCellsTop: true,
             ajax: {
-                url: "{{ route('places.index') }}",
+                url: "{{ route('news.index') }}",
                 dataFilter: function(data){
                     var json = JSON.parse( data );
                     json.recordsTotal = json.last_page;
@@ -69,7 +69,7 @@
 		                render: function (data) {
 		                    return `
 		                        <div class="form-check form-check-sm form-check-custom form-check-solid justify-content-center">
-		                            <input class="form-check-input" type="checkbox" name="places[]" value="${data}" />
+		                            <input class="form-check-input" type="checkbox" name="news[]" value="${data}" />
 		                        </div>
                                `;
 		                }
@@ -77,9 +77,8 @@
                     {
 		                targets: 4,
 		                render: function (data, type, row) {
-                            const color = row.category_id === 5 ? 'success' : 'warning'
 
-                            return `<div class="badge badge-light-${color} fs-8 fw-bolder">${row.category.name_es}</div>`
+                            return `<div class="badge badge-light-dark fs-8 fw-bolder">${row.category.name_es}</div>`
 		                }
 		            },
                     {

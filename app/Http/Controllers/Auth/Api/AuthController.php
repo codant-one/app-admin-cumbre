@@ -106,7 +106,7 @@ class AuthController extends Controller
 
             $expired = now()->addHours(24);
                 
-            if (!$token = Auth::attempt($credentials)) {
+            if (!$token = Auth::guard('api')->attempt($credentials)) {
                 return response()->json([
                     'success' => false,
                     'message' => 'invalid_credentials',
@@ -114,9 +114,9 @@ class AuthController extends Controller
                 ], 400);
             }
 
-            $user = Auth::user();
-
-            if (Auth::user()->getRoleNames()[0] === 'App' || Auth::user()->getRoleNames()[0] === 'Panelista') {//user app    
+            $user = Auth::guard('api')->user(); 
+            
+            if ($user->getRoleNames()[0] === 'App' || $user->getRoleNames()[0] === 'Panelista') {//user app    
                 $user->online = Carbon::now();
                 $user->fcm_token = $request->fcm_token;
                 $user->device_type = $request->device_type;
@@ -137,51 +137,6 @@ class AuthController extends Controller
                     'data' => $this->respondWithToken($token)
                 ], 200);
             }
-
-            // if (env('APP_DEBUG') || ($user->is_2fa === 0)) {
-            //     return response()->json([
-            //         'success' => true,
-            //         'message' => 'login_success',
-            //         'data' => $this->respondWithToken($token)
-            //     ], 200);
-            // }
-
-            // if (empty($user->token_2fa)) {
-            //     $google2fa = app('pragmarx.google2fa');
-            //     $token2FA = $google2fa->generateSecretKey();
-
-            //     $user->token_2fa = $token2FA;
-            //     $user->update();
-
-            //     $qr = $google2fa->getQRCodeUrl(
-            //         config('app.name'),
-            //         $user->email,
-            //         $token2FA
-            //     );
-
-            //     $data = [
-            //         'qr' => $qr,
-            //         'token' => $token2FA
-            //     ];
-
-            //     return response()->json([
-            //         'success' => true,
-            //         'message' => '2fa-generate',
-            //         'data' => array_merge($data, $this->respondWithToken($token))
-            //     ], 200);
-
-            // } else {
-
-            //     $data = [
-            //         'token' => $user->token_2fa
-            //     ];
-
-            //     return response()->json([
-            //         'success' => true,
-            //         'message' => '2fa',
-            //         'data' => array_merge($data, $this->respondWithToken($token))
-            //     ], 200);
-            // }
         } catch(\Illuminate\Database\QueryException $ex) {
             return response()->json([
                 'success' => false,
@@ -247,8 +202,8 @@ class AuthController extends Controller
      */
     protected function respondWithToken($token)
     {
-        $permissions = getPermissionsByRole(Auth::user());
-        $userData = getUserData(Auth::user()->load(['userDetail']));
+        $permissions = getPermissionsByRole(Auth::guard('api')->user());
+        $userData = getUserData(Auth::guard('api')->user()->load(['userDetail']));
 
         $data = [
             'accessToken' => $token,
@@ -256,7 +211,7 @@ class AuthController extends Controller
             'user_data' => $userData
         ];
 
-        if (Auth::user()->getRoleNames()[0] === 'App') {//user app
+        if (Auth::guard('api')->user()->getRoleNames()[0] === 'App') {//user app
             return $data;
         }  else {
             return array_merge($data, ['userAbilities' => $permissions]);

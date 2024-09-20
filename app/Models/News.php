@@ -16,4 +16,21 @@ class News extends Model
     public function category() {
         return $this->belongsTo(Category::class, 'category_id', 'id');
     }
+
+    /**** Attributes ****/
+    public function getPopularLabelAttribute()
+    {
+         switch ($this->is_popular) {
+             case 1:
+                 $class = 'primary';
+                 $name = 'SI';
+                 break;
+             case 0:
+                 $class = 'info';
+                 $name = 'NO';
+                 break;
+         }
+ 
+         return '<div class="badge badge-light-' . $class . ' fs-8 fw-bolder">' . $name . '</div>';
+     }
 }

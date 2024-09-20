@@ -36,6 +36,9 @@
 {{-- Dual Listbox --}}
 <script src="{{ asset('/js/vendor/jquery.bootstrap-duallistbox.min.js?v=') . env('APP_VERSION') }}"></script>
 
+{{-- TinyMCE --}}
+<script src="https://cdn.tiny.cloud/1/zdx5vskla3myqmynl0na54nbzn6lesrfzailifp7b305app3/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+
 {{-- DataTables --}}
 <!-- <script>var HOST_URL = "/metronic/theme/html/tools/preview";</script> -->
 <script src="{{ asset('/plugins/custom/datatables/datatables.bundle.js') }}"></script>

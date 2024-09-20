@@ -12,7 +12,8 @@ use App\Http\Controllers\Admin\{
     DashboardController,
     UserController,
     RolController,
-    PlaceController
+    PlaceController,
+    NewController
 };
 
 /*
@@ -53,7 +54,8 @@ Route::middleware([
         Route::resources([
             'users' => UserController::class,
             'roles' => RolController::class,
-            'places' => PlaceController::class
+            'places' => PlaceController::class,
+            'news' => NewController::class
         ]);
 
         /* DASHBOARD */
@@ -66,6 +68,7 @@ Route::middleware([
         Route::post('/users/delete', [UserController::class, 'deleteUsers'])->name('users.delete');
         Route::post('/roles/delete', [RolController::class, 'deleteRoles'])->name('roles.delete');
         Route::post('/places/delete', [PlaceController::class, 'deletePlaces'])->name('places.delete');
+        Route::post('/news/delete', [NewController::class, 'deleteNews'])->name('news.delete');
 
     });
 
