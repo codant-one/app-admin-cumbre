@@ -10,7 +10,9 @@ use App\Http\Controllers\Auth\Admin\{
 
 use App\Http\Controllers\Admin\{
     DashboardController,
-    UserController
+    UserController,
+    RolController,
+    PlaceController
 };
 
 /*
@@ -49,7 +51,9 @@ Route::middleware([
 
         /* RESOURCES */
         Route::resources([
-            'users' => UserController::class
+            'users' => UserController::class,
+            'roles' => RolController::class,
+            'places' => PlaceController::class
         ]);
 
         /* DASHBOARD */
@@ -57,6 +61,11 @@ Route::middleware([
             
         /* AUTH */
         Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
+
+        /* DELETE MULTIPLE ELEMENTS */
+        Route::post('/users/delete', [UserController::class, 'deleteUsers'])->name('users.delete');
+        Route::post('/roles/delete', [RolController::class, 'deleteRoles'])->name('roles.delete');
+        Route::post('/places/delete', [PlaceController::class, 'deletePlaces'])->name('places.delete');
 
     });
 

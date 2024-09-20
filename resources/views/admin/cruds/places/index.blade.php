@@ -1,68 +1,47 @@
 @extends('admin.layouts.master', [
-    'title' => 'Usuarios',
+    'title' => 'Lugares',
     'breadcrumbs' => [
         route('dashboard.index') => 'Inicio',
-        route('users.index') => 'Usuarios',
+        route('places.index') => 'Usuarios',
     ]
 ])
 
 @section('content')
 
-    @include('admin.cruds.users.partials.table-list')
+    @include('admin.cruds.places.partials.table-list')
 
 @endsection
 
 @section('scripts')
 
 @php
-    $edit_route = route("users.edit", ["user" => 'id-here']);
-    $delete_route = route("users.destroy", ["user" => 'id-here']);
+    $edit_route = route("places.edit", ["place" => 'id-here']);
+    $delete_route = route("places.destroy", ["place" => 'id-here']);
 @endphp
 
 <script>
     $(document).ready(function () {
 
         //Initializate select2
-        $('.roles').select2();
-        $('.token').select2();
+        $('.categories').select2();
+        $('.is_popular').select2();
 
-        var can = "{!!  auth()->user()->can('user_edit','user_delete') !!}";
-         
-        var columns;
-        // if(can){
-            columns = [
-                { data: 'id' }, //Get ID for show checkbox selector
-                { data: 'id' }, //Return ID in the ROW
-                { data: 'name',
-                  render : function(data, type, row, meta){
-                    return data +' '+ row.last_name;
-                } },
-                { data: 'email' },
-                { data: 'token_2fa' },
-                { data: 'roles' },
-                { data: 'actions', orderable: false }
-            ];
-        // } else {
-        //     columns = [
-        //         { data: 'id' }, //Get ID for show checkbox selector
-        //         { data: 'id' }, //Return ID in the ROW
-        //         { data: 'firstname',
-        //           render : function(data, type, row, meta){
-        //             return data +' '+ row.lastname;
-        //         } },
-        //         { data: 'email' },
-        //         { data: 'token_2fa' },
-        //         { data: 'roles' },
-        //         { data: null, visible: false },
-        //         { data: 'actions', visible: false }
-        //     ];
-        // }
+        columns = [
+            { data: 'id' }, //Get ID for show checkbox selector
+            { data: 'id' }, //Return ID in the ROW
+            { data: 'title_es' },
+            { data: 'title_en' },
+            { data: 'category.name_es' },
+            { data: 'popular_label' },
+            { data: 'actions', orderable: false }
+        ];
+
 		const table = $('.table').DataTable({
             processing: true,
             serverSide: true,
             orderCellsTop: true,
             ajax: {
-                url: "{{ route('users.index') }}",
+                url: "{{ route('places.index') }}",
                 dataFilter: function(data){
                     var json = JSON.parse( data );
                     json.recordsTotal = json.last_page;
@@ -90,41 +69,17 @@
 		                render: function (data) {
 		                    return `
 		                        <div class="form-check form-check-sm form-check-custom form-check-solid justify-content-center">
-		                            <input class="form-check-input" type="checkbox" name="users[]" value="${data}" />
+		                            <input class="form-check-input" type="checkbox" name="places[]" value="${data}" />
 		                        </div>
                                `;
 		                }
 		            },
                     {
-		                targets: 2,
-		                render: function (data, type, row) {
-		                   	const title = data.length > 25 ? `${data.slice(0, 25).replace(/\s+$/, '')}...` : data
-
-		                    return `<a href="${ `{{ route("users.edit", ["user" => 'here']) }}`.replace('here', row.id) }" class="text-dark fw-bolder text-hover-primary fs-6">
-		                                ${title}
-		                            </a>`
-		                }
-		            },
-                    {
 		                targets: 4,
 		                render: function (data, type, row) {
-		                    return (
-		                        	row.token_2fa ?
-		                        '<span class="badge badge-light-success">Habilitado</span>' :
-		                        '<span class="badge badge-light-danger">No habilitado</span>'
-		                    )
-		                }
-		            },
-                    {
-		                targets: 5,
-		                render: function (data, type, row) {
-		                let badges = {
-                                'SuperAdmin': '<span class="badge badge-light-primary fw-bolder">Super Admin</span>',
-		                    	'Administrador': '<span class="badge badge-light-info fw-bolder">Administrador</span>',
-		                    	'Operador': '<span class="badge badge-light-warning fw-bolder">Operador</span>',
-                                'Cliente': '<span class="badge badge-light-success fw-bolder">Cliente</span>'
-		                    }
-		                    return badges[data[0].name] 
+                            const color = row.category_id === 5 ? 'success' : 'warning'
+
+                            return `<div class="badge badge-light-${color} fs-8 fw-bolder">${row.category.name_es}</div>`
 		                }
 		            },
                     {

@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
+
 use App\Models\User;
-use App\Models\Ban;
 
 class UserController extends Controller
 {
@@ -47,7 +47,7 @@ class UserController extends Controller
             }
 
             $query->whereHas('roles', function ($q){
-                $q->where([['name','!=','Cliente'],['name','!=','SuperAdmin']]);
+                $q->where([['name','!=','App'],['name','!=','Panelista'],['name','!=','SuperAdmin']]);
             });
 
             $users = ($request->length == -1) ? $query->paginate( $query->count() ) : $query->paginate($request->length);

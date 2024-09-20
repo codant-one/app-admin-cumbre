@@ -9,6 +9,10 @@
     align-items: end !important;
 }
 
+.align-center {
+    align-items: center !important;
+}
+
 .bg-radial {
     background-image: radial-gradient(circle, #3F73D5, #003393, #001B4F);
 }
@@ -31,9 +35,9 @@
     color: #8A1E41 !important;
 }
 
-.form-control.form-control-solid, .form-check.form-check-solid .form-check-input {
-    background-color: var(--neptune-050);
-    border-color:  var(--neptune-050);
+.form-control.form-control-solid, .form-check.form-check-solid .form-check-input, .form-select.form-select-solid {
+    background-color: var(--neptune-050) !important;
+    border-color:  var(--neptune-050) !important;
 }
 
 .text-link-public {
@@ -214,9 +218,19 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
     font-weight: bold !important;
 }
 
-.menu-state-primary .menu-item .menu-link:hover:not(.disabled):not(.active), .menu-state-primary .menu-item.hover>.menu-link:not(.disabled):not(.active) {
+.menu-state-primary .menu-item .menu-link:hover:not(.disabled):not(.active), .menu-state-primary .menu-item.hover>.menu-link:not(.disabled):not(.active),
+.dropdown-menu .menu-item .menu-link:hover  {
     color: var(--primary)!important;
     background-color: var(--pelorous)!important;
+}
+
+.bg-hover-pelorous:hover {
+    color: var(--primary)!important;
+    background-color: var(--pelorous)!important;
+}
+
+.bg-hover-pelorous:hover i {
+    color: var(--primary)!important;
 }
 
 .text-primary {

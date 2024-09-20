@@ -22,7 +22,7 @@
    
          <i class="bi bi-pencil-fill fs-7"></i>
    
-         <input type="file" name="{{ $name }}" accept=".png, .jpg, .jpeg" {{ $required ?? '' }}/>
+         <input type="file" id="{{ $name }}" name="{{ $name }}" accept=".png, .jpg, .jpeg" {{ $required ?? '' }}/>
          <input type="hidden" name="{{ $name }}_remove" />
    
       </label>

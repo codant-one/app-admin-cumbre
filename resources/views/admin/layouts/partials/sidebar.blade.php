@@ -27,16 +27,16 @@
                 <div class="menu-item">
 					<a class="menu-link active" href="{{ route('dashboard.index') }}">
                         <span class="menu-icon">
-							<img src="{{ url('/svg/home.svg') }}" alt="Home">
+							<i class="fa fa-home fs-4"></i>
                         </span>
                         <span class="menu-title">Inicio</span>
 					</a>
 				</div>
 
-				<!-- MODULOS -->
+				<!-- ADMINISTRACIÓN -->
 				<div class="menu-item">
 					<div class="menu-content pt-8 pb-2">
-						<span class="menu-section text-muted text-uppercase fs-8 ls-1">MODULOS</span>
+						<span class="menu-section text-muted text-uppercase fs-8 ls-1">ADMINISTRACIÓN</span>
 					</div>
 				</div>
 
@@ -71,7 +71,7 @@
 				</div>
 
 				<!-- ROLES Y PERMISOS -->
-				<div data-kt-menu-trigger="click" class="menu-item menu-accordion">	
+				<!--<div data-kt-menu-trigger="click" class="menu-item menu-accordion">	
 					<span class="menu-link">
 						<span class="menu-icon">
 							<i class="fa fa-users-cog fs-4"></i>
@@ -79,9 +79,9 @@
 						<span class="menu-title">Roles y permisos</span>
 						<span class="menu-arrow"></span>
 					</span>
-					<div class="menu-sub menu-sub-accordion menu-active-bg mt-1">
+					<div class="menu-sub menu-sub-accordion menu-active-bg mt-1"> -->
 						<!-- ROLES -->
-						<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+						<!--<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
 							<span class="menu-link">
 								<span class="menu-icon">
 									<i class="fa fa-user-tie fs-4"></i>
@@ -92,7 +92,7 @@
 
 							<div class="menu-sub menu-sub-accordion menu-active-bg mt-1">
 								<div class="menu-item">
-									<a class="menu-link" href="{{ route('users.create') }}">
+									<a class="menu-link" href="{{ route('roles.create') }}">
 										<span class="menu-icon">
 											<i class="fa fa-plus-circle"></i>
 										</span>
@@ -100,7 +100,7 @@
 									</a>
 								</div>
 								<div class="menu-item">
-									<a class="menu-link" href="{{ route('users.index') }}">
+									<a class="menu-link" href="{{ route('roles.index') }}">
 										<span class="menu-icon">
 											<i class="fa fa-list-ol"></i>
 										</span>
@@ -108,10 +108,10 @@
 									</a>
 								</div>
 							</div>
-						</div>
+						</div> -->
 
 						<!-- PERMISOS -->
-						<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+						<!--<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
 							<span class="menu-link">
 								<span class="menu-icon">
 									<i class="fa fa-user-lock fs-4"></i>
@@ -140,8 +140,44 @@
 							</div>
 						</div>
 					</div>
+				</div> -->
+
+				<!-- MÓDULOS -->
+				<div class="menu-item">
+					<div class="menu-content pt-8 pb-2">
+						<span class="menu-section text-muted text-uppercase fs-8 ls-1">MÓDULOS</span>
+					</div>
 				</div>
 
+				<!--LUGARES -->
+				<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+					<span class="menu-link">
+						<span class="menu-icon">
+							<i class="fa fa-map-marker-alt fs-4"></i>
+						</span>
+						<span class="menu-title">Lugares</span>
+						<span class="menu-arrow"></span>
+					</span>
+
+					<div class="menu-sub menu-sub-accordion menu-active-bg mt-1">
+						<div class="menu-item">
+							<a class="menu-link" href="{{ route('places.create') }}">
+								<span class="menu-icon">
+									<i class="fa fa-plus-circle"></i>
+								</span>
+								<span class="menu-title">Agregar Nuevo</span>
+							</a>
+						</div>
+						<div class="menu-item">
+							<a class="menu-link" href="{{ route('places.index') }}">
+								<span class="menu-icon">
+									<i class="fa fa-list-ol"></i>
+								</span>
+								<span class="menu-title">Ver Todos</span>
+							</a>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

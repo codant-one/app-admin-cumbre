@@ -1,10 +1,10 @@
 @extends('admin.layouts.master', [
-'title' => 'Usuarios',
-'breadcrumbs' => [
-route('dashboard.index') => 'Inicio',
-route('users.index') => 'Usuarios',
-route('users.create') => 'Editar',
-]
+    'title' => 'Usuarios',
+    'breadcrumbs' => [
+        route('dashboard.index') => 'Inicio',
+        route('users.index') => 'Usuarios',
+        route('users.create') => 'Editar',
+    ]
 ])
 
 @section('content')
@@ -18,59 +18,38 @@ route('users.create') => 'Editar',
                 {!!  Form::open(['route' => ['users.update', ['user' => $user->id]], 'method' => 'PUT']) !!}
                 
                     <div class="row mb-6">
-                        <label class="col-lg-4 col-form-label required fw-bold fs-6">Primer Nombre</label>
+                        <label class="col-lg-4 col-form-label required fw-bold fs-6">Nombre</label>
                         <div class="col-lg-8 fv-row fv-plugins-icon-container">
-                            {!! Form::text('firstname', old('firstname', $user->firstname),
+                            {!! Form::text('name', old('name', $user->name),
                                 ['required',
-                                'id' => 'firstname',
+                                'id' => 'name',
                                 'class' => 'form-control form-control-solid mb-3 mb-lg-0',
-                                'placeholder' => 'Primer Nombre'])
+                                'placeholder' => 'Nombre'])
                             !!}
                         </div>
                     </div>
 
                     <div class="row mb-6">
-                        <label class="col-lg-4 col-form-label required fw-bold fs-6">Segundo Nombre</label>
+                        <label class="col-lg-4 col-form-label required fw-bold fs-6">Apellido</label>
                         <div class="col-lg-8 fv-row fv-plugins-icon-container">
-                            {!! Form::text('secondname', old('secondname', $user->secondname),
-                                ['id' => 'secondname',
+                            {!! Form::text('last_name', old('last_name', $user->last_name),
+                                ['id' => 'last_name',
                                 'class' => 'form-control form-control-solid mb-3 mb-lg-0',
-                                'placeholder' => 'Segundo Nombre'])
+                                'placeholder' => 'Apellido'])
                             !!}
                         </div>
                     </div>
 
-                    <div class="row mb-6">
-                        <label class="col-lg-4 col-form-label required fw-bold fs-6">Primer Apellido</label>
-                        <div class="col-lg-8 fv-row fv-plugins-icon-container">
-                            {!! Form::text('lastname', old('lastname', $user->lastname),
-                                ['required',
-                                'id' => 'lastname',
-                                'class' => 'form-control form-control-solid mb-3 mb-lg-0',
-                                'placeholder' => 'Primer Apellido'])
-                            !!}
-                        </div>
-                    </div>
-
-                    <div class="row mb-6">
-                        <label class="col-lg-4 col-form-label required fw-bold fs-6">Segundo Apellido</label>
-                        <div class="col-lg-8 fv-row fv-plugins-icon-container">
-                            {!! Form::text('secondsurname', old('secondsurname', $user->secondsurname),
-                                ['id' => 'secondsurname',
-                                'class' => 'form-control form-control-solid mb-3 mb-lg-0',
-                                'placeholder' => 'Segundo Apellido'])
-                            !!}
-                        </div>
-                    </div>
-                    
                     <div class="row mb-6">
                         <label class="col-lg-4 col-form-label required fw-bold fs-6">Email</label>
                         <div class="col-lg-8 fv-row fv-plugins-icon-container">
                             {!! Form::email('email', old('email', $user->email),
-                                ['required',
-                                'id' => 'email',
-                                'class' => 'form-control form-control-solid mb-3 mb-lg-0',
-                                'placeholder' => 'Email'])
+                                [
+                                    'id' => 'email',
+                                    'class' => 'form-control form-control-solid mb-3 mb-lg-0',
+                                    'placeholder' => 'Email',
+                                    'readonly' => 'readonly',
+                                ])
                             !!}
                         </div>
                     </div>

@@ -9,6 +9,8 @@ $(document).ready(function(){
         url_route = "roles/delete";
     } else if(currentURL.indexOf('permissions') > -1){
         url_route = "permissions/delete";
+    } else if(currentURL.indexOf('places') > -1){
+        url_route = "places/delete";
     }
     
     $('.deleteAll').click(function(){

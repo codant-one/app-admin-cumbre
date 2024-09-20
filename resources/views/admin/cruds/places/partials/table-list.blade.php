@@ -11,10 +11,10 @@
                                 </div>
                             </th>
                             <th class="w-60px">ID</th>
-                            <th>Nombre</th>
-                            <th>Email</th>
-                            <th>Two-step</th>
-                            <th>Rol</th>
+                            <th>Título en español</th>
+                            <th>Título en inglés</th>
+                            <th>Categoría</th>
+                            <th>Popular</th>
                             <th class="text-end min-w-100px">Acciones</th>
                         </tr>
                         <tr>
@@ -27,16 +27,16 @@
                                 <input type="number" min="1" class="form-control d-block" placeholder="ID">
                             </th>
                             <th>
-                                <input type="text" class="form-control" placeholder="NOMBRE">
+                                <input type="text" class="form-control" placeholder="TITULO EN ESPAÑOL">
                             </th>
                             <th>
-                                <input type="email" class="form-control" placeholder="EMAIL">
+                                <input type="text" class="form-control" placeholder="TITULO EN INGLES">
                             </th>
                             <th>
-                                {!! Form::select('token', ['No' => 'No Habilitado', 'Si' => 'Habilitado'], null, ['class' => 'form-control token', 'placeholder' => 'Token2FA'] ) !!}
+                                {!! Form::select('categories', $categories, null, ['class' => 'form-control categories', 'placeholder' => 'CATEGORÍAS']); !!}
                             </th>
                             <th>
-                                {!! Form::select('roles', $roles, null, ['class' => 'form-control roles', 'placeholder' => 'Rol']); !!}
+                                {!! Form::select('is_popular', ['0' => 'NO', '1' => 'SI'], null, ['class' => 'form-control is_popular', 'placeholder' => 'POPULAR'] ) !!}
                             </th>
                             <th class="text-end min-w-100px">
                                 <button class="btn btn-info btn-reset">Limpiar</button>

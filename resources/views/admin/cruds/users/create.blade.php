@@ -19,43 +19,24 @@
                     
                     <div class="row mb-7">
                         <div class="fv-row col-md-6">
-                            <label class="required fw-bold fs-6 mb-2">Primer Nombre</label>
-                            {!! Form::text('firstname', old('firstname'),
+                            <label class="required fw-bold fs-6 mb-2">Nombre</label>
+                            {!! Form::text('name', old('name'),
                                 ['required',
-                                'id' => 'firstname',
+                                'id' => 'name',
                                 'class' => 'form-control form-control-solid mb-3 mb-lg-0',
-                                'placeholder' => 'Primer Nombre'])
+                                'placeholder' => 'Nombre'])
                             !!}
                         </div>
                         <div class="fv-row col-md-6">
-                            <label class="fw-bold fs-6 mb-2">Segundo Nombre</label>
-                            {!! Form::text('secondname', old('secondname'),
-                                ['id' => 'secondname',
+                            <label class="fw-bold fs-6 mb-2">Apellido</label>
+                            {!! Form::text('last_name', old('last_name'),
+                                ['id' => 'last_name',
                                 'class' => 'form-control form-control-solid mb-3 mb-lg-0',
-                                'placeholder' => 'Segundo Nombre'])
+                                'placeholder' => 'Apellido'])
                             !!}
                         </div>
                     </div>
 
-                    <div class="row mb-7">
-                        <div class="fv-row col-md-6">
-                            <label class="required fw-bold fs-6 mb-2">Primer Apellido</label>
-                            {!! Form::text('lastname', old('lastname'),
-                                ['required',
-                                'id' => 'lastname',
-                                'class' => 'form-control form-control-solid mb-3 mb-lg-0',
-                                'placeholder' => 'Primer Apellido'])
-                            !!}
-                        </div>
-                        <div class="fv-row col-md-6">
-                            <label class="fw-bold fs-6 mb-2">Segundo Apellido</label>
-                            {!! Form::text('secondsurname', old('secondsurname'),
-                                ['id' => 'secondsurname',
-                                'class' => 'form-control form-control-solid mb-3 mb-lg-0',
-                                'placeholder' => 'Segundo Apellido'])
-                            !!}
-                        </div>
-                    </div>
                     <div class="fv-row mb-7">
                         <label class="required fw-bold fs-6 mb-2">Email</label>
                         {!! Form::email('email', old('email'),

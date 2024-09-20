@@ -34,7 +34,7 @@ $(document).ready(function () {
     });
 
     $(document).delegate('.delete-item', 'click', function () {
-        let confirmation = confirm( lang.js_common.element_delete );
+        let confirmation = confirm('¿Estás seguro que deseas eliminar este elemento?');
 
         if (!confirmation) return;
 
