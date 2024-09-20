@@ -93,7 +93,7 @@ class NewController extends Controller
         $request = $this->prepareRequest($request, false);
 
         $new = new News;
-        $new->fill($request->except(['image','images']));
+        $new->fill($request->except(['image']));
         $new->save();
 
         if ($request->hasFile('image')) {
@@ -149,7 +149,7 @@ class NewController extends Controller
                 ]
             ]);
 
-        return view('admin.cruds.new.edit', compact('new', 'categories'));
+        return view('admin.cruds.news.edit', compact('new', 'categories'));
     }
 
     /**
@@ -161,7 +161,7 @@ class NewController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $new = News::with(['images'])->find($id);
+        $new = News::find($id);
 
         if (!$new)
             return redirect()->route('news.index')->with([
@@ -173,7 +173,7 @@ class NewController extends Controller
             ]);
 
         $request = $this->prepareRequest($request, $new);
-        $new->fill($request->except(['image','images']));
+        $new->fill($request->except(['image']));
         $new->update();
 
         if ($request->hasFile('image')) {
@@ -186,7 +186,6 @@ class NewController extends Controller
             $new->image = $file_data['filePath'];
             $new->update();
         }
-
 
         return redirect()->route('news.index')->with([
             'feedback' => [

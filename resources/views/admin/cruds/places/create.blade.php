@@ -96,7 +96,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-check form-switch form-check-custom form-check-solid align-items-start">
-                            <label class="fw-bold fs-6 form-check-label mt-2 me-16 ms-0" for="shipping_submit">Imagen Principal</label>  
+                            <label class="fw-bold fs-6 form-check-label mt-2 me-16 ms-0 required" for="shipping_submit">Imagen Principal</label>  
                             @include('commons.image-field', [
                                 'required' => 'required',
                                 'name' => 'image',

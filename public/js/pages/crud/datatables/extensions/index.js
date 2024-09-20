@@ -11,6 +11,8 @@ $(document).ready(function(){
         url_route = "permissions/delete";
     } else if(currentURL.indexOf('places') > -1){
         url_route = "places/delete";
+    } else if(currentURL.indexOf('news') > -1){
+        url_route = "news/delete";
     }
     
     $('.deleteAll').click(function(){

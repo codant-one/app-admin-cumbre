@@ -19,7 +19,7 @@
                         </tr>
                         <tr>
                             <th class="d-flex justify-content-center">
-                                <a class="btn my-4 p-0  d-block deleteAll" title="Eliminar múltiples usuarios">
+                                <a class="btn my-4 p-0  d-block deleteAll" title="Eliminar múltiples noticias">
                                     <span><i class="fa fa-solid fa-trash text-danger fs-2"></i></span>
                                 </a>
                             </th>

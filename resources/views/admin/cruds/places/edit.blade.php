@@ -107,7 +107,7 @@
                 </div>
 
 				<div class="row mb-6">
-                    <label class="col-lg-4 col-form-label required fw-bold fs-6">Imagen Principal</label>
+                    <label class="col-lg-4 col-form-label required fw-bold fs-6 required">Imagen Principal</label>
                     <div class="col-lg-8 fv-row fv-plugins-icon-container">
                         @include('commons.image-field', [
                             'required' => '',

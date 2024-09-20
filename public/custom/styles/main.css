@@ -123,7 +123,7 @@
 }
 
 .form-control:disabled, .form-control[readonly] {
-    background-color: #eff2f5 !important;
+    background-color: var(--neptune-050)!important;
 }
 
 .accordion-button:not(.collapsed){
@@ -333,7 +333,7 @@ body {
     border: none !important;
     border-bottom-width: 1px !important;
     border-bottom-style: dashed !important;
-    border-bottom-color: #eff2f5 !important;
+    border-bottom-color: var(--neptune-050)!important;
 }
 
 .form-check.form-check-solid .form-check-input:checked {
