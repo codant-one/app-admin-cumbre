@@ -13,6 +13,10 @@ $(document).ready(function(){
         url_route = "places/delete";
     } else if(currentURL.indexOf('news') > -1){
         url_route = "news/delete";
+    } else if(currentURL.indexOf('category-types') > -1){
+        url_route = "category-types/delete";
+    } else if(currentURL.indexOf('categories') > -1){
+        url_route = "categories/delete";
     }
     
     $('.deleteAll').click(function(){

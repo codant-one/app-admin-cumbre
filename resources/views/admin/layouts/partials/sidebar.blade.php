@@ -142,6 +142,78 @@
 					</div>
 				</div> -->
 
+				<!-- TIPOS DE CATEGORIAS -->
+				<div data-kt-menu-trigger="click" class="menu-item menu-accordion">	
+					<span class="menu-link">
+						<span class="menu-icon">
+							<i class="fa fa-sitemap fs-4"></i>
+						</span>
+						<span class="menu-title">Categorías</span>
+						<span class="menu-arrow"></span>
+					</span>
+					<div class="menu-sub menu-sub-accordion menu-active-bg mt-1">
+					<!-- TIPOS DE CATEGORIAS -->
+						<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+							<span class="menu-link">
+								<span class="menu-icon">
+									<i class="fa fa-sitemap fs-4"></i>
+								</span>
+								<span class="menu-title">Tipos de categorías</span>
+								<span class="menu-arrow"></span>
+							</span>
+
+							<div class="menu-sub menu-sub-accordion menu-active-bg mt-1">
+								<div class="menu-item">
+									<a class="menu-link" href="{{ route('category-types.create') }}">
+										<span class="menu-icon">
+											<i class="fa fa-plus-circle"></i>
+										</span>
+										<span class="menu-title">Agregar Nuevo</span>
+									</a>
+								</div>
+								<div class="menu-item">
+									<a class="menu-link" href="{{ route('category-types.index') }}">
+										<span class="menu-icon">
+											<i class="fa fa-list-ol"></i>
+										</span>
+										<span class="menu-title">Ver Todos</span>
+									</a>
+								</div>
+							</div>
+						</div>
+
+						<!-- CATEGORIAS -->
+						<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+							<span class="menu-link">
+								<span class="menu-icon">
+									<i class="fa fa-shapes fs-4"></i>
+								</span>
+								<span class="menu-title">Categorías</span>
+								<span class="menu-arrow"></span>
+							</span>
+
+							<div class="menu-sub menu-sub-accordion menu-active-bg mt-1">
+								<div class="menu-item">
+									<a class="menu-link" href="{{ route('categories.create') }}">
+										<span class="menu-icon">
+											<i class="fa fa-plus-circle"></i>
+										</span>
+										<span class="menu-title">Agregar Nuevo</span>
+									</a>
+								</div>
+								<div class="menu-item">
+									<a class="menu-link" href="{{ route('categories.index') }}">
+										<span class="menu-icon">
+											<i class="fa fa-list-ol"></i>
+										</span>
+										<span class="menu-title">Ver Todos</span>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
 				<!-- MÓDULOS -->
 				<div class="menu-item">
 					<div class="menu-content pt-8 pb-2">

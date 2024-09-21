@@ -26,4 +26,29 @@ class Category extends Model
               ->where('category_type_id', $category_type_id)
               ->get()->pluck('name_es','id');   
     }
+
+    /**** Attributes ****/
+    public function getTypeLabelAttribute()
+    {
+         switch ($this->category_type_id) {
+            case 1:
+                $class = 'primary';
+                break;
+            case 2:
+                $class = 'success';
+                break;
+            case 3:
+                $class = 'info';
+                break;
+            case 4:
+                $class = 'warning';
+                break;
+            default:
+                $class = 'error';
+                break;
+
+         }
+ 
+         return '<div class="badge badge-light-' . $class . ' fs-8 fw-bolder">' . $this->category_type->name_es . '</div>';
+     }
 }
