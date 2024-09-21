@@ -214,6 +214,36 @@
 					</div>
 				</div>
 
+				<!--CARGOS -->
+				<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+					<span class="menu-link">
+						<span class="menu-icon">
+							<i class="fa fa-user-tie fs-4"></i>
+						</span>
+						<span class="menu-title">Cargos</span>
+						<span class="menu-arrow"></span>
+					</span>
+
+					<div class="menu-sub menu-sub-accordion menu-active-bg mt-1">
+						<div class="menu-item">
+							<a class="menu-link" href="{{ route('positions.create') }}">
+								<span class="menu-icon">
+									<i class="fa fa-plus-circle"></i>
+								</span>
+								<span class="menu-title">Agregar Nuevo</span>
+							</a>
+						</div>
+						<div class="menu-item">
+							<a class="menu-link" href="{{ route('positions.index') }}">
+								<span class="menu-icon">
+									<i class="fa fa-list-ol"></i>
+								</span>
+								<span class="menu-title">Ver Todos</span>
+							</a>
+						</div>
+					</div>
+				</div>
+
 				<!-- MÓDULOS -->
 				<div class="menu-item">
 					<div class="menu-content pt-8 pb-2">

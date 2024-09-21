@@ -15,7 +15,8 @@ use App\Http\Controllers\Admin\{
     PlaceController,
     NewController,
     CategoryTypeController,
-    CategoryController
+    CategoryController,
+    PositionController
 };
 
 /*
@@ -59,7 +60,8 @@ Route::middleware([
             'places' => PlaceController::class,
             'news' => NewController::class,
             'category-types' => CategoryTypeController::class,
-            'categories' => CategoryController::class
+            'categories' => CategoryController::class,
+            'positions' => PositionController::class
         ]);
 
         /* DASHBOARD */
@@ -75,6 +77,7 @@ Route::middleware([
         Route::post('/news/delete', [NewController::class, 'deleteNews'])->name('news.delete');
         Route::post('/category-types/delete', [CategoryTypeController::class, 'deleteCategoryTypes'])->name('category-types.delete');
         Route::post('/categories/delete', [CategoryController::class, 'deleteCategories'])->name('categories.delete');
+        Route::post('/positions/delete', [PositionController::class, 'deletePositions'])->name('positions.delete');
 
     });
 

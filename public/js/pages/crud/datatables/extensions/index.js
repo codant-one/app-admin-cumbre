@@ -17,6 +17,8 @@ $(document).ready(function(){
         url_route = "category-types/delete";
     } else if(currentURL.indexOf('categories') > -1){
         url_route = "categories/delete";
+    } else if(currentURL.indexOf('positions') > -1){
+        url_route = "positions/delete";
     }
     
     $('.deleteAll').click(function(){
