@@ -244,6 +244,31 @@
 					</div>
 				</div>
 
+				<!-- CONFIGURACIÓN -->
+				<div class="menu-item">
+					<div class="menu-content pt-8 pb-2">
+						<span class="menu-section text-muted text-uppercase fs-8 ls-1">CONFIGURACIÓN</span>
+					</div>
+				</div>
+
+				<div class="menu-item">
+					<a class="menu-link" href="{{ route('map') }}">
+                        <span class="menu-icon">
+							<i class="fa fa-map-marked fs-4"></i>
+                        </span>
+                        <span class="menu-title">Mapa</span>
+					</a>
+				</div>
+
+				<div class="menu-item">
+					<a class="menu-link" href="{{ route('translations') }}">
+                        <span class="menu-icon">
+							<i class="fa fa-language fs-4"></i>
+                        </span>
+                        <span class="menu-title">Traducciones</span>
+					</a>
+				</div>
+
 				<!-- MÓDULOS -->
 				<div class="menu-item">
 					<div class="menu-content pt-8 pb-2">

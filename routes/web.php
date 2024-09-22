@@ -17,7 +17,8 @@ use App\Http\Controllers\Admin\{
     CategoryTypeController,
     CategoryController,
     PositionController,
-    SponsorController
+    SponsorController,
+    ConfigController
 };
 
 /*
@@ -71,6 +72,13 @@ Route::middleware([
             
         /* AUTH */
         Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
+
+        /* CONFIG */
+        Route::get('/map', [ConfigController::class, 'map'])->name('map');
+        Route::post('/map', [ConfigController::class, 'mapUpdate'])->name('mapUpdate');
+        Route::get('/translations', [ConfigController::class, 'translations'])->name('translations');
+        Route::post('/translations', [ConfigController::class, 'translationsUpdate'])->name('translationsUpdate');
+
 
         /* DELETE MULTIPLE ELEMENTS */
         Route::post('/users/delete', [UserController::class, 'deleteUsers'])->name('users.delete');
