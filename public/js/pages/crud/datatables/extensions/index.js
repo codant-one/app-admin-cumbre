@@ -23,6 +23,8 @@ $(document).ready(function(){
         url_route = "sponsors/delete";
     } else if(currentURL.indexOf('speakers') > -1){
         url_route = "speakers/delete";
+    } else if(currentURL.indexOf('schedules') > -1){
+        url_route = "schedules/delete";
     }
     
     $('.deleteAll').click(function(){

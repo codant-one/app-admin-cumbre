@@ -244,6 +244,36 @@
 					</div>
 				</div>
 
+				<!--AGENDA -->
+				<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+					<span class="menu-link">
+						<span class="menu-icon">
+							<i class="fa fa-calendar-alt fs-4"></i>
+						</span>
+						<span class="menu-title">Agenda</span>
+						<span class="menu-arrow"></span>
+					</span>
+
+					<div class="menu-sub menu-sub-accordion menu-active-bg mt-1">
+						<div class="menu-item">
+							<a class="menu-link" href="{{ route('schedules.create') }}">
+								<span class="menu-icon">
+									<i class="fa fa-plus-circle"></i>
+								</span>
+								<span class="menu-title">Agregar Nuevo</span>
+							</a>
+						</div>
+						<div class="menu-item">
+							<a class="menu-link" href="{{ route('schedules.index') }}">
+								<span class="menu-icon">
+									<i class="fa fa-list-ol"></i>
+								</span>
+								<span class="menu-title">Ver Todos</span>
+							</a>
+						</div>
+					</div>
+				</div>
+
 				<!-- CONFIGURACIÓN -->
 				<div class="menu-item">
 					<div class="menu-content pt-8 pb-2">

@@ -19,7 +19,8 @@ use App\Http\Controllers\Admin\{
     PositionController,
     SponsorController,
     ConfigController,
-    SpeakerController
+    SpeakerController,
+    ScheduleController
 };
 
 /*
@@ -66,7 +67,8 @@ Route::middleware([
             'categories' => CategoryController::class,
             'positions' => PositionController::class,
             'sponsors' => SponsorController::class,
-            'speakers' => SpeakerController::class            
+            'speakers' => SpeakerController::class,
+            'schedules' => ScheduleController::class          
         ]);
 
         /* DASHBOARD */
@@ -91,6 +93,7 @@ Route::middleware([
         Route::post('/positions/delete', [PositionController::class, 'deletePositions'])->name('positions.delete');
         Route::post('/sponsors/delete', [SponsorController::class, 'deleteSponsors'])->name('sponsors.delete');
         Route::post('/speakers/delete', [SpeakerController::class, 'deleteSpeakers'])->name('speakers.delete');
+        Route::post('/schedules/delete', [ScheduleController::class, 'deleteSchedules'])->name('schedules.delete');
 
     });
 
