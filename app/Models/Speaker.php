@@ -23,4 +23,21 @@ class Speaker extends Model
     public function talk_speaker() {
         return $this->hasMany(TalkSpeaker::class, 'speaker_id', 'id');
     }
+
+    /**** Attributes ****/
+    public function getPopularLabelAttribute()
+    {
+        switch ($this->is_popular) {
+            case 1:
+                $class = 'primary';
+                $name = 'SI';
+                break;
+            case 0:
+                $class = 'info';
+                $name = 'NO';
+                break;
+        }
+
+        return '<div class="badge badge-light-' . $class . ' fs-8 fw-bolder">' . $name . '</div>';
+    }
 }

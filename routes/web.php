@@ -18,7 +18,8 @@ use App\Http\Controllers\Admin\{
     CategoryController,
     PositionController,
     SponsorController,
-    ConfigController
+    ConfigController,
+    SpeakerController
 };
 
 /*
@@ -64,7 +65,8 @@ Route::middleware([
             'category-types' => CategoryTypeController::class,
             'categories' => CategoryController::class,
             'positions' => PositionController::class,
-            'sponsors' => SponsorController::class
+            'sponsors' => SponsorController::class,
+            'speakers' => SpeakerController::class            
         ]);
 
         /* DASHBOARD */
@@ -79,7 +81,6 @@ Route::middleware([
         Route::get('/translations', [ConfigController::class, 'translations'])->name('translations');
         Route::post('/translations', [ConfigController::class, 'translationsUpdate'])->name('translationsUpdate');
 
-
         /* DELETE MULTIPLE ELEMENTS */
         Route::post('/users/delete', [UserController::class, 'deleteUsers'])->name('users.delete');
         Route::post('/roles/delete', [RolController::class, 'deleteRoles'])->name('roles.delete');
@@ -89,6 +90,7 @@ Route::middleware([
         Route::post('/categories/delete', [CategoryController::class, 'deleteCategories'])->name('categories.delete');
         Route::post('/positions/delete', [PositionController::class, 'deletePositions'])->name('positions.delete');
         Route::post('/sponsors/delete', [SponsorController::class, 'deleteSponsors'])->name('sponsors.delete');
+        Route::post('/speakers/delete', [SpeakerController::class, 'deleteSpeakers'])->name('speakers.delete');
 
     });
 

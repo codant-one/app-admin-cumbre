@@ -56,7 +56,6 @@ class SponsorController extends Controller
             }
 
             $sponsors = ($request->length == -1) ? $query->paginate( $query->count() ) : $query->paginate($request->length);
-            // $sponsors->append(['popular_label']);
 
             return response()->json($sponsors, 200);
         }

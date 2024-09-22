@@ -21,6 +21,8 @@ $(document).ready(function(){
         url_route = "positions/delete";
     } else if(currentURL.indexOf('sponsors') > -1){
         url_route = "sponsors/delete";
+    } else if(currentURL.indexOf('speakers') > -1){
+        url_route = "speakers/delete";
     }
     
     $('.deleteAll').click(function(){
