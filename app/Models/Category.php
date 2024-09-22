@@ -30,7 +30,7 @@ class Category extends Model
     /**** Attributes ****/
     public function getTypeLabelAttribute()
     {
-         switch ($this->category_type_id) {
+        switch ($this->category_type_id) {
             case 1:
                 $class = 'primary';
                 break;
@@ -47,8 +47,8 @@ class Category extends Model
                 $class = 'error';
                 break;
 
-         }
+        }
  
-         return '<div class="badge badge-light-' . $class . ' fs-8 fw-bolder">' . $this->category_type->name_es . '</div>';
-     }
+        return '<div class="badge badge-light-' . $class . ' fs-8 fw-bolder">' . $this->category_type->name_es . '</div>';
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Speaker extends Model
 {
@@ -22,6 +23,16 @@ class Speaker extends Model
 
     public function talk_speaker() {
         return $this->hasMany(TalkSpeaker::class, 'speaker_id', 'id');
+    }
+
+    /**** Public methods ****/
+    public static function forDropdown()
+    {
+        return DB::table('speakers as s')
+                ->select(DB::raw("CONCAT(s.name, ' ', s.last_name) as full_name"), 's.id')
+                ->orderBy('s.name')
+                ->get()
+                ->pluck('full_name', 'id');  
     }
 
     /**** Attributes ****/

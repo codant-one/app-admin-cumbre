@@ -35,4 +35,28 @@ class Talk extends Model
     public function notification() {
         return $this->hasOne(NotificationUser::class, 'talk_id', 'id');
     }
+
+    /**** Attributes ****/
+    public function getTypeLabelAttribute()
+    {
+        switch ($this->schedule_id) {
+            case 1:
+                $class = 'primary';
+                break;
+            case 2:
+                $class = 'success';
+                break;
+            case 3:
+                $class = 'info';
+                break;
+            case 4:
+                $class = 'warning';
+                break;
+            default:
+                $class = 'error';
+                break;
+        }
+     
+        return '<div class="badge badge-light-' . $class . ' fs-8 fw-bolder">' . $this->schedule->name_es . '</div>';
+    }
 }

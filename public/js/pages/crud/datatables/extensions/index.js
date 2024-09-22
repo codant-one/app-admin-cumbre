@@ -25,6 +25,8 @@ $(document).ready(function(){
         url_route = "speakers/delete";
     } else if(currentURL.indexOf('schedules') > -1){
         url_route = "schedules/delete";
+    } else if(currentURL.indexOf('talks') > -1){
+        url_route = "talks/delete";
     }
     
     $('.deleteAll').click(function(){
