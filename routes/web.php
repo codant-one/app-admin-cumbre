@@ -16,7 +16,8 @@ use App\Http\Controllers\Admin\{
     NewController,
     CategoryTypeController,
     CategoryController,
-    PositionController
+    PositionController,
+    SponsorController
 };
 
 /*
@@ -61,7 +62,8 @@ Route::middleware([
             'news' => NewController::class,
             'category-types' => CategoryTypeController::class,
             'categories' => CategoryController::class,
-            'positions' => PositionController::class
+            'positions' => PositionController::class,
+            'sponsors' => SponsorController::class
         ]);
 
         /* DASHBOARD */
@@ -78,6 +80,7 @@ Route::middleware([
         Route::post('/category-types/delete', [CategoryTypeController::class, 'deleteCategoryTypes'])->name('category-types.delete');
         Route::post('/categories/delete', [CategoryController::class, 'deleteCategories'])->name('categories.delete');
         Route::post('/positions/delete', [PositionController::class, 'deletePositions'])->name('positions.delete');
+        Route::post('/sponsors/delete', [SponsorController::class, 'deleteSponsors'])->name('sponsors.delete');
 
     });
 
