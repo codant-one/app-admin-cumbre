@@ -15,7 +15,7 @@
                 'is_2fa' => $user->is_2fa,
                 'last_name' => $user->last_name,
                 'username' => $user->username,
-                'avatar' => $user->avatar ? asset('storage/' . $user->avatar) : $user->avatar,
+                'avatar' => $user->avatar ?  env('APP_URL') . asset('storage/' . $user->avatar) : $user->avatar,
                 'user_details' => $user->userDetail,
                 'roles' => $rol,
                 'hash' => $user->password,

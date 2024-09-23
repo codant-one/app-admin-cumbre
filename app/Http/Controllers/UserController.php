@@ -99,7 +99,7 @@ class UserController extends Controller
 
             return response()->json([
                 'success' => true,
-                'data' => $user
+                'data' => getUserData(Auth::guard('api')->user()->load(['userDetail']))
             ], 200);
 
         } catch(\Illuminate\Database\QueryException $ex) {
