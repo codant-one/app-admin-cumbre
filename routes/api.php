@@ -68,6 +68,7 @@ Route::middleware('jwt')->group(function () {
 
     // Notifications
     Route::get('notifications', [MiscellaneousController::class , 'notifications'])->name('notifications');
+    Route::post('notifications', [MiscellaneousController::class , 'notification'])->name('notification');
 });
 
 //Testing Endpoints

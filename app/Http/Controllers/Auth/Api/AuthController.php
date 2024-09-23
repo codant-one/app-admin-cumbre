@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Str;
 
+use Tymon\JWTAuth\Facades\JWTAuth;
+
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest; 
 
@@ -205,9 +207,14 @@ class AuthController extends Controller
         $permissions = getPermissionsByRole(Auth::guard('api')->user());
         $userData = getUserData(Auth::guard('api')->user()->load(['userDetail']));
 
+        $ttl = JWTAuth::factory()->getTTL();
+        $expiration = Carbon::now()->addMinutes($ttl)->toDateTimeString();
+
         $data = [
             'accessToken' => $token,
             'token_type' => 'bearer',
+            'expires_in' => $ttl * 60,
+            'expiration_date' => $expiration, 
             'user_data' => $userData
         ];
 

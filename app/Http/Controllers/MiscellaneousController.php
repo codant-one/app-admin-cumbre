@@ -1801,6 +1801,8 @@ class MiscellaneousController extends Controller
     {
         try {
 
+            $lang = $request->lang; 
+
             $exists = 
                 Favorite::where([
                     ['user_id', Auth::user()->id],
@@ -1820,8 +1822,22 @@ class MiscellaneousController extends Controller
                     'updated_at' => now()
                 ]);
 
+            $talk = Talk::with(['favorite'])->find($request->talk_id);
+
+            $notification = NotificationUser::where([
+                ['user_id', Auth::user()->id],
+                ['talk_id', $request->talk_id]
+            ])->exists();
+    
             return response()->json([
-                'success' => true
+                'success' => true,
+                'data' => [
+                    'id' => $talk->id,
+                    'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
+                    'hour' => $talk->hour,
+                    'is_favorite' => $talk->favorite ? 1 : 0,
+                    'is_notification' => $notification ? 1 : 0
+                ]
             ], 200);
 
         } catch(\Illuminate\Database\QueryException $ex) {
@@ -2067,6 +2083,8 @@ class MiscellaneousController extends Controller
     {
         try {
 
+            $lang = $request->lang;
+
             $exists = 
                 NotificationUser::where([
                     ['user_id', Auth::user()->id],
@@ -2086,8 +2104,22 @@ class MiscellaneousController extends Controller
                     'updated_at' => now()
                 ]);
 
+            $talk = Talk::with(['favorite'])->find($request->talk_id);
+
+            $notification = NotificationUser::where([
+                ['user_id', Auth::user()->id],
+                ['talk_id', $request->talk_id]
+            ])->exists();
+
             return response()->json([
-                'success' => true
+                'success' => true,
+                'data' => [
+                    'id' => $talk->id,
+                    'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
+                    'hour' => $talk->hour,
+                    'is_favorite' => $talk->favorite ? 1 : 0,
+                    'is_notification' => $notification ? 1 : 0
+                ]
             ], 200);
 
         } catch(\Illuminate\Database\QueryException $ex) {
