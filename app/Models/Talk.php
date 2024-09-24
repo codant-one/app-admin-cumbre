@@ -30,11 +30,11 @@ class Talk extends Model
     }
 
     public function favorite() {
-        return $this->hasOne(Favorite::class, 'talk_id', 'id')->where('user_id', Auth::id());
+        return $this->hasOne(Favorite::class, 'talk_id', 'id')->where('user_id', Auth::guard('api')->user()->id);
     }
 
     public function notification() {
-        return $this->hasOne(NotificationUser::class, 'talk_id', 'id')->where('user_id', Auth::id());
+        return $this->hasOne(NotificationUser::class, 'talk_id', 'id')->where('user_id', Auth::guard('api')->user()->id);
     }
 
     /**** Attributes ****/
