@@ -774,8 +774,8 @@ class MiscellaneousController extends Controller
                             'id' => $talk->id,
                             'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
                             'hour' => $talk->hour,
-                            'is_favorite' => Auth::check() ? ($favorite ? 1 : 0): 0,
-                            'is_notification' => Auth::check() ? ($notification ? 1 : 0): 0
+                            'is_favorite' => Auth::guard('api')->user() ? ($favorite ? 1 : 0): 0,
+                            'is_notification' => Auth::guard('api')->user() ? ($notification ? 1 : 0): 0
                         ];
                     });
                 });
@@ -873,8 +873,8 @@ class MiscellaneousController extends Controller
                 'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
                 'hour' => $talk->hour,
                 'image' => env('APP_URL') . '/storage/' . $talk->image,
-                'is_favorite' => Auth::check() ? ($talk->favorite ? 1 : 0): 0,
-                'is_notification' => Auth::check() ? ($talk->notification ? 1 : 0): 0,
+                'is_favorite' => Auth::guard('api')->user() ? ($talk->favorite ? 1 : 0): 0,
+                'is_notification' => Auth::guard('api')->user() ? ($talk->notification ? 1 : 0): 0,
                 'speakers' => $talk->speakers->map(function($speakerWrapper) use ($lang) {
                     $speaker = $speakerWrapper->speaker; // Accedemos al modelo 'speaker'
                     return [
@@ -971,8 +971,8 @@ class MiscellaneousController extends Controller
                             'id' => $talk->id,
                             'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
                             'hour' => $talk->hour,
-                            'is_favorite' => Auth::check() ? ($talk->favorite ? 1 : 0): 0,
-                            'is_notification' => Auth::check() ? ($talk->notification ? 1 : 0): 0,
+                            'is_favorite' => Auth::guard('api')->user() ? ($talk->favorite ? 1 : 0): 0,
+                            'is_notification' => Auth::guard('api')->user() ? ($talk->notification ? 1 : 0): 0,
                         ];
                     })
                 ];
@@ -1085,8 +1085,8 @@ class MiscellaneousController extends Controller
                         'id' => $talk->id,
                         'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
                         'hour' => $talk->hour,
-                        'is_favorite' => Auth::check() ? ($talk->favorite ? 1 : 0): 0,
-                        'is_notification' => Auth::check() ? ($talk->notification ? 1 : 0): 0
+                        'is_favorite' => Auth::guard('api')->user() ? ($talk->favorite ? 1 : 0): 0,
+                        'is_notification' => Auth::guard('api')->user() ? ($talk->notification ? 1 : 0): 0
                     ];
                 })
             ];
