@@ -1822,12 +1822,7 @@ class MiscellaneousController extends Controller
                     'updated_at' => now()
                 ]);
 
-            $talk = Talk::with(['favorite'])->find($request->talk_id);
-
-            $notification = NotificationUser::where([
-                ['user_id', Auth::user()->id],
-                ['talk_id', $request->talk_id]
-            ])->exists();
+            $talk = Talk::with(['favorite', 'notification'])->find($request->talk_id);
     
             return response()->json([
                 'success' => true,
@@ -1836,7 +1831,7 @@ class MiscellaneousController extends Controller
                     'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
                     'hour' => $talk->hour,
                     'is_favorite' => $talk->favorite ? 1 : 0,
-                    'is_notification' => $notification ? 1 : 0
+                    'is_notification' => $talk->notification ? 1 : 0
                 ]
             ], 200);
 
@@ -2104,12 +2099,7 @@ class MiscellaneousController extends Controller
                     'updated_at' => now()
                 ]);
 
-            $talk = Talk::with(['favorite'])->find($request->talk_id);
-
-            $notification = NotificationUser::where([
-                ['user_id', Auth::user()->id],
-                ['talk_id', $request->talk_id]
-            ])->exists();
+            $talk = Talk::with(['favorite', 'notification'])->find($request->talk_id);
 
             return response()->json([
                 'success' => true,
@@ -2118,7 +2108,7 @@ class MiscellaneousController extends Controller
                     'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
                     'hour' => $talk->hour,
                     'is_favorite' => $talk->favorite ? 1 : 0,
-                    'is_notification' => $notification ? 1 : 0
+                    'is_notification' => $talk->notification ? 1 : 0
                 ]
             ], 200);
 

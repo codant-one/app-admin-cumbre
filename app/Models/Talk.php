@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Talk extends Model
 {
@@ -29,11 +30,11 @@ class Talk extends Model
     }
 
     public function favorite() {
-        return $this->hasOne(Favorite::class, 'talk_id', 'id');
+        return $this->hasOne(Favorite::class, 'talk_id', 'id')->where('user_id', Auth::id());
     }
 
     public function notification() {
-        return $this->hasOne(NotificationUser::class, 'talk_id', 'id');
+        return $this->hasOne(NotificationUser::class, 'talk_id', 'id')->where('user_id', Auth::id());
     }
 
     /**** Attributes ****/
