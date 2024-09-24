@@ -21,7 +21,8 @@ use App\Http\Controllers\Admin\{
     ConfigController,
     SpeakerController,
     ScheduleController,
-    TalkController
+    TalkController,
+    ClientController
 };
 
 /*
@@ -70,7 +71,8 @@ Route::middleware([
             'sponsors' => SponsorController::class,
             'speakers' => SpeakerController::class,
             'schedules' => ScheduleController::class,     
-            'talks' => TalkController::class          
+            'talks' => TalkController::class,
+            'clients' => ClientController::class         
         ]);
 
         /* DASHBOARD */
@@ -97,6 +99,7 @@ Route::middleware([
         Route::post('/speakers/delete', [SpeakerController::class, 'deleteSpeakers'])->name('speakers.delete');
         Route::post('/schedules/delete', [ScheduleController::class, 'deleteSchedules'])->name('schedules.delete');
         Route::post('/talks/delete', [TalkController::class, 'deleteTalks'])->name('talks.delete');
+        Route::post('/clients/delete', [ClientController::class, 'deleteClients'])->name('clients.delete');
     });
 
     // Localization

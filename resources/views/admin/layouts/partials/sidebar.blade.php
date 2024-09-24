@@ -25,11 +25,20 @@
 				</div>
 
                 <div class="menu-item">
-					<a class="menu-link active" href="{{ route('dashboard.index') }}">
+					<a class="menu-link {{ request()->routeIs('dashboard.index') ? 'active' : '' }}" href="{{ route('dashboard.index') }}">
                         <span class="menu-icon">
 							<i class="fa fa-home fs-4"></i>
                         </span>
                         <span class="menu-title">Inicio</span>
+					</a>
+				</div>
+
+				<div class="menu-item mt-1">
+					<a class="menu-link {{ request()->routeIs('clients.index') ? 'active' : '' }}" href="{{ route('clients.index') }}">
+                        <span class="menu-icon">
+							<i class="fa fa-user-tie fs-4"></i>
+                        </span>
+                        <span class="menu-title">Clientes</span>
 					</a>
 				</div>
 
@@ -41,7 +50,7 @@
 				</div>
 
 				<!-- USUARIOS -->
-				<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+				<div data-kt-menu-trigger="click" class="menu-item menu-accordion mt-1 {{ request()->routeIs('users.create') || request()->routeIs('users.index') ? 'hover show' : '' }}">
 					<span class="menu-link">
 						<span class="menu-icon">
 							<i class="fa fa-users fs-4"></i>
@@ -52,15 +61,15 @@
 
 					<div class="menu-sub menu-sub-accordion menu-active-bg mt-1">
 						<div class="menu-item">
-							<a class="menu-link" href="{{ route('users.create') }}">
+							<a class="menu-link {{ request()->routeIs('users.create') ? 'active' : '' }}" href="{{ route('users.create') }}">
 								<span class="menu-icon">
 									<i class="fa fa-plus-circle"></i>
 								</span>
 								<span class="menu-title">Agregar Nuevo</span>
 							</a>
 						</div>
-						<div class="menu-item">
-							<a class="menu-link" href="{{ route('users.index') }}">
+						<div class="menu-item mt-1">
+							<a class="menu-link {{ request()->routeIs('users.index') ? 'active' : '' }}" href="{{ route('users.index') }}">
 								<span class="menu-icon">
 									<i class="fa fa-list-ol"></i>
 								</span>
@@ -143,7 +152,8 @@
 				</div> -->
 
 				<!-- TIPOS DE CATEGORIAS -->
-				<div data-kt-menu-trigger="click" class="menu-item menu-accordion">	
+				<div data-kt-menu-trigger="click" 
+					class="menu-item menu-accordion mt-1 {{ request()->routeIs('category-types.create') || request()->routeIs('category-types.index') || request()->routeIs('categories.create') || request()->routeIs('categories.index') ? 'hover show' : '' }}">	
 					<span class="menu-link">
 						<span class="menu-icon">
 							<i class="fa fa-sitemap fs-4"></i>
@@ -153,7 +163,7 @@
 					</span>
 					<div class="menu-sub menu-sub-accordion menu-active-bg mt-1">
 					<!-- TIPOS DE CATEGORIAS -->
-						<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+						<div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ request()->routeIs('category-types.create') || request()->routeIs('category-types.index') ? 'hover show' : '' }}">
 							<span class="menu-link">
 								<span class="menu-icon">
 									<i class="fa fa-sitemap fs-4"></i>
@@ -164,15 +174,15 @@
 
 							<div class="menu-sub menu-sub-accordion menu-active-bg mt-1">
 								<div class="menu-item">
-									<a class="menu-link" href="{{ route('category-types.create') }}">
+									<a class="menu-link {{ request()->routeIs('category-types.create') ? 'active' : '' }}" href="{{ route('category-types.create') }}">
 										<span class="menu-icon">
 											<i class="fa fa-plus-circle"></i>
 										</span>
 										<span class="menu-title">Agregar Nuevo</span>
 									</a>
 								</div>
-								<div class="menu-item">
-									<a class="menu-link" href="{{ route('category-types.index') }}">
+								<div class="menu-item mt-1">
+									<a class="menu-link {{ request()->routeIs('category-types.index') ? 'active' : '' }}" href="{{ route('category-types.index') }}">
 										<span class="menu-icon">
 											<i class="fa fa-list-ol"></i>
 										</span>
@@ -183,7 +193,7 @@
 						</div>
 
 						<!-- CATEGORIAS -->
-						<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+						<div data-kt-menu-trigger="click" class="menu-item menu-accordion mt-1 {{ request()->routeIs('categories.create') || request()->routeIs('categories.index') ? 'hover show' : '' }}">
 							<span class="menu-link">
 								<span class="menu-icon">
 									<i class="fa fa-shapes fs-4"></i>
@@ -194,15 +204,15 @@
 
 							<div class="menu-sub menu-sub-accordion menu-active-bg mt-1">
 								<div class="menu-item">
-									<a class="menu-link" href="{{ route('categories.create') }}">
+									<a class="menu-link {{ request()->routeIs('categories.create') ? 'active' : '' }}" href="{{ route('categories.create') }}">
 										<span class="menu-icon">
 											<i class="fa fa-plus-circle"></i>
 										</span>
 										<span class="menu-title">Agregar Nuevo</span>
 									</a>
 								</div>
-								<div class="menu-item">
-									<a class="menu-link" href="{{ route('categories.index') }}">
+								<div class="menu-item mt-1">
+									<a class="menu-link {{ request()->routeIs('categories.index') ? 'active' : '' }}" href="{{ route('categories.index') }}">
 										<span class="menu-icon">
 											<i class="fa fa-list-ol"></i>
 										</span>
@@ -215,7 +225,7 @@
 				</div>
 
 				<!--CARGOS -->
-				<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+				<div data-kt-menu-trigger="click" class="menu-item menu-accordion mt-1 {{ request()->routeIs('positions.create') || request()->routeIs('positions.index') ? 'hover show' : '' }}">
 					<span class="menu-link">
 						<span class="menu-icon">
 							<i class="fa fa-user-tie fs-4"></i>
@@ -226,15 +236,15 @@
 
 					<div class="menu-sub menu-sub-accordion menu-active-bg mt-1">
 						<div class="menu-item">
-							<a class="menu-link" href="{{ route('positions.create') }}">
+							<a class="menu-link {{ request()->routeIs('positions.create') ? 'active' : '' }}" href="{{ route('positions.create') }}">
 								<span class="menu-icon">
 									<i class="fa fa-plus-circle"></i>
 								</span>
 								<span class="menu-title">Agregar Nuevo</span>
 							</a>
 						</div>
-						<div class="menu-item">
-							<a class="menu-link" href="{{ route('positions.index') }}">
+						<div class="menu-item mt-1">
+							<a class="menu-link {{ request()->routeIs('positions.index') ? 'active' : '' }}" href="{{ route('positions.index') }}">
 								<span class="menu-icon">
 									<i class="fa fa-list-ol"></i>
 								</span>
@@ -245,7 +255,7 @@
 				</div>
 
 				<!--AGENDA -->
-				<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+				<div data-kt-menu-trigger="click" class="menu-item menu-accordion mt-1 {{ request()->routeIs('schedules.create') || request()->routeIs('schedules.index') ? 'hover show' : '' }}">
 					<span class="menu-link">
 						<span class="menu-icon">
 							<i class="fa fa-calendar-alt fs-4"></i>
@@ -256,15 +266,15 @@
 
 					<div class="menu-sub menu-sub-accordion menu-active-bg mt-1">
 						<div class="menu-item">
-							<a class="menu-link" href="{{ route('schedules.create') }}">
+							<a class="menu-link {{ request()->routeIs('schedules.create') ? 'active' : '' }}" href="{{ route('schedules.create') }}">
 								<span class="menu-icon">
 									<i class="fa fa-plus-circle"></i>
 								</span>
 								<span class="menu-title">Agregar Nuevo</span>
 							</a>
 						</div>
-						<div class="menu-item">
-							<a class="menu-link" href="{{ route('schedules.index') }}">
+						<div class="menu-item mt-1">
+							<a class="menu-link {{ request()->routeIs('schedules.index') ? 'active' : '' }}" href="{{ route('schedules.index') }}">
 								<span class="menu-icon">
 									<i class="fa fa-list-ol"></i>
 								</span>
@@ -275,7 +285,7 @@
 				</div>
 
 				<!--CHARLAS -->
-				<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+				<div data-kt-menu-trigger="click" class="menu-item menu-accordion mt-1 {{ request()->routeIs('talks.create') || request()->routeIs('talks.index') ? 'hover show' : '' }}">
 					<span class="menu-link">
 						<span class="menu-icon">
 							<i class="fa fa-podium-star fs-4"></i>
@@ -286,15 +296,15 @@
 
 					<div class="menu-sub menu-sub-accordion menu-active-bg mt-1">
 						<div class="menu-item">
-							<a class="menu-link" href="{{ route('talks.create') }}">
+							<a class="menu-link {{ request()->routeIs('talks.create') ? 'active' : '' }}" href="{{ route('talks.create') }}">
 								<span class="menu-icon">
 									<i class="fa fa-plus-circle"></i>
 								</span>
 								<span class="menu-title">Agregar Nuevo</span>
 							</a>
 						</div>
-						<div class="menu-item">
-							<a class="menu-link" href="{{ route('talks.index') }}">
+						<div class="menu-item mt-1">
+							<a class="menu-link {{ request()->routeIs('talks.index') ? 'active' : '' }}" href="{{ route('talks.index') }}">
 								<span class="menu-icon">
 									<i class="fa fa-list-ol"></i>
 								</span>
@@ -312,7 +322,7 @@
 				</div>
 
 				<div class="menu-item">
-					<a class="menu-link" href="{{ route('map') }}">
+					<a class="menu-link {{ request()->routeIs('map') ? 'active' : '' }}" href="{{ route('map') }}">
                         <span class="menu-icon">
 							<i class="fa fa-map-marked fs-4"></i>
                         </span>
@@ -320,8 +330,8 @@
 					</a>
 				</div>
 
-				<div class="menu-item">
-					<a class="menu-link" href="{{ route('translations') }}">
+				<div class="menu-item mt-1">
+					<a class="menu-link {{ request()->routeIs('translations') ? 'active' : '' }}" href="{{ route('translations') }}">
                         <span class="menu-icon">
 							<i class="fa fa-language fs-4"></i>
                         </span>
@@ -337,7 +347,7 @@
 				</div>
 
 				<!--LUGARES -->
-				<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+				<div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ request()->routeIs('places.create') || request()->routeIs('places.index') ? 'hover show' : '' }}">
 					<span class="menu-link">
 						<span class="menu-icon">
 							<i class="fa fa-map-marker-alt fs-4"></i>
@@ -348,15 +358,15 @@
 
 					<div class="menu-sub menu-sub-accordion menu-active-bg mt-1">
 						<div class="menu-item">
-							<a class="menu-link" href="{{ route('places.create') }}">
+							<a class="menu-link {{ request()->routeIs('places.create') ? 'active' : '' }}" href="{{ route('places.create') }}">
 								<span class="menu-icon">
 									<i class="fa fa-plus-circle"></i>
 								</span>
 								<span class="menu-title">Agregar Nuevo</span>
 							</a>
 						</div>
-						<div class="menu-item">
-							<a class="menu-link" href="{{ route('places.index') }}">
+						<div class="menu-item mt-1">
+							<a class="menu-link {{ request()->routeIs('places.index') ? 'active' : '' }}" href="{{ route('places.index') }}">
 								<span class="menu-icon">
 									<i class="fa fa-list-ol"></i>
 								</span>
@@ -367,7 +377,7 @@
 				</div>
 
 				<!--NOTICIAS -->
-				<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+				<div data-kt-menu-trigger="click" class="menu-item menu-accordion mt-1 {{ request()->routeIs('news.create') || request()->routeIs('news.index') ? 'hover show' : '' }}">
 					<span class="menu-link">
 						<span class="menu-icon">
 							<i class="fa fa-newspaper fs-4"></i>
@@ -378,15 +388,15 @@
 
 					<div class="menu-sub menu-sub-accordion menu-active-bg mt-1">
 						<div class="menu-item">
-							<a class="menu-link" href="{{ route('news.create') }}">
+							<a class="menu-link {{ request()->routeIs('news.create') ? 'active' : '' }}" href="{{ route('news.create') }}">
 								<span class="menu-icon">
 									<i class="fa fa-plus-circle"></i>
 								</span>
 								<span class="menu-title">Agregar Nuevo</span>
 							</a>
 						</div>
-						<div class="menu-item">
-							<a class="menu-link" href="{{ route('news.index') }}">
+						<div class="menu-item mt-1">
+							<a class="menu-link {{ request()->routeIs('news.index') ? 'active' : '' }}" href="{{ route('news.index') }}">
 								<span class="menu-icon">
 									<i class="fa fa-list-ol"></i>
 								</span>
@@ -397,7 +407,7 @@
 				</div>
 
 				<!--PATROCINADORES -->
-				<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+				<div data-kt-menu-trigger="click" class="menu-item menu-accordion mt-1 {{ request()->routeIs('sponsors.create') || request()->routeIs('sponsors.index') ? 'hover show' : '' }}">
 					<span class="menu-link">
 						<span class="menu-icon">
 							<i class="fa fa-handshake fs-4"></i>
@@ -408,15 +418,15 @@
 
 					<div class="menu-sub menu-sub-accordion menu-active-bg mt-1">
 						<div class="menu-item">
-							<a class="menu-link" href="{{ route('sponsors.create') }}">
+							<a class="menu-link {{ request()->routeIs('sponsors.create') ? 'active' : '' }}" href="{{ route('sponsors.create') }}">
 								<span class="menu-icon">
 									<i class="fa fa-plus-circle"></i>
 								</span>
 								<span class="menu-title">Agregar Nuevo</span>
 							</a>
 						</div>
-						<div class="menu-item">
-							<a class="menu-link" href="{{ route('sponsors.index') }}">
+						<div class="menu-item mt-1">
+							<a class="menu-link {{ request()->routeIs('sponsors.index') ? 'active' : '' }}" href="{{ route('sponsors.index') }}">
 								<span class="menu-icon">
 									<i class="fa fa-list-ol"></i>
 								</span>
@@ -427,7 +437,7 @@
 				</div>
 
 				<!--PANELISTAS -->
-				<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+				<div data-kt-menu-trigger="click" class="menu-item menu-accordion mt-1 {{ request()->routeIs('speakers.create') || request()->routeIs('speakers.index') ? 'hover show' : '' }}">
 					<span class="menu-link">
 						<span class="menu-icon">
 							<i class="fa fa-user-chart fs-4"></i>
@@ -438,15 +448,15 @@
 
 					<div class="menu-sub menu-sub-accordion menu-active-bg mt-1">
 						<div class="menu-item">
-							<a class="menu-link" href="{{ route('speakers.create') }}">
+							<a class="menu-link {{ request()->routeIs('speakers.create') ? 'active' : '' }}" href="{{ route('speakers.create') }}">
 								<span class="menu-icon">
 									<i class="fa fa-plus-circle"></i>
 								</span>
 								<span class="menu-title">Agregar Nuevo</span>
 							</a>
 						</div>
-						<div class="menu-item">
-							<a class="menu-link" href="{{ route('speakers.index') }}">
+						<div class="menu-item mt-1">
+							<a class="menu-link {{ request()->routeIs('speakers.index') ? 'active' : '' }}" href="{{ route('speakers.index') }}">
 								<span class="menu-icon">
 									<i class="fa fa-list-ol"></i>
 								</span>

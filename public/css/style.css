@@ -1907,7 +1907,11 @@ html {
   a.tm-button.tm-button-white.tm-button-transparent:hover,
   button.tm-button.tm-button-white.tm-button-transparent:hover {
     background: #ffffff;
-    color: #7FB41E;;
+    color: #7FB41E;
+  }
+
+  .tm-button-transparent:hover .icon-app path {
+    fill: #7FB41E !important;
   }
   
   .tm-button.tm-button-dark,

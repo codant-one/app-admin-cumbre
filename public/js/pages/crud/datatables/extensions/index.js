@@ -27,6 +27,8 @@ $(document).ready(function(){
         url_route = "schedules/delete";
     } else if(currentURL.indexOf('talks') > -1){
         url_route = "talks/delete";
+    } else if(currentURL.indexOf('clients') > -1){
+        url_route = "clients/delete";
     }
     
     $('.deleteAll').click(function(){
