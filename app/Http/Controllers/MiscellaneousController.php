@@ -758,7 +758,7 @@ class MiscellaneousController extends Controller
                     'errors' =>  __('api.schedule_not_found', [], $lang)
                 ], 404);
 
-            $talks = Talk::with(['category', 'favorite', 'notification'])->where('schedule_id', $id)->orderBy('date')->get();
+            $talks = Talk::with(['category'])->where('schedule_id', $id)->orderBy('date')->get();
 
             $groupedTalks = $talks->groupBy(function($talk) {
                 return $talk->date; // Primero agrupamos por fecha
@@ -859,7 +859,7 @@ class MiscellaneousController extends Controller
         try {
             
             $lang = $request->lang;
-            $talk = Talk::with(['speakers.speaker', 'favorite', 'notification'])->find($id);
+            $talk = Talk::with(['speakers.speaker'])->find($id);
 
             if (!$talk)
                 return response()->json([
