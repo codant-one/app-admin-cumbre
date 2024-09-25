@@ -7,11 +7,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
 
 use Carbon\Carbon;
+use File;
+use Validator;
 
 use App\Models\User;
 use App\Models\UserRegisterToken;
+
+use App\Imports\UserImport;
 
 class ClientController extends Controller
 {
@@ -253,52 +258,34 @@ class ClientController extends Controller
 
     public function uploadPost(Request $request)
     {
-        $password = Str::random(8);
-        $request->merge(['password' => $password]);
 
-        $request = $this->prepareRequest($request);
-
-        $user = new User;
-        $user->fill($request->all());
-        $user->save();
-        $user->assignRole('App');
-
-        UserRegisterToken::updateOrCreate(
-            ['user_id' => $user->id],
-            ['token' => Str::random(60)]
+        $validate = Validator::make($request->all(),
+            [
+                'file' => 'required|mimes:xlsx,xls'
+            ],
+            [
+                'file.required' => 'El archivo es obligatorio',
+                'file.mimes' => 'El formato del archivo no es válido'
+            ]
         );
 
-        $email = $user->email;
-        $subject = 'Bienvenido a la VII Cumbre del Petróleo, Gas y Energía';
-
-        $data = [
-            'title' => 'Cuenta creada satisfactoriamente!!!',
-            'user' => $user->name . ' ' . $user->last_name,
-            'email'=> $email,
-            'password' => $password
-        ];
-
-        try {
-            \Mail::send(
-                'emails.auth.client_created'
-                , ['data' => $data]
-                , function ($message) use ($email, $subject) {
-                    $message->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
-                    $message->to($email)->subject($subject);
-            });
-
-            $responseMail = 'Correo electrónico enviado al usuario satisfactoriamente.';
-        } catch (\Exception $e) {
-            $responseMail = 'No se pudo enviar el correo electrónico al usuario';
-
-            Log::info($e);
+        if($validate->fails()){
+            return redirect()->route("clients.upload")->with([
+                'feedback' => [
+                    'type' => 'toastr',
+                    'action' => 'error',
+                    'message' => $validate->errors()->first()
+                ]
+            ]);
         } 
+
+        Excel::import(new UserImport, $request->file('file'));
         
         return redirect()->route('clients.index')->with([
             'feedback' => [
                 'type' => 'toastr',
                 'action' => 'success',
-                'message' => 'Usuario Creado Exitosamente ('.$responseMail.')'
+                'message' => 'Archivo Cargado Exitosamente.'
             ]
         ]);
     }

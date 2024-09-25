@@ -32,27 +32,25 @@ class LandingController extends Controller
     }
 
     public function delete_data(Request $request)
-    {
-              
-                $validated = $request->validate([
-                    'email' => 'required|email',
-                    'password' => 'required',
-                ]);
-                $user = User::where('email', $validated['email'])->first();
+    {         
+        $validated = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+                
+        $user = User::where('email', $validated['email'])->first();
 
-                if ($user && Hash::check($validated['password'], $user->password)) {
-                    
-                    $info = [
-                        'text' => 'Credenciales evaluadas con exito',
-                        'subject' => 'Solicitud de eliminación de datos',
-                        'email' => 'emails.landing_email'
-                    ];    
-                    $responseMail = $this->sendMail($info, $user->id); 
-                    return redirect()->back()->with('success', 'Solicitud enviada con éxito');
-                } else {
-
-                    return redirect()->back()->with('error', 'Las credenciales no son válidas');
-                }
+        if ($user && Hash::check($validated['password'], $user->password)) {
+            $info = [
+                'text' => 'Credenciales evaluadas con exito',
+                'subject' => 'Solicitud de eliminación de datos',
+                'email' => 'emails.landing_email'
+            ];    
+            $responseMail = $this->sendMail($info, $user->id); 
+            return redirect()->back()->with('success', 'Solicitud enviada con éxito');
+        } else {
+            return redirect()->back()->with('error', 'Las credenciales no son válidas');
+        }
     }
 
 
