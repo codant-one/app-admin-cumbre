@@ -15,12 +15,22 @@ use File;
 use Validator;
 use App;
 
+use App\Services\GoogleFirebaseConsole;
+
+use App\Models\User;
 use App\Models\Map;
 use App\Models\Translation;
+use App\Models\Talk;
+use App\Models\Notification;
+use App\Models\NotificationUser;
+use App\Models\NotificationType;
+use App\Models\Schedule;
 
 class ConfigController extends Controller
 {
     
+    protected $googleFirebaseConsole;
+
     public function map()
     {
         $map = Map::first();
@@ -82,6 +92,84 @@ class ConfigController extends Controller
                 'type' => 'toastr',
                 'action' => 'success',
                 'message' => 'Datos actualizados exitosamente'
+            ]
+        ]);
+    }
+
+    public function notifications()
+    {          
+        $user = "{{user}}";
+        $schedules = Schedule::forDropdown();
+        $notification_types = NotificationType::forDropdown();
+
+        return view('admin.config.notifications.index', compact('user', 'schedules', 'notification_types'));
+    }
+
+    public function notificationStore(Request $request)
+    {
+        $type = (int)$request->notification_type_id;
+        $talk_id = (int)$request->talk_id ?? 0;
+
+        $users = User::whereHas('roles', function ($q) {
+            $q->where('name', 'App');
+        })->whereNotNull('fcm_token')->get();
+
+        foreach($users as $user) {
+
+            $full_name = $user->name . ' ' . $user->last_name;
+            $band = false;
+
+            if($type === 2) {//GENERAL
+                $notification = new Notification;
+                $notification->user_id = $user->id;
+                $notification->notification_type_id = 2;
+                $notification->title_es = $request->title_es;
+                $notification->description_es = str_replace('{{user}}', $full_name, $request->description_es);
+                $notification->title_en = $request->title_en;
+                $notification->description_en = str_replace('{{user}}', $full_name, $request->description_en);
+                $notification->date = now();
+                $notification->save();
+
+                $band = true;
+
+            } else {//AGENDA
+
+                $notification_user = NotificationUser::where([
+                    ['user_id', $user->id],
+                    ['talk_id', $talk_id]
+                ])->first();
+
+                if ($notification_user) {
+                    $notification = new Notification;
+                    $notification->user_id = $user->id;
+                    $notification->notification_type_id = 1;
+                    $notification->notification_user_id = $notification_user->id;
+                    $notification->title_es = $request->title_es;
+                    $notification->description_es = str_replace('{{user}}', $full_name, $request->description_es);
+                    $notification->title_en = $request->title_en;
+                    $notification->description_en = str_replace('{{user}}', $full_name, $request->description_en);
+                    $notification->date = now();
+                    $notification->save();
+
+                    $band = true;
+                }
+
+            }
+
+            if($band) {
+                $title = ($user->lang === 'es') ? $request->title_es : $request->title_en;
+                $body = str_replace('{{user}}', $full_name, ($user->lang === 'es') ? $request->description_es : $request->description_en);
+
+                $this->googleFirebaseConsole = new GoogleFirebaseConsole();
+                $this->googleFirebaseConsole->pushNotification($user->fcm_token, $title, $body, $user);
+            }
+        }
+       
+        return redirect()->route('notifications')->with([
+            'feedback' => [
+                'type' => 'toastr',
+                'action' => 'success',
+                'message' => 'Mensaje enviado'
             ]
         ]);
     }

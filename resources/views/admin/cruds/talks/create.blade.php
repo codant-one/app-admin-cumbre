@@ -126,12 +126,11 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label class="required fw-bold fs-6 mb-2">Panelistas</label>
+                        <label class="fw-bold fs-6 mb-2">Panelistas</label>
                         <select class="form-select form-select-solid speakers"
                             multiple="multiple"
                             name="speakers[]"
-                            id="speakers"
-                            required>
+                            id="speakers">
                             <option value="">Seleccione</option>
                             @foreach ($speakers as $key => $speaker)
                                 <option value="{{ $key }}">{{ $speaker }}</option>

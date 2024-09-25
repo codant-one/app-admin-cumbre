@@ -15,15 +15,12 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest; 
 
-use App\Services\GoogleFirebaseConsole;
-
 use App\Models\User;
 use App\Models\UserDetails;
 use App\Models\UserRegisterToken;
 
 class AuthController extends Controller
 {
-    protected $googleFirebaseConsole;
 
     /**
      * Create a new AuthController instance.
@@ -124,14 +121,6 @@ class AuthController extends Controller
                 $user->device_type = $request->device_type;
                 $user->lang = $request->lang;
                 $user->save();
-    
-                // $title = $request->device_type === 'ios' ? 'Notificación iOS' : 'Notificación Android';
-                // $body = "Mensaje para {$user->name}";
-    
-                // $this->googleFirebaseConsole = new GoogleFirebaseConsole();
-
-                // // Envía la notificación al usuario
-                // $data = $this->googleFirebaseConsole->pushNotification($request->fcm_token, $title, $body, $user);
 
                 return response()->json([
                     'success' => true,

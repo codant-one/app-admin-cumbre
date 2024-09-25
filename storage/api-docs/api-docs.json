@@ -1472,6 +1472,12 @@
                             "application/json": {}
                         }
                     },
+                    "400": {
+                        "description": "Some was wrong",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
                     "500": {
                         "description": "an \"unexpected\" error",
                         "content": {
@@ -1520,6 +1526,54 @@
                 "responses": {
                     "200": {
                         "description": "successful operation",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Some was wrong",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "500": {
+                        "description": "an \"unexpected\" error",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/lang": {
+            "get": {
+                "tags": [
+                    "Lang"
+                ],
+                "summary": "Change lang",
+                "description": "Change the language of the logged in user",
+                "operationId": "d56b050cbebe33a6f12e7a41e6454013",
+                "parameters": [
+                    {
+                        "name": "lang",
+                        "in": "query",
+                        "description": "App language (es/en)",
+                        "required": true,
+                        "schema": {
+                            "description": "Lang",
+                            "type": "string",
+                            "format": "text"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Show sitemap",
                         "content": {
                             "application/json": {}
                         }
@@ -1738,6 +1792,10 @@
         {
             "name": "Notifications",
             "description": "Notifications"
+        },
+        {
+            "name": "Lang",
+            "description": "Lang"
         },
         {
             "name": "Users",

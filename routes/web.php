@@ -86,10 +86,15 @@ Route::middleware([
         Route::post('/map', [ConfigController::class, 'mapUpdate'])->name('mapUpdate');
         Route::get('/translations', [ConfigController::class, 'translations'])->name('translations');
         Route::post('/translations', [ConfigController::class, 'translationsUpdate'])->name('translationsUpdate');
+        Route::get('/notifications', [ConfigController::class, 'notifications'])->name('notifications');
+        Route::post('/notifications', [ConfigController::class, 'notificationStore'])->name('notificationStore');
 
         /* CLIENTS */
         Route::get('/clients/upload/users', [ClientController::class, 'upload'])->name('clients.upload');
         Route::post('/clients/uploadPost', [ClientController::class, 'uploadPost'])->name('clients.uploadPost');
+          
+        /* TALKS */
+        Route::get('/talks/schedule/{id}', [TalkController::class, 'talksByScheduleId'])->name('talks.talksByScheduleId');
 
         /* DELETE MULTIPLE ELEMENTS */
         Route::post('/users/delete', [UserController::class, 'deleteUsers'])->name('users.delete');

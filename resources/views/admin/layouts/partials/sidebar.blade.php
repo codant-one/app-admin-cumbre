@@ -321,6 +321,16 @@
 					</div>
 				</div>
 
+				<!--NOTIFICACIONES -->
+				<div class="menu-item mt-1">
+					<a class="menu-link {{ request()->routeIs('notifications') ? 'active' : '' }}" href="{{ route('notifications') }}">
+                        <span class="menu-icon">
+							<i class="fa fa-comment-alt fs-4"></i>
+                        </span>
+                        <span class="menu-title">Notificaciones</span>
+					</a>
+				</div>
+
 				<div class="menu-item">
 					<a class="menu-link {{ request()->routeIs('map') ? 'active' : '' }}" href="{{ route('map') }}">
                         <span class="menu-icon">

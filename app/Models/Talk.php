@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class Talk extends Model
 {
@@ -35,6 +36,15 @@ class Talk extends Model
 
     public function notification() {
         return $this->hasOne(NotificationUser::class, 'talk_id', 'id')->where('user_id', Auth::guard('api')->user()->id);
+    }
+
+    /**** Public methods ****/
+    public static function forDropdown()
+    {
+        return DB::table('talks as t')
+               ->select(['t.id', 't.title_es' ])
+               ->orderBy('title_es')
+               ->get()->pluck('title_es','id');   
     }
 
     /**** Attributes ****/

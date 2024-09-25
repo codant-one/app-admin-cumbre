@@ -138,13 +138,12 @@
                 </div>
 
                 <div class="row mb-6">
-                    <label class="col-lg-4 col-form-label fw-bold fs-6 required">Panelistas</label>
+                    <label class="col-lg-4 col-form-label fw-bold fs-6">Panelistas</label>
                     <div class="col-lg-8 fv-row fv-plugins-icon-container">
                         <select class="form-select form-select-solid speakers"
                             multiple="multiple"
                             name="speakers[]"
-                            id="speakers"
-                            required>
+                            id="speakers">
                             <option value="">Seleccione</option>
                             @foreach ($speakers as $key => $speaker)
                             <option value="{{ $key }}" 

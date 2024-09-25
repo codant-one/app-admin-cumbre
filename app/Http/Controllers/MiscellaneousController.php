@@ -141,7 +141,7 @@ class MiscellaneousController extends Controller
                         return [
                             'id' => $talk->id,
                             'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
-                            'hour' => $talk->hour
+                            'hour' => Carbon::createFromFormat('H:i:s', $talk->hour)->format('h:i A')
                         ];
                     })
                 ];
@@ -759,24 +759,29 @@ class MiscellaneousController extends Controller
                 ], 404);
 
             $talks = Talk::with(['category'])->where('schedule_id', $id)->orderBy('date')->get();
+            $dayCounter = 0;
 
             $groupedTalks = $talks->groupBy(function($talk) {
-                return $talk->date; // Primero agrupamos por fecha
-            })->map(function($talksByDate) use ($lang) {
-                return $talksByDate->groupBy(function($talk) use ($lang) {
-                    // Luego agrupamos por categoría dentro de cada fecha
+                return $talk->date;
+            })->mapWithKeys(function($talksByDate) use (&$dayCounter, $lang) {
+                $dayCounter++;
+                $dayKey = (($lang === 'es') ? 'Día ' : 'Day ' ). $dayCounter;
+
+                $groupedByCategory = $talksByDate->groupBy(function($talk) use ($lang) {
                     return ($lang === 'es') ? $talk->category->name_es : $talk->category->name_en;
                 })->map(function($talksGroup) use ($lang) {
                     return $talksGroup->map(function($talk) use ($lang) {
                         return [
                             'id' => $talk->id,
                             'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
-                            'hour' => $talk->hour,
-                            'is_favorite' => Auth::guard('api')->user() ? ($talk->favorite ? 1 : 0): 0,
-                            'is_notification' => Auth::guard('api')->user() ? ($talk->notification ? 1 : 0): 0
+                            'hour' => Carbon::createFromFormat('H:i:s', $talk->hour)->format('h:i A'),
+                            'is_favorite' => Auth::guard('api')->user() ? ($talk->favorite ? 1 : 0) : 0,
+                            'is_notification' => Auth::guard('api')->user() ? ($talk->notification ? 1 : 0) : 0,
                         ];
                     });
                 });
+
+                 return [$dayKey => $groupedByCategory];
             });
 
             return response()->json([
@@ -869,7 +874,7 @@ class MiscellaneousController extends Controller
             $formattedTalk = [
                 'id' => $talk->id,
                 'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
-                'hour' => $talk->hour,
+                'hour' => Carbon::createFromFormat('H:i:s', $talk->hour)->format('h:i A'),
                 'image' => env('APP_URL') . '/storage/' . $talk->image,
                 'is_favorite' => Auth::guard('api')->user() ? ($talk->favorite ? 1 : 0): 0,
                 'is_notification' => Auth::guard('api')->user() ? ($talk->notification ? 1 : 0): 0,
@@ -968,7 +973,7 @@ class MiscellaneousController extends Controller
                         return [
                             'id' => $talk->id,
                             'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
-                            'hour' => $talk->hour,
+                            'hour' => Carbon::createFromFormat('H:i:s', $talk->hour)->format('h:i A'),
                             'is_favorite' => Auth::guard('api')->user() ? ($talk->favorite ? 1 : 0): 0,
                             'is_notification' => Auth::guard('api')->user() ? ($talk->notification ? 1 : 0): 0,
                         ];
@@ -1082,7 +1087,7 @@ class MiscellaneousController extends Controller
                     return [
                         'id' => $talk->id,
                         'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
-                        'hour' => $talk->hour,
+                        'hour' => Carbon::createFromFormat('H:i:s', $talk->hour)->format('h:i A'),
                         'is_favorite' => Auth::guard('api')->user() ? ($talk->favorite ? 1 : 0): 0,
                         'is_notification' => Auth::guard('api')->user() ? ($talk->notification ? 1 : 0): 0
                     ];
@@ -1715,7 +1720,7 @@ class MiscellaneousController extends Controller
                 return [
                     'id' => $talk->id,
                     'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
-                    'hour' => $talk->hour,
+                    'hour' => Carbon::createFromFormat('H:i:s', $talk->hour)->format('h:i A'),
                     'image' => env('APP_URL') . '/storage/' . $talk->image,
                     'speakers' => $talk->speakers->map(function($speakerWrapper) use ($lang) {
                         $speaker = $speakerWrapper->speaker; // Accedemos al modelo 'speaker'
@@ -1827,7 +1832,7 @@ class MiscellaneousController extends Controller
                 'data' => [
                     'id' => $talk->id,
                     'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
-                    'hour' => $talk->hour,
+                    'hour' => Carbon::createFromFormat('H:i:s', $talk->hour)->format('h:i A'),
                     'is_favorite' => $talk->favorite ? 1 : 0,
                     'is_notification' => $talk->notification ? 1 : 0
                 ]
@@ -1963,6 +1968,11 @@ class MiscellaneousController extends Controller
      *      response=200,
      *      description="Show sitemap",
      *    ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=400,
+     *      description="Some was wrong"
+     *   ),
      *   @OA\Response(
      *      @OA\MediaType(mediaType="application/json"),
      *      response=500,
@@ -2104,10 +2114,75 @@ class MiscellaneousController extends Controller
                 'data' => [
                     'id' => $talk->id,
                     'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
-                    'hour' => $talk->hour,
+                   'hour' => Carbon::createFromFormat('H:i:s', $talk->hour)->format('h:i A'),
                     'is_favorite' => $talk->favorite ? 1 : 0,
                     'is_notification' => $talk->notification ? 1 : 0
                 ]
+            ], 200);
+
+        } catch(\Illuminate\Database\QueryException $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'database_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        } catch(\Exception $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'server_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *   path="/lang",
+     *   summary="Change lang",
+     *   description= "Change the language of the logged in user",
+     *   tags={"Lang"},
+     *   security={{"bearerAuth": {} }},
+     *   @OA\Parameter(
+     *      name="lang",
+     *      in="query",
+     *      description="App language (es/en)",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string",
+     *          format="text",
+     *          description="Lang"
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=200,
+     *      description="Show sitemap",
+     *    ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=400,
+     *      description="Some was wrong"
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=500,
+     *      description="an ""unexpected"" error"
+     *   ),
+     * )
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function lang(LangRequest $request): JsonResponse
+    {
+        try {
+            if (Auth::guard('api')->user()){
+                $user = Auth::guard('api')->user();
+                $user->lang = $request->lang;
+                $user->save();
+            }
+
+            return response()->json([
+                'success' => true
             ], 200);
 
         } catch(\Illuminate\Database\QueryException $ex) {

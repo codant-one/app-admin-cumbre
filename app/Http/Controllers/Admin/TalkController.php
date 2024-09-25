@@ -117,11 +117,13 @@ class TalkController extends Controller
             $talk->save();
         }
 
-        foreach($request->speakers as $speaker) {
-            $talk_speaker = new TalkSpeaker;
-            $talk_speaker->talk_id = $talk->id;
-            $talk_speaker->speaker_id = $speaker;
-            $talk_speaker->save();
+        if ($request->has('speakers') && is_array($request->speakers)) {
+            foreach($request->speakers as $speaker) {
+                $talk_speaker = new TalkSpeaker;
+                $talk_speaker->talk_id = $talk->id;
+                $talk_speaker->speaker_id = $speaker;
+                $talk_speaker->save();
+            }
         }
 
         return redirect()->route('talks.index')->with([
@@ -209,13 +211,15 @@ class TalkController extends Controller
             $talk->update();
         }
 
-        $talk->speakers()->delete();
+        if ($request->has('speakers') && is_array($request->speakers)) {
+            $talk->speakers()->delete();
 
-        foreach($request->speakers as $speaker) {
-            $talk_speaker = new TalkSpeaker;
-            $talk_speaker->talk_id = $talk->id;
-            $talk_speaker->speaker_id = $speaker;
-            $talk_speaker->save();
+            foreach($request->speakers as $speaker) {
+                $talk_speaker = new TalkSpeaker;
+                $talk_speaker->talk_id = $talk->id;
+                $talk_speaker->speaker_id = $speaker;
+                $talk_speaker->save();
+            }
         }
 
         return redirect()->route('talks.index')->with([
@@ -283,6 +287,16 @@ class TalkController extends Controller
             ]);
         }
 
+    }
+
+    public function talksByScheduleId($id)
+    {
+        $talks = Talk::select(['id','title_es'])
+                     ->where('schedule_id', $id)
+                     ->orderBy('title_es')
+                     ->get()->pluck('title_es','id');
+                       
+        return response()->json($talks, 200);
     }
 
     private function prepareRequest(Request $request, $talk)

@@ -69,6 +69,9 @@ Route::middleware('jwt')->group(function () {
     // Notifications
     Route::get('notifications', [MiscellaneousController::class , 'notifications'])->name('notifications');
     Route::post('notifications', [MiscellaneousController::class , 'notification'])->name('notification');
+
+    // Maps
+    Route::get('lang', [MiscellaneousController::class , 'lang'])->name('lang');
 });
 
 //Testing Endpoints
