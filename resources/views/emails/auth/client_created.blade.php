@@ -55,9 +55,7 @@
     <tr>
         <td align="center" style="padding:0;margin:0;padding-bottom:10px;padding-left:40px;padding-right:40px;">
             <span class="es-button-border" style="border-style:solid;border-color:#2CB543;background:#E6641C;border-width:0px 0px 2px 0px;border-radius:32px;width:auto;border-bottom-width:0px">
-                <a href="#" class="es-button" target="_blank" style="mso-style-priority:100 !important;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#FFFFFF;font-size:16px;padding:10px 20px 10px 20px;background:#E6641C;border-radius:32px;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-weight:normal;font-style:normal;line-height:19px;width:auto;text-align:center;mso-padding-alt:0;mso-border-alt:10px solid #0a1b33;    display: flex;
-    justify-content: center;
-    align-items: center;margin:auto;">
+                <a href="#" class="es-button" target="_blank" style="mso-style-priority:100 !important;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#FFFFFF;font-size:16px;padding:10px 20px 10px 20px;background:#E6641C;border-radius:32px;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-weight:normal;font-style:normal;line-height:19px;width:auto;text-align:center;mso-padding-alt:0;mso-border-alt:10px solid #0a1b33;display:block;margin:auto;">
                     <img src="{{ url('/images/google-play.png') }}" width="24" style="margin-right:5px">
                     <span>Google Play</span>
                 </a>

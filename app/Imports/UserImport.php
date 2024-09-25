@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
+use App\Jobs\SendUserCreatedEmail;
+
 use App\Models\User;
 use App\Models\UserRegisterToken;
 
@@ -34,28 +36,8 @@ class UserImport implements ToModel
             ['token' => Str::random(60)]
         );
 
-        $email = $user->email;
-        $subject = 'Bienvenido a la VII Cumbre del Petróleo, Gas y Energía';
-
-        $data = [
-            'title' => 'Cuenta creada satisfactoriamente!!!',
-            'user' => $user->name . ' ' . $user->last_name,
-            'email'=> $email,
-            'password' => $password
-        ];
-
-        try {
-            \Mail::send(
-                'emails.auth.client_created'
-                , ['data' => $data]
-                , function ($message) use ($email, $subject) {
-                    $message->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
-                    $message->to($email)->subject($subject);
-            });
-
-        } catch (\Exception $e) {
-            Log::info($e);
-        } 
+        // Enviar el correo en segundo plano usando colas
+        SendUserCreatedEmail::dispatch($user, $password)->delay(now()->addSeconds(30));
 
         return $user;
     }
