@@ -88,8 +88,8 @@ Route::middleware([
         Route::post('/translations', [ConfigController::class, 'translationsUpdate'])->name('translationsUpdate');
 
         /* CLIENTS */
-        Route::get('/clients/upload', [ClientController::class, 'upload'])->name('upload');
-        Route::post('/clients/uploadPost', [ClientController::class, 'uploadPost'])->name('uploadPost');
+        Route::get('/clients/upload/users', [ClientController::class, 'upload'])->name('clients.upload');
+        Route::post('/clients/uploadPost', [ClientController::class, 'uploadPost'])->name('clients.uploadPost');
 
         /* DELETE MULTIPLE ELEMENTS */
         Route::post('/users/delete', [UserController::class, 'deleteUsers'])->name('users.delete');

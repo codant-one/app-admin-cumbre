@@ -248,7 +248,6 @@ class ClientController extends Controller
 
     public function upload(Request $request)
     {
-        dd('aa');
         return view('admin.cruds.clients.upload');
     }
 
