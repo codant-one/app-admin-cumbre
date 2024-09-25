@@ -11,6 +11,7 @@ use App\Jobs\SendUserCreatedEmail;
 
 use App\Models\User;
 use App\Models\UserRegisterToken;
+use App\Models\UserCode;
 
 class UserImport implements ToModel
 {
@@ -35,6 +36,11 @@ class UserImport implements ToModel
             ['user_id' => $user->id],
             ['token' => Str::random(60)]
         );
+
+        $userCode = new UserCode;
+        $userCode->user_id = $user->id;
+        $userCode->code = $password;
+        $userCode->save();
 
         // Enviar el correo en segundo plano usando colas
         SendUserCreatedEmail::dispatch($user, $password)->delay(now()->addSeconds(30));

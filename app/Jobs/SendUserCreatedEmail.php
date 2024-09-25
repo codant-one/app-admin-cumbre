@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -10,6 +9,9 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
+
+use App\Models\User;
+use App\Models\UserCode;
 
 class SendUserCreatedEmail implements ShouldQueue
 {
@@ -42,7 +44,7 @@ class SendUserCreatedEmail implements ShouldQueue
         $data = [
             'title' => 'Cuenta creada satisfactoriamente!!!',
             'user' => $this->user->name . ' ' . $this->user->last_name,
-            'email'=> $email,
+            'email' => $email,
             'password' => $this->password
         ];
 
@@ -51,9 +53,11 @@ class SendUserCreatedEmail implements ShouldQueue
                 $message->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
                 $message->to($email)->subject($subject);
             });
-            Log::info($this->user->id.') Correo enviado.');
+
+            UserCode::where('user_id', $this->user->id)->update(['send' => 1]);
+            Log::info($this->user->id . ') Correo enviado.');
         } catch (\Exception $e) {
-            Log::info($this->user->id.') Error: '.$e);
+            Log::error($this->user->id . ') Error: ' . $e->getMessage());
         }
     }
 }
