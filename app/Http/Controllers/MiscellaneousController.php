@@ -768,14 +768,12 @@ class MiscellaneousController extends Controller
                     return ($lang === 'es') ? $talk->category->name_es : $talk->category->name_en;
                 })->map(function($talksGroup) use ($lang) {
                     return $talksGroup->map(function($talk) use ($lang) {
-                        $favorite = $talk->favorite;
-                        $notification = $talk->notification;
                         return [
                             'id' => $talk->id,
                             'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
                             'hour' => $talk->hour,
-                            'is_favorite' => Auth::guard('api')->user() ? ($favorite ? 1 : 0): 0,
-                            'is_notification' => Auth::guard('api')->user() ? ($notification ? 1 : 0): 0
+                            'is_favorite' => Auth::guard('api')->user() ? ($talk->favorite ? 1 : 0): 0,
+                            'is_notification' => Auth::guard('api')->user() ? ($talk->notification ? 1 : 0): 0
                         ];
                     });
                 });

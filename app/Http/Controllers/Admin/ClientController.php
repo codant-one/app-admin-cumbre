@@ -4,10 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+
+use Carbon\Carbon;
 
 use App\Models\User;
+use App\Models\UserRegisterToken;
 
 class ClientController extends Controller
 {
@@ -70,6 +74,9 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
+        $password = Str::random(8);
+        $request->merge(['password' => $password]);
+
         $request = $this->prepareRequest($request);
 
         $user = new User;
@@ -77,11 +84,42 @@ class ClientController extends Controller
         $user->save();
         $user->assignRole('App');
 
-        return redirect()->route('users.index')->with([
+        UserRegisterToken::updateOrCreate(
+            ['user_id' => $user->id],
+            ['token' => Str::random(60)]
+        );
+
+        $email = $user->email;
+        $subject = 'Bienvenido a la VII Cumbre del Petróleo, Gas y Energía';
+
+        $data = [
+            'title' => 'Cuenta creada satisfactoriamente!!!',
+            'user' => $user->name . ' ' . $user->last_name,
+            'email'=> $email,
+            'password' => $password
+        ];
+
+        try {
+            \Mail::send(
+                'emails.auth.client_created'
+                , ['data' => $data]
+                , function ($message) use ($email, $subject) {
+                    $message->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
+                    $message->to($email)->subject($subject);
+            });
+
+            $responseMail = 'Correo electrónico enviado al usuario satisfactoriamente.';
+        } catch (\Exception $e) {
+            $responseMail = 'No se pudo enviar el correo electrónico al usuario';
+
+            Log::info($e);
+        } 
+        
+        return redirect()->route('clients.index')->with([
             'feedback' => [
                 'type' => 'toastr',
                 'action' => 'success',
-                'message' => 'Usuario Creado Exitosamente'
+                'message' => 'Usuario Creado Exitosamente ('.$responseMail.')'
             ]
         ]);
     }
@@ -108,7 +146,7 @@ class ClientController extends Controller
         $user = User::find($id);
         
         if (!$user)
-            return redirect()->route('users.index')->with([
+            return redirect()->route('clients.index')->with([
                 'feedback' => [
                     'type' => 'toastr',
                     'action' => 'error',
@@ -116,7 +154,7 @@ class ClientController extends Controller
                 ]
             ]);
 
-        return view('admin.cruds.users.edit', compact('user'));
+        return view('admin.cruds.clients.edit', compact('user'));
     }
 
     /**
@@ -131,7 +169,7 @@ class ClientController extends Controller
         $user = User::find($id);
 
         if (!$user)
-            return redirect()->route('users.index')->with([
+            return redirect()->route('clients.index')->with([
                 'feedback' => [
                     'type' => 'toastr',
                     'action' => 'error',
@@ -142,7 +180,7 @@ class ClientController extends Controller
         $user->fill($request->all());
         $user->update();
 
-        return redirect()->route('users.index')->with([
+        return redirect()->route('clients.index')->with([
             'feedback' => [
                 'type' => 'toastr',
                 'action' => 'success',
@@ -162,7 +200,7 @@ class ClientController extends Controller
         $user = User::find($id);
         
         if (!$user)
-            return redirect()->route('users.index')->with([
+            return redirect()->route('clients.index')->with([
                 'feedback' => [
                     'type' => 'toastr',
                     'action' => 'error',
@@ -172,7 +210,7 @@ class ClientController extends Controller
 
         $user->delete();
 
-        return redirect()->route('users.index')->with([
+        return redirect()->route('clients.index')->with([
             'feedback' => [
                 'type' => 'toastr',
                 'action' => 'warning',
@@ -181,7 +219,7 @@ class ClientController extends Controller
         ]);
     }
 
-    public function deleteUsers(Request $request)
+    public function deleteClients(Request $request)
     {
         try{
             $users = User::whereIn('id', $request->ids)->get();
@@ -206,6 +244,64 @@ class ClientController extends Controller
                 ]
             ]);
         }
+    }
+
+    public function upload(Request $request)
+    {
+        dd('aa');
+        return view('admin.cruds.clients.upload');
+    }
+
+    public function uploadPost(Request $request)
+    {
+        $password = Str::random(8);
+        $request->merge(['password' => $password]);
+
+        $request = $this->prepareRequest($request);
+
+        $user = new User;
+        $user->fill($request->all());
+        $user->save();
+        $user->assignRole('App');
+
+        UserRegisterToken::updateOrCreate(
+            ['user_id' => $user->id],
+            ['token' => Str::random(60)]
+        );
+
+        $email = $user->email;
+        $subject = 'Bienvenido a la VII Cumbre del Petróleo, Gas y Energía';
+
+        $data = [
+            'title' => 'Cuenta creada satisfactoriamente!!!',
+            'user' => $user->name . ' ' . $user->last_name,
+            'email'=> $email,
+            'password' => $password
+        ];
+
+        try {
+            \Mail::send(
+                'emails.auth.client_created'
+                , ['data' => $data]
+                , function ($message) use ($email, $subject) {
+                    $message->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
+                    $message->to($email)->subject($subject);
+            });
+
+            $responseMail = 'Correo electrónico enviado al usuario satisfactoriamente.';
+        } catch (\Exception $e) {
+            $responseMail = 'No se pudo enviar el correo electrónico al usuario';
+
+            Log::info($e);
+        } 
+        
+        return redirect()->route('clients.index')->with([
+            'feedback' => [
+                'type' => 'toastr',
+                'action' => 'success',
+                'message' => 'Usuario Creado Exitosamente ('.$responseMail.')'
+            ]
+        ]);
     }
 
     private function prepareRequest(Request $request)

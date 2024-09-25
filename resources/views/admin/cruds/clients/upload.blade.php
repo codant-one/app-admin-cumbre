@@ -3,7 +3,7 @@
     'breadcrumbs' => [
         route('dashboard.index') => 'Inicio',
         route('clients.index') => 'Clientes',
-        route('clients.create') => 'Agregar Nuevo'
+        route('clients.upload') => 'Cargar Clientes'
     ]
 ])
 

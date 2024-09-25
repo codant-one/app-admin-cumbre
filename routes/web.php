@@ -87,6 +87,10 @@ Route::middleware([
         Route::get('/translations', [ConfigController::class, 'translations'])->name('translations');
         Route::post('/translations', [ConfigController::class, 'translationsUpdate'])->name('translationsUpdate');
 
+        /* CLIENTS */
+        Route::get('/clients/upload', [ClientController::class, 'upload'])->name('upload');
+        Route::post('/clients/uploadPost', [ClientController::class, 'uploadPost'])->name('uploadPost');
+
         /* DELETE MULTIPLE ELEMENTS */
         Route::post('/users/delete', [UserController::class, 'deleteUsers'])->name('users.delete');
         Route::post('/roles/delete', [RolController::class, 'deleteRoles'])->name('roles.delete');

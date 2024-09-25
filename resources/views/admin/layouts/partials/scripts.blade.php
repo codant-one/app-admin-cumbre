@@ -95,8 +95,13 @@
           let route = ''
             route = window.location.pathname + '/create'
 
-          if($(location).attr("href").indexOf('dashboard') == -1)
-            $('#kt_datatable_example_1_wrapper > div.toolbar').html("<a href='"+route+"' class='btn btn-info addNewItem'><span><i class='fa fa-plus-circle'></i></span>Agregar Nuevo</a>");
+          if($(location).attr("href").indexOf('dashboard') == -1 && $(location).attr("href").indexOf('clients') == -1)
+            $('#kt_datatable_example_1_wrapper > div.toolbar').html("<a href='"+route+"' class='btn btn-info'><span><i class='fa fa-plus-circle'></i></span>Agregar Nuevo</a>");
+          if($(location).attr("href").indexOf('dashboard') == -1 && $(location).attr("href").indexOf('clients') > -1)
+            $('#kt_datatable_example_1_wrapper > div.toolbar').html(
+              "<a href='"+window.location.pathname + '/upload'+"' class='btn btn-info mr-2'><span><i class='fa fa-upload'></i></span>Cargar Excel</a>" +
+              "<a href='"+route+"' class='btn btn-info'><span><i class='fa fa-plus-circle'></i></span>Agregar Nuevo</a>"
+            );
       }
     } );
 
