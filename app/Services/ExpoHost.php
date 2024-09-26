@@ -31,7 +31,7 @@ class ExpoHost
             $client = new \GuzzleHttp\Client();
 
             $payload = [
-                'to' => [$fcmToken],
+                'to' => $fcmToken,
                 'title' => $title, 
                 'body' => $body 
 

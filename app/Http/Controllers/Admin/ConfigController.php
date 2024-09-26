@@ -162,7 +162,7 @@ class ConfigController extends Controller
                 $body = str_replace('{{user}}', $full_name, ($user->lang === 'es') ? $request->description_es : $request->description_en);
 
                 $this->expoHost = new ExpoHost();
-                $this->expoHost->pushNotification($user->fcm_token, $title, $body, $user);
+                $this->expoHost->pushNotification([$user->fcm_token], $title, $body, $user);
             }
         }
        
@@ -182,9 +182,7 @@ class ConfigController extends Controller
 
     public function publicNotificationsStore(Request $request)
     {   
-        $tokens = Token::pluck('token')->map(function($token) {
-            return "'".$token."'";
-        })->implode(',');
+        $tokens = Token::select('token')->get()->pluck('token');
    
         $this->expoHost = new ExpoHost();
         $this->expoHost->pushNotification($tokens, $request->title, $request->body);
