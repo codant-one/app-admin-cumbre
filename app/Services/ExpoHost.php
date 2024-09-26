@@ -45,7 +45,6 @@ class ExpoHost
             $response = $client->post($this->url, $options);
             $responseJson = json_decode($response->getBody(), true);
 
-            Log::info('$response '. $response);
             Log::info($responseJson);
             return [
                 'data' => $responseJson,
