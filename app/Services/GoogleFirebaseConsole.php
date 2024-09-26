@@ -64,7 +64,7 @@ class GoogleFirebaseConsole
             ];
 
             Log::info('url '. $this->url);
-            Log::info('$options '. $options);
+            Log::info('$options '. json_encode($options));
 
             $response = $client->post($this->url, $options);
             $responseJson = json_decode($response->getBody(), true);
