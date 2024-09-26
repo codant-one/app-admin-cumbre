@@ -77,6 +77,7 @@ class GoogleFirebaseConsole
             ];
 
         } catch (RequestException $e) {
+            Log::info('error '. $e);
             if ($e->hasResponse()) {
                 $errorResponse = json_decode($e->getResponse()->getBody(), true);
                 $response = [
