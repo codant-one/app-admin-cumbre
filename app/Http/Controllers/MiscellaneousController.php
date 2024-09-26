@@ -12,6 +12,7 @@ use App\Http\Requests\LangRequest;
 use App\Http\Requests\QuestionRequest;
 use App\Http\Requests\ReviewRequest;
 use App\Http\Requests\FavoriteRequest;
+use App\Http\Requests\TokenRequest;
 
 use App\Models\Sponsor;
 use App\Models\Place;
@@ -26,6 +27,7 @@ use App\Models\Translation;
 use App\Models\Map;
 use App\Models\Notification;
 use App\Models\NotificationUser;
+use App\Models\Token;
 
 use Carbon\Carbon;
 
@@ -2180,6 +2182,73 @@ class MiscellaneousController extends Controller
                 $user->lang = $request->lang;
                 $user->save();
             }
+
+            return response()->json([
+                'success' => true
+            ], 200);
+
+        } catch(\Illuminate\Database\QueryException $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'database_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        } catch(\Exception $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => 'server_error',
+                'exception' => $ex->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * @OA\Post(
+     *   path="/tokens",
+     *   summary="Add token",
+     *   description= "Create or update token apps",
+     *   tags={"Tokens"},
+     *    @OA\RequestBody(
+     *      @OA\MediaType(
+     *          mediaType="application/json",
+     *          @OA\Schema(
+     *              required={"fcm_token"},
+     *              @OA\Property(
+     *                  property="fcm_token",
+     *                  type="string",
+     *                  format= "text",
+     *                  description="Token ExpoHost"
+     *              )
+     *          )
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=200,
+     *      description="Show sitemap",
+     *    ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=400,
+     *      description="Some was wrong"
+     *   ),
+     *   @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=500,
+     *      description="an ""unexpected"" error"
+     *   ),
+     * )
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function tokens(TokenRequest $request): JsonResponse
+    {
+        try {
+
+            Token::updateOrCreate(
+                [ 'token' => $request->fcm_token ],
+                [ 'token' => $request->fcm_token ]
+            );
 
             return response()->json([
                 'success' => true

@@ -18,6 +18,7 @@ use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use App\Models\UserDetails;
 use App\Models\UserRegisterToken;
+use App\Models\Token;
 
 class AuthController extends Controller
 {
@@ -121,6 +122,11 @@ class AuthController extends Controller
                 $user->device_type = $request->device_type;
                 $user->lang = $request->lang;
                 $user->save();
+
+                Token::updateOrCreate(
+                    [ 'token' => $request->fcm_token ],
+                    [ 'token' => $request->fcm_token ]
+                );
 
                 return response()->json([
                     'success' => true,

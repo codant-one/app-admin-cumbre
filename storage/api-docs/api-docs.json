@@ -1598,6 +1598,55 @@
                 ]
             }
         },
+        "/tokens": {
+            "post": {
+                "tags": [
+                    "Tokens"
+                ],
+                "summary": "Add token",
+                "description": "Create or update token apps",
+                "operationId": "2859cb10cd5bee9b143c8acd51eb030a",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "fcm_token"
+                                ],
+                                "properties": {
+                                    "fcm_token": {
+                                        "description": "Token ExpoHost",
+                                        "type": "string",
+                                        "format": "text"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Show sitemap",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Some was wrong",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "500": {
+                        "description": "an \"unexpected\" error",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
         "/auth/profile/user": {
             "post": {
                 "tags": [
@@ -1796,6 +1845,10 @@
         {
             "name": "Lang",
             "description": "Lang"
+        },
+        {
+            "name": "Tokens",
+            "description": "Tokens"
         },
         {
             "name": "Users",
