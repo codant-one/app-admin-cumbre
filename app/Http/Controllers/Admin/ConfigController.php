@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Log;
 
 use Carbon\Carbon;
 
@@ -157,14 +156,12 @@ class ConfigController extends Controller
 
             }
 
-            Log::info('antes');
             if($band) {
                 $title = ($user->lang === 'es') ? $request->title_es : $request->title_en;
                 $body = str_replace('{{user}}', $full_name, ($user->lang === 'es') ? $request->description_es : $request->description_en);
 
                 $this->googleFirebaseConsole = new GoogleFirebaseConsole();
                 $this->googleFirebaseConsole->pushNotification($user->fcm_token, $title, $body, $user);
-                Log::info($body);
             }
         }
        

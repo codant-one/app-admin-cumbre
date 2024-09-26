@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Log;
+
 use Google\Client;
 
 use GuzzleHttp\Exception\RequestException;
@@ -64,6 +66,7 @@ class GoogleFirebaseConsole
             $response = $client->post($this->url, $options);
             $responseJson = json_decode($response->getBody(), true);
 
+            Log::info($responseJson);
             return [
                 'data' => $responseJson,
                 'success' => true
