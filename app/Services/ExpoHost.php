@@ -20,7 +20,7 @@ class ExpoHost
         $this->client = new Client();
     }
 
-    function pushNotification($fcmToken, $title, $body, $user) {
+    function pushNotification($fcmToken, $title, $body) {
         
         try {
 

@@ -25,6 +25,7 @@ use App\Models\Notification;
 use App\Models\NotificationUser;
 use App\Models\NotificationType;
 use App\Models\Schedule;
+use App\Models\Token;
 
 class ConfigController extends Controller
 {
@@ -166,6 +167,29 @@ class ConfigController extends Controller
         }
        
         return redirect()->route('notifications')->with([
+            'feedback' => [
+                'type' => 'toastr',
+                'action' => 'success',
+                'message' => 'Mensaje enviado'
+            ]
+        ]);
+    }
+
+    public function publicNotifications()
+    {          
+        return view('admin.config.publicNotifications.index');
+    }
+
+    public function publicNotificationsStore(Request $request)
+    {   
+        $tokens = Token::pluck('token')->map(function($token) {
+            return $token;
+        })->implode(', ');
+   
+        $this->expoHost = new ExpoHost();
+        $this->expoHost->pushNotification($tokens, $request->title, $request->body);
+               
+        return redirect()->route('publicNotifications')->with([
             'feedback' => [
                 'type' => 'toastr',
                 'action' => 'success',

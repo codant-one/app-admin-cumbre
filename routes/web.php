@@ -88,6 +88,8 @@ Route::middleware([
         Route::post('/translations', [ConfigController::class, 'translationsUpdate'])->name('translationsUpdate');
         Route::get('/notifications', [ConfigController::class, 'notifications'])->name('notifications');
         Route::post('/notifications', [ConfigController::class, 'notificationStore'])->name('notificationStore');
+        Route::get('/publicNotifications', [ConfigController::class, 'publicNotifications'])->name('publicNotifications');
+        Route::post('/publicNotifications', [ConfigController::class, 'publicNotificationsStore'])->name('publicNotificationsStore');
 
         /* CLIENTS */
         Route::get('/clients/upload/users', [ClientController::class, 'upload'])->name('clients.upload');
