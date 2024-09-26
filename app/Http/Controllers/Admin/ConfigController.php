@@ -15,7 +15,7 @@ use File;
 use Validator;
 use App;
 
-use App\Services\GoogleFirebaseConsole;
+use App\Services\ExpoHost;
 
 use App\Models\User;
 use App\Models\Map;
@@ -29,7 +29,7 @@ use App\Models\Schedule;
 class ConfigController extends Controller
 {
     
-    protected $googleFirebaseConsole;
+    protected $expoHost;
 
     public function map()
     {
@@ -160,8 +160,8 @@ class ConfigController extends Controller
                 $title = ($user->lang === 'es') ? $request->title_es : $request->title_en;
                 $body = str_replace('{{user}}', $full_name, ($user->lang === 'es') ? $request->description_es : $request->description_en);
 
-                $this->googleFirebaseConsole = new GoogleFirebaseConsole();
-                $this->googleFirebaseConsole->pushNotification($user->fcm_token, $title, $body, $user);
+                $this->expoHost = new ExpoHost();
+                $this->expoHost->pushNotification($user->fcm_token, $title, $body, $user);
             }
         }
        
