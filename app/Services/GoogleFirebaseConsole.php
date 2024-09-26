@@ -63,13 +63,13 @@ class GoogleFirebaseConsole
                 'json' => $payload,
             ];
 
-            Log::info('url', $this->url);
-            Log::info('$options', $options);
+            Log::info('url '. $this->url);
+            Log::info('$options '. $options);
 
             $response = $client->post($this->url, $options);
             $responseJson = json_decode($response->getBody(), true);
 
-            Log::info('$response', $response);
+            Log::info('$response '. $response);
             Log::info($responseJson);
             return [
                 'data' => $responseJson,
