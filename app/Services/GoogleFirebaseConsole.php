@@ -17,7 +17,6 @@ class GoogleFirebaseConsole
 
     public function __construct()
     {
-        Log::info('constructor');
         $this->url = 'https://fcm.googleapis.com/v1/projects/'.env('GOOGLE_FIREBASE_PROJECT_ID').'/messages:send';
         
         $this->client = new Client();
@@ -31,8 +30,6 @@ class GoogleFirebaseConsole
         } else {
             $this->accessToken = $token['access_token'];
         }
-
-        Log::info($token);
 
     }
 
@@ -66,9 +63,13 @@ class GoogleFirebaseConsole
                 'json' => $payload,
             ];
 
+            Log::info('url', $this->url);
+            Log::info('$options', $options);
+
             $response = $client->post($this->url, $options);
             $responseJson = json_decode($response->getBody(), true);
 
+            Log::info('$response', $response);
             Log::info($responseJson);
             return [
                 'data' => $responseJson,
