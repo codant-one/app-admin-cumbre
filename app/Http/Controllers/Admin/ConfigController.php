@@ -183,7 +183,7 @@ class ConfigController extends Controller
     public function publicNotificationsStore(Request $request)
     {   
         $tokens = Token::pluck('token')->map(function($token) {
-            return "'".$token.".";
+            return "'".$token."'";
         })->implode(',');
    
         $this->expoHost = new ExpoHost();
