@@ -9,7 +9,7 @@ use Google\Client;
 use GuzzleHttp\Exception\RequestException;
 use Carbon\Carbon;
 
-class GoogleFirebaseConsole
+class ExpoHost
 {
     protected $client;
     protected $url;
