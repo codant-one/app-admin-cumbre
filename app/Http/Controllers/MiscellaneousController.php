@@ -228,7 +228,7 @@ class MiscellaneousController extends Controller
         try {
             
             $lang = $request->lang;
-            $sponsors = Sponsor::with(['category'])->get();
+            $sponsors = Sponsor::with(['category'])->orderByRaw('order_id IS NULL, order_id ASC')->get();
 
             $groupedSponsors = $sponsors->groupBy(function($sponsor) use ($lang) {
                 $response = ($lang === 'es') ? $sponsor->category->name_es : $sponsor->category->name_en;

@@ -29,7 +29,7 @@ class SponsorController extends Controller
     {
         if ($request->ajax()) {
 
-            $query = Sponsor::with(['category']);
+            $query = Sponsor::with(['category'])->orderByRaw('order_id IS NULL, order_id ASC');
             
             foreach ($request->input('order') as $order) {
                 $query->orderBy($order['column_name'], $order['dir']);

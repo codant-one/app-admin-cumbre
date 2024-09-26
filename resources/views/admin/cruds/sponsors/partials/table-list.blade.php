@@ -13,6 +13,7 @@
                             <th class="w-60px">ID</th>
                             <th>Logo</th>
                             <th>Categoría</th>
+                            <th>Orden</th>
                             <th>Enlace</th>
                             <th class="text-end min-w-100px">Acciones</th>
                         </tr>
@@ -29,6 +30,7 @@
                             <th>
                                 {!! Form::select('categories', $categories, null, ['class' => 'form-control categories', 'placeholder' => 'CATEGORÍAS']); !!}
                             </th>
+                            <th></th>
                             <th>
                                 <input type="text" min="1" class="form-control d-block" placeholder="ENLACE">
                             </th>

@@ -30,6 +30,7 @@
             { data: 'id' }, //Return ID in the ROW
             { data: 'logo' },
             { data: 'category.name_es' },
+            { data: 'order_id' },
             { data: 'link' },
             { data: 'actions', orderable: false }
         ];
