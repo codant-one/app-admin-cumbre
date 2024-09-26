@@ -184,7 +184,7 @@ class ConfigController extends Controller
     {   
         $tokens = Token::pluck('token')->map(function($token) {
             return $token;
-        })->implode(', ');
+        })->implode(',');
    
         $this->expoHost = new ExpoHost();
         $this->expoHost->pushNotification($tokens, $request->title, $request->body);

@@ -23,7 +23,7 @@ class ExpoHost
     function pushNotification($fcmToken, $title, $body) {
         
         try {
-
+            Log::info($fcmToken);
             $headers = [
                 'Content-Type' => 'application/json',
             ];
