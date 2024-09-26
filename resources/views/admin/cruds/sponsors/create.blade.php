@@ -41,7 +41,16 @@
                     </div>
                 </div>
                 <div class="row mb-7">
-                    <div class="col-md-12">
+                    <div class="col-md-6">
+                        <label class="required fw-bold fs-6 mb-2">Orden</label>
+                            {!! Form::number('order_id', old('order_id'),
+                                ['required',
+                                'id' => 'order_id',
+                                'class' => 'form-control form-control-solid mb-3 mb-lg-0',
+                                'placeholder' => 'Orden'])
+                            !!}
+                    </div>
+                    <div class="col-md-6">
                         <div class="form-check form-switch form-check-custom form-check-solid align-items-start">
                             <label class="fw-bold fs-6 form-check-label mt-2 me-16 ms-0 required" for="shipping_submit">Logo</label>  
                             @include('commons.image-field', [
