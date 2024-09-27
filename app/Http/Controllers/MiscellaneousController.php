@@ -33,6 +33,37 @@ use Carbon\Carbon;
 
 class MiscellaneousController extends Controller
 {
+    protected $monthNames = [
+        'en' => [
+            '01' => 'Jan',
+            '02' => 'Feb',
+            '03' => 'Mar',
+            '04' => 'Apr',
+            '05' => 'May',
+            '06' => 'Jun',
+            '07' => 'Jul',
+            '08' => 'Aug',
+            '09' => 'Sep',
+            '10' => 'Oct',
+            '11' => 'Nov',
+            '12' => 'Dec',
+        ],
+        'es' => [
+            '01' => 'Ene',
+            '02' => 'Feb',
+            '03' => 'Mar',
+            '04' => 'Abr',
+            '05' => 'May',
+            '06' => 'Jun',
+            '07' => 'Jul',
+            '08' => 'Ago',
+            '09' => 'Sep',
+            '10' => 'Oct',
+            '11' => 'Nov',
+            '12' => 'Dic',
+        ],
+    ];
+
     /**
      * @OA\Get(
      *   path="/home",
@@ -99,14 +130,22 @@ class MiscellaneousController extends Controller
             $news = News::where('is_popular', 1)->get();
 
             $groupedNews = $news->map(function($new) use ($lang) {
+                
+                $date = Carbon::parse($new->date);
+                $day = $date->format('d');
+                $month = $this->monthNames[$lang][$date->format('m')];
+                $year = $date->format('Y');
+
+                $formattedDate = "{$day} {$month} {$year}";
+
                 return [
                     'id' => $new->id,
                     'title' => ($lang === 'es') ? $new->title_es : $new->title_en,
                     'content' => ($lang === 'es') ? $new->content_es : $new->content_en,
                     'category' => ($lang === 'es') ? $new->category->name_es : $new->category->name_en,
-                    'date' => $new->date,
+                    'date' => $formattedDate,
                     'image' => env('APP_URL').'/storage/'.$new->image,
-                    'label' => $new->date,
+                    'label' =>$formattedDate,
                     'type' => 'new'
                 ];
             });
@@ -152,12 +191,19 @@ class MiscellaneousController extends Controller
             $news = News::orderBy('date', 'desc')->limit(3)->get();
 
             $groupedNews = $news->map(function($new) use ($lang) {
+                $date = Carbon::parse($new->date);
+                $day = $date->format('d');
+                $month = $this->monthNames[$lang][$date->format('m')];
+                $year = $date->format('Y');
+
+                $formattedDate = "{$day} {$month} {$year}";
+
                 return [
                     'id' => $new->id,
                     'title' => ($lang === 'es') ? $new->title_es : $new->title_en,
                     'content' => ($lang === 'es') ? $new->content_es : $new->content_en,
                     'category' => ($lang === 'es') ? $new->category->name_es : $new->category->name_en,
-                    'date' => $new->date,
+                    'date' => $formattedDate,
                     'image' => env('APP_URL').'/storage/'.$new->image
                 ];
             });
@@ -497,12 +543,19 @@ class MiscellaneousController extends Controller
                 return $response; 
             })->map(function($newsGroup) use ($lang) {
                 return $newsGroup->map(function($new) use ($lang) {
+                    $date = Carbon::parse($new->date);
+                    $day = $date->format('d');
+                    $month = $this->monthNames[$lang][$date->format('m')];
+                    $year = $date->format('Y');
+    
+                    $formattedDate = "{$day} {$month} {$year}";
+
                     return [
                         'id' => $new->id,
                         'title' => ($lang === 'es') ? $new->title_es : $new->title_en,
                         'content' => ($lang === 'es') ? $new->content_es : $new->content_en,
                         'category' => ($lang === 'es') ? $new->category->name_es : $new->category->name_en,
-                        'date' => $new->date,
+                        'date' => $formattedDate,
                         'image' => env('APP_URL').'/storage/'.$new->image
                     ];
                 });
@@ -594,12 +647,19 @@ class MiscellaneousController extends Controller
                     'errors' =>  __('api.new_not_found', [], $lang)
                 ], 404);
 
+            $date = Carbon::parse($new->date);
+            $day = $date->format('d');
+            $month = $this->monthNames[$lang][$date->format('m')];
+            $year = $date->format('Y');
+    
+            $formattedDate = "{$day} {$month} {$year}";
+
             $formattedNew = [
                 'id' => $new->id,
                 'title' => ($lang === 'es') ? $new->title_es : $new->title_en,
                 'content' => ($lang === 'es') ? $new->content_es : $new->content_en,
                 'category' => ($lang === 'es') ? $new->category->name_es : $new->category->name_en,
-                'date' => $new->date,
+                'date' => $formattedDate,
                 'image' => env('APP_URL').'/storage/'.$new->image
             ];
 
@@ -1907,6 +1967,17 @@ class MiscellaneousController extends Controller
      *   description= "Show sitemap",
      *   tags={"Maps"},
      *   security={{"bearerAuth": {} }},
+     *   @OA\Parameter(
+     *      name="lang",
+     *      in="query",
+     *      description="App language (es/en)",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string",
+     *          format="text",
+     *          description="Lang"
+     *      )
+     *   ),
      *   @OA\Response(
      *      @OA\MediaType(mediaType="application/json"),
      *      response=200,
@@ -1930,6 +2001,7 @@ class MiscellaneousController extends Controller
     {
         try {
             
+            $lang = $request->lang;
             $map = Map::select(['image','image_2','image_3'])->first();
 
             if ($lang === 'es') {

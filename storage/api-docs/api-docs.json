@@ -1423,6 +1423,19 @@
                 "summary": "Get sitemap",
                 "description": "Show sitemap",
                 "operationId": "80eb5525a716cf60a72b1b210eb2b738",
+                "parameters": [
+                    {
+                        "name": "lang",
+                        "in": "query",
+                        "description": "App language (es/en)",
+                        "required": true,
+                        "schema": {
+                            "description": "Lang",
+                            "type": "string",
+                            "format": "text"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Show sitemap",
