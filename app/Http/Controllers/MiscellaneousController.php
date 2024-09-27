@@ -1912,6 +1912,11 @@ class MiscellaneousController extends Controller
      *      response=200,
      *      description="Show sitemap",
      *    ),
+     *  @OA\Response(
+     *      @OA\MediaType(mediaType="application/json"),
+     *      response=400,
+     *      description="Some was wrong"
+     *   ),
      *   @OA\Response(
      *      @OA\MediaType(mediaType="application/json"),
      *      response=500,
@@ -1921,18 +1926,32 @@ class MiscellaneousController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function maps(): JsonResponse
+    public function maps(LangRequest $request): JsonResponse
     {
         try {
             
             $map = Map::select(['image','image_2','image_3'])->first();
 
+            if ($lang === 'es') {
+                $labels = [
+                    'floor_1' => 'Piso 1',
+                    'floor_2' => 'Piso 2',
+                    'floor_3' => 'Piso 3'
+                ];
+            } else {
+                $labels = [
+                    'floor_1' => 'Floor 1',
+                    'floor_2' => 'Floor 2',
+                    'floor_3' => 'Floor 3'
+                ];
+            }
+
             return response()->json([
                 'success' => true,
                 'data' => [
-                   'image' => env('APP_URL').'/storage/'.$map->image,
-                   'image_2' =>  env('APP_URL').'/storage/'.$map->image_2,
-                   'image_3' => env('APP_URL').'/storage/'.$map->image_3
+                    $labels['floor_1'] => env('APP_URL').'/storage/'.$map->image,
+                    $labels['floor_2'] => env('APP_URL').'/storage/'.$map->image_2,
+                    $labels['floor_3'] => env('APP_URL').'/storage/'.$map->image_3
                 ]
             ], 200);
 

@@ -1430,6 +1430,12 @@
                             "application/json": {}
                         }
                     },
+                    "400": {
+                        "description": "Some was wrong",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
                     "500": {
                         "description": "an \"unexpected\" error",
                         "content": {
