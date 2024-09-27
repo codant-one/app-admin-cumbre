@@ -1925,11 +1925,15 @@ class MiscellaneousController extends Controller
     {
         try {
             
-            $map = Map::select(['image'])->first();
+            $map = Map::select(['image','image_2','image_3'])->first();
 
             return response()->json([
                 'success' => true,
-                'data' => env('APP_URL').'/storage/'.$map->image
+                'data' => [
+                   'image' => env('APP_URL').'/storage/'.$map->image,
+                   'image_2' =>  env('APP_URL').'/storage/'.$map->image_2,
+                   'image_3' => env('APP_URL').'/storage/'.$map->image_3
+                ]
             ], 200);
 
         } catch(\Illuminate\Database\QueryException $ex) {

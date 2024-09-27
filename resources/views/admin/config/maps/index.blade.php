@@ -27,6 +27,28 @@
                         ])
                     </div>
                 </div>
+
+                <div class="row mb-6">
+                    <label class="col-lg-4 col-form-label required fw-bold fs-6">Imagen 2</label>
+                    <div class="col-lg-8 fv-row fv-plugins-icon-container">
+                        @include('commons.image-field', [
+                            'required' => is_null($map) ? 'required' : '',
+                            'name' => 'image_2',
+                            'default' => is_null($map) ? asset('images/avatars/blank.png') : asset('storage/'.$map->image_2),
+                        ])
+                    </div>
+                </div>
+
+                <div class="row mb-6">
+                    <label class="col-lg-4 col-form-label required fw-bold fs-6">Imagen 3</label>
+                    <div class="col-lg-8 fv-row fv-plugins-icon-container">
+                        @include('commons.image-field', [
+                            'required' => is_null($map) ? 'required' : '',
+                            'name' => 'image_3',
+                            'default' => is_null($map) ? asset('images/avatars/blank.png') : asset('storage/'.$map->image_3),
+                        ])
+                    </div>
+                </div>
 			</div>
             <div class="card-footer d-flex justify-content-end py-6 px-9">
                 <button type="submit" id="kt_modal_create_api_key_submit" class="btn btn-info">

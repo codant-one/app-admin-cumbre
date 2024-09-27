@@ -48,14 +48,31 @@ class ConfigController extends Controller
             $map = new Map;
         }
         
-        if ($request->hasFile('image')) {
+        if ($request->hasFile('image')) 
+        {
             $image = $request->file('image');
-
             $path = 'maps/';
 
             $file_data = uploadFile($image, $path, $map->image);
-
             $map->image = $file_data['filePath'];
+            $map->save();
+        }
+
+        if ($request->hasFile('image_2')) 
+        {
+            $image_2 = $request->file('image_2');
+            $path = 'maps/';
+            $file_data2 = uploadFile($image_2, $path, $map->image_2);
+            $map->image_2 = $file_data2['filePath'];
+            $map->save();
+        }
+
+        if ($request->hasFile('image_3')) 
+        {
+            $image_3 = $request->file('image_3');
+            $path = 'maps/';
+            $file_data2 = uploadFile($image_3, $path, $map->image_3);
+            $map->image_3 = $file_data2['filePath'];
             $map->save();
         }
 
