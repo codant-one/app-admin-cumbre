@@ -561,6 +561,28 @@ class MiscellaneousController extends Controller
                 });
             });
 
+            $allNewsGroup = [
+                ($lang === 'es') ? 'Todas' : 'All' => $news->map(function ($new) use ($lang) {
+                    $date = Carbon::parse($new->date);
+                    $day = $date->format('d');
+                    $month = $this->monthNames[$lang][$date->format('m')];
+                    $year = $date->format('Y');
+            
+                    $formattedDate = "{$day} {$month} {$year}";
+            
+                    return [
+                        'id' => $new->id,
+                        'title' => ($lang === 'es') ? $new->title_es : $new->title_en,
+                        'content' => ($lang === 'es') ? $new->content_es : $new->content_en,
+                        'category' => ($lang === 'es') ? $new->category->name_es : $new->category->name_en,
+                        'date' => $formattedDate,
+                        'image' => env('APP_URL') . '/storage/' . $new->image,
+                    ];
+                }),
+            ];
+            
+            $groupedNews = collect($allNewsGroup)->merge($groupedNews);
+
             return response()->json([
                 'success' => true,
                 'data' => $groupedNews
