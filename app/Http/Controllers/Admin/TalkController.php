@@ -211,8 +211,9 @@ class TalkController extends Controller
             $talk->update();
         }
 
+        $talk->speakers()->delete();
+    
         if ($request->has('speakers') && is_array($request->speakers)) {
-            $talk->speakers()->delete();
 
             foreach($request->speakers as $speaker) {
                 $talk_speaker = new TalkSpeaker;
