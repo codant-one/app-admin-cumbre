@@ -48,8 +48,7 @@ class ConfigController extends Controller
             $map = new Map;
         }
         
-        if ($request->hasFile('image')) 
-        {
+        if ($request->hasFile('image')) {
             $image = $request->file('image');
             $path = 'maps/';
 
@@ -58,8 +57,7 @@ class ConfigController extends Controller
             $map->save();
         }
 
-        if ($request->hasFile('image_2')) 
-        {
+        if ($request->hasFile('image_2')) {
             $image_2 = $request->file('image_2');
             $path = 'maps/';
             $file_data2 = uploadFile($image_2, $path, $map->image_2);
@@ -67,8 +65,7 @@ class ConfigController extends Controller
             $map->save();
         }
 
-        if ($request->hasFile('image_3')) 
-        {
+        if ($request->hasFile('image_3')) {
             $image_3 = $request->file('image_3');
             $path = 'maps/';
             $file_data2 = uploadFile($image_3, $path, $map->image_3);
@@ -104,6 +101,15 @@ class ConfigController extends Controller
         $translation->link_es = $request->link_es;
         $translation->link_en = $request->link_en;
         $translation->save();
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $path = 'translations/';
+
+            $file_data = uploadFile($image, $path, $translation->image);
+            $translation->image = $file_data['filePath'];
+            $translation->save();
+        }
 
         return redirect()->route('translations')->with([
             'feedback' => [

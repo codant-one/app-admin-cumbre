@@ -166,6 +166,18 @@
                     </div>
                 </div>
 
+                <div class="row mb-6">
+                    <div class="form-check form-switch form-check-custom form-check-solid">
+                        <label class="col-lg-4 fw-bold fs-6 mb-2 form-check-label mr-2" for="shipping_submit">Es Patrocinado?</label>
+                        {!!
+                            Form::checkbox('sponsor', null, $talk->is_sponsor,
+                            ['id' => 'sponsor',
+                            'class' => 'form-check-input'
+                            ])
+                        !!}  
+                    </div>
+                </div>
+
 			</div>
             <div class="card-footer d-flex justify-content-end py-6 px-9">
                 <a href="{{ route('talks.index') }}" class="btn btn-light me-2">Regresar</a>

@@ -1977,9 +1977,13 @@ class MiscellaneousController extends Controller
     {
         try {
             
+            $translation = Translation::select(['link_es', 'link_en'])->first();
+            $translation->image = env('APP_URL').'/storage/'.$translation->image;
+            $translation->save();
+
             return response()->json([
                 'success' => true,
-                'data' => Translation::select(['link_es', 'link_en'])->first()
+                'data' => $translation
             ], 200);
 
         } catch(\Illuminate\Database\QueryException $ex) {

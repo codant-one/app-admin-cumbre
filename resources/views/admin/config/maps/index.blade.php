@@ -21,9 +21,9 @@
                     <label class="col-lg-4 col-form-label required fw-bold fs-6">Imagen</label>
                     <div class="col-lg-8 fv-row fv-plugins-icon-container">
                         @include('commons.image-field', [
-                            'required' => is_null($map) ? 'required' : '',
+                            'required' => is_null($map->image) ? 'required' : '',
                             'name' => 'image',
-                            'default' => is_null($map) ? asset('images/avatars/blank.png') : asset('storage/'.$map->image),
+                            'default' => is_null($map->image) ? asset('images/avatars/blank.png') : asset('storage/'.$map->image),
                         ])
                     </div>
                 </div>
@@ -32,9 +32,9 @@
                     <label class="col-lg-4 col-form-label required fw-bold fs-6">Imagen 2</label>
                     <div class="col-lg-8 fv-row fv-plugins-icon-container">
                         @include('commons.image-field', [
-                            'required' => is_null($map) ? 'required' : '',
+                            'required' => is_null($map->image_2) ? 'required' : '',
                             'name' => 'image_2',
-                            'default' => is_null($map) ? asset('images/avatars/blank.png') : asset('storage/'.$map->image_2),
+                            'default' => is_null($map->image_2) ? asset('images/avatars/blank.png') : asset('storage/'.$map->image_2),
                         ])
                     </div>
                 </div>
@@ -43,9 +43,9 @@
                     <label class="col-lg-4 col-form-label required fw-bold fs-6">Imagen 3</label>
                     <div class="col-lg-8 fv-row fv-plugins-icon-container">
                         @include('commons.image-field', [
-                            'required' => is_null($map) ? 'required' : '',
+                            'required' => is_null($map->image_3) ? 'required' : '',
                             'name' => 'image_3',
-                            'default' => is_null($map) ? asset('images/avatars/blank.png') : asset('storage/'.$map->image_3),
+                            'default' => is_null($map->image_3) ? asset('images/avatars/blank.png') : asset('storage/'.$map->image_3),
                         ])
                     </div>
                 </div>

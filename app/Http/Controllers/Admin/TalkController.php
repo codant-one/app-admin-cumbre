@@ -301,6 +301,12 @@ class TalkController extends Controller
 
     private function prepareRequest(Request $request, $talk)
     {
+        $sponsor = ($request->sponsor == "on") ? 1 : 0;
+
+        $request->request->add(['is_sponsor' => $sponsor]);
+
+        $request->request->remove('sponsor');
+
         $request->request->remove('image_remove');
 
         return $request;

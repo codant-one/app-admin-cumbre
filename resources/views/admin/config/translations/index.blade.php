@@ -14,7 +14,7 @@
 				<div class="card-title fs-3 fw-bolder">Traducciones del sistema</div>
 			</div>
             <div class="card-body border-top p-9">
-            {!!  Form::open(['route' => 'translationsUpdate', 'method' => 'POST']) !!}
+            {!!  Form::open(['route' => 'translationsUpdate', 'method' => 'POST', 'files' => true]) !!}
                 @csrf
                 <input type="hidden" id="id" name="id" value="{{ is_null($translation) ? 0 : $translation->id }}" />
                 <div class="row mb-6">
@@ -37,6 +37,16 @@
                             'class' => 'form-control form-control-solid mb-3 mb-lg-0',
                             'placeholder' => 'Enlace ingles'])
                         !!}
+                    </div>
+                </div>
+                <div class="row mb-6">
+                    <label class="col-lg-4 col-form-label required fw-bold fs-6">Imagen</label>
+                    <div class="col-lg-8 fv-row fv-plugins-icon-container">
+                        @include('commons.image-field', [
+                            'required' => is_null($translation->image) ? 'required' : '',
+                            'name' => 'image',
+                            'default' => is_null($translation->image) ? asset('images/avatars/blank.png') : asset('storage/'.$translation->image),
+                        ])
                     </div>
                 </div>
 			</div>

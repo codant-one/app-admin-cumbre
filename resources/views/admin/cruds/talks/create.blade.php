@@ -150,6 +150,17 @@
                             ])
                         </div>
                     </div>
+                    <div class="col-md-2">
+                        <div class="form-check form-switch form-check-custom form-check-solid">
+                            <label class="fw-bold fs-6 form-check-label" style="margin-left: 0; margin-right: 10px" for="shipping_submit">Es Patrocinado?</label>
+                            {!!
+                                Form::checkbox('sponsor', null, '0',
+                                ['id' => 'sponsor',
+                                'class' => 'form-check-input'
+                                ])
+                            !!}  
+                        </div>
+                    </div>
                 </div>           
             </div>
             <div class="card-footer d-flex justify-content-center">
