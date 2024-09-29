@@ -958,6 +958,7 @@ class MiscellaneousController extends Controller
 
             $formattedTalk = [
                 'id' => $talk->id,
+                'schedule_id' => $talk->schedule_id,
                 'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
                 'hour' => Carbon::createFromFormat('H:i:s', $talk->hour)->format('h:i A'),
                 'image' => env('APP_URL') . '/storage/' . $talk->image,
