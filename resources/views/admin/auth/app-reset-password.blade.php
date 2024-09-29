@@ -1,16 +1,15 @@
 @extends('admin.layouts.public')
 
 @section('page-content')
-
-<div class="bg-dark d-flex flex-column flex-column-fluid bgi-position-y-bottom position-x-center bgi-no-repeat bgi-size-contain bgi-attachment-fixed">
+<div class="app-bg-dark d-flex flex-column flex-column-fluid bgi-position-y-bottom position-x-center bgi-no-repeat bgi-size-contain bgi-attachment-fixed">
 	<div class="d-flex flex-center flex-column flex-column-fluid p-10 pb-lg-20">
-		<div class="w-lg-500px bg-body rounded shadow-sm p-10 p-lg-20 mx-auto" style="border-radius: 16px !important">
-			{!! Form::open(['route' => 'auth.admin.change','id'=>'formCreate', 'class' => 'w-100', 'method' => 'POST']) !!}
+		<div class="w-100 w-lg-500px bg-body rounded shadow-sm p-10 p-lg-20" style="border-radius: 16px !important">
+			{!! Form::open(['route' => 'auth.app.change', 'id'=>'formCreate', 'class' => 'w-100', 'method' => 'POST']) !!}
             <div class="text-center mb-10">
-                <a href="{{route('auth.admin.login')}}">
+                <a href="{{env('APP_STORE')}}">
                     <img src="{{ asset(env('DOMAIN_LOGO_URL_WHITE')) }}" alt="" width="70px">
                 </a>
-                <div class="text-gray-400 fw-bold fs-4 mt-5">
+                <div class="title-app mt-5">
                     Restablecer Contraseña
                 </div>
             </div>
@@ -64,7 +63,7 @@
                 </div>
             </div>
             <input type="hidden" id="token" name="token">
-            <div class="d-flex justify-content-center pb-5">
+            <div class="d-flex justify-content-center">
                 <div class="col-12">
                     <button type="submit" id="kt_sign_up_submit" class="btn btn-lg btn-info w-100 mb-5">
                         <span class="indicator-label">Enviar</span>
@@ -87,7 +86,7 @@
     var token = @json($token);
 
     $.ajax({
-        url: `{{ route("auth.admin.find", ['token' => $token]) }}`,
+        url: `{{ route("auth.app.find", ['token' => $token]) }}`,
         type: 'GET',
         success: function (response) {
             $("#password").prop("disabled",false);
@@ -104,7 +103,7 @@
                  confirmButton: "btn btn-danger rounded-pill"
              }
             }).then((function(t) {
-                window.location.href = "{{route('auth.admin.forgot.password')}}";
+                window.location.href = "{{route('auth.app.forgot.password')}}";
             }
             ));
         }
@@ -192,6 +191,22 @@
 ));
 
 
+    @if (\Session::has('register_success'))
+        Swal.fire({
+            text: "{{ Session::get('register_success') }}",
+            icon: "success",
+            buttonsStyling: !1,
+            confirmButtonText: "¡Entendido!",
+            customClass: {
+                confirmButton: "btn btn-info rounded-pill"
+            }
+        }).then((function(t) {
+                window.location.reload();
+                return true;
+            }
+        ));
+    @endif
+    
 </script>
 
 @endsection

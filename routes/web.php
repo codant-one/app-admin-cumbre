@@ -49,6 +49,12 @@ Route::middleware([
         Route::post('/admin/change', [PasswordResetController::class, 'change'])->name("admin.change");
         Route::post('/admin/login', [AuthController::class, 'authenticate'])->name('admin.authenticate');
         Route::get('/admin/find/{token}', [PasswordResetController::class, 'find'])->name("admin.find");
+
+        Route::get('/forgot-password', [PasswordResetController::class, 'app_forgot_password'])->name('app.forgot.password');
+        Route::post('/reset-confirm', [PasswordResetController::class, 'app_email_confirmation'])->name('app.confirm');
+        Route::get('/reset-password', [PasswordResetController::class, 'app_reset_password'])->name('app.reset.password');
+        Route::post('/change', [PasswordResetController::class, 'app_change'])->name("app.change");
+        Route::get('/find/{token}', [PasswordResetController::class, 'app_find'])->name("app.find");
     });
 
     Route::name('auth.admin.')->middleware(['auth'])->group(function () {

@@ -1,16 +1,15 @@
 @extends('admin.layouts.public')
 
 @section('page-content')
-
-<div class="bg-dark d-flex flex-column flex-column-fluid bgi-position-y-bottom position-x-center bgi-no-repeat bgi-size-contain bgi-attachment-fixed">
+<div class="app-bg-dark d-flex flex-column flex-column-fluid bgi-position-y-bottom position-x-center bgi-no-repeat bgi-size-contain bgi-attachment-fixed">
 	<div class="d-flex flex-center flex-column flex-column-fluid p-10 pb-lg-20">
 		<div class="w-lg-500px bg-body rounded shadow-sm p-10 p-lg-20 mx-auto" style="border-radius: 16px !important">
-			{!! Form::open(['route' => 'auth.admin.confirm', 'id'=>'formSubmit', 'class' => 'w-100', 'method' => 'POST']) !!}
+			{!! Form::open(['route' => 'auth.app.confirm', 'id'=>'formSubmit', 'class' => 'w-100', 'method' => 'POST']) !!}
             <div class="text-center mb-10">
-                <a href="{{route('auth.admin.login')}}">
+                <a href="{{env('APP_STORE')}}">
                     <img src="{{ asset(env('DOMAIN_LOGO_URL_WHITE')) }}" alt="" width="70px">
                 </a>
-                <div class="text-gray-400 fw-bold fs-4 mt-5">
+                <div class="title-app mt-5">
                     Restablecer Contraseña
                 </div>
             </div>
@@ -36,7 +35,7 @@
                 @enderror
                 <small>Ingrese su correo electrónico y enviaremos un link para reiniciar su contraseña</small>
             </div>
-            <input type="hidden" name="route" id="hidden-route" value="auth.admin.forgot.password">
+            <input type="hidden" name="route" id="hidden-route" value="auth.app.forgot.password">
             <div class="d-flex justify-content-center pb-10 mb-7">
                 <div class="col-12 mb-10">
                     <button type="submit" id="submit-btn" class="btn btn-lg btn-info w-100 mb-10">
@@ -92,5 +91,21 @@
             }
         });
     });
+
+    @if (\Session::has('register_success'))
+        Swal.fire({
+            text: "{{ Session::get('register_success') }}",
+            icon: "success",
+            buttonsStyling: !1,
+            confirmButtonText: "¡Entendido!",
+            customClass: {
+                confirmButton: "btn btn-info rounded-pill"
+            }
+        }).then((function(t) {
+                window.location.reload();
+                return true;
+            }
+        ));
+    @endif
 </script>
 @endsection
