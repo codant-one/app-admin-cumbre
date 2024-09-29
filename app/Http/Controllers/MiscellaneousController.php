@@ -160,7 +160,7 @@ class MiscellaneousController extends Controller
                 ];
             });
 
-            $speakers = Speaker::with(['position'])->where('is_popular', 1)->get();
+            $speakers = Speaker::with(['position'])->where('is_popular', 1)->orderByRaw('order_id IS NULL, order_id ASC')->get();
 
             $groupedSpeakers = $speakers->map(function($speaker) use ($lang) {
                 return [
