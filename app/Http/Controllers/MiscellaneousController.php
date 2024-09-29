@@ -857,6 +857,7 @@ class MiscellaneousController extends Controller
                     return $talksGroup->map(function($talk) use ($lang) {
                         return [
                             'id' => $talk->id,
+                            'schedule_id' => $talk->schedule_id,
                             'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
                             'hour' => Carbon::createFromFormat('H:i:s', $talk->hour)->format('h:i A'),
                             'is_favorite' => Auth::guard('api')->user() ? ($talk->favorite ? 1 : 0) : 0,
