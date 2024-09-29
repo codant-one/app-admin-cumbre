@@ -858,6 +858,7 @@ class MiscellaneousController extends Controller
                         return [
                             'id' => $talk->id,
                             'schedule_id' => $talk->schedule_id,
+                            'rating' => $talk->rating,
                             'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
                             'hour' => Carbon::createFromFormat('H:i:s', $talk->hour)->format('h:i A'),
                             'is_favorite' => Auth::guard('api')->user() ? ($talk->favorite ? 1 : 0) : 0,
@@ -959,6 +960,7 @@ class MiscellaneousController extends Controller
             $formattedTalk = [
                 'id' => $talk->id,
                 'schedule_id' => $talk->schedule_id,
+                'rating' => $talk->rating,
                 'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
                 'hour' => Carbon::createFromFormat('H:i:s', $talk->hour)->format('h:i A'),
                 'image' => env('APP_URL') . '/storage/' . $talk->image,
@@ -1663,6 +1665,17 @@ class MiscellaneousController extends Controller
                     'rating' => $request->rating
                 ]
             );
+
+            $reviews = Review::where('talk_id', $request->talk_id)->get();
+            $sum = 0;
+
+            foreach($reviews as $review) {
+                $sum = $sum + $review->rating;
+            }
+
+            $talk = Talk::find($request->talk_id);
+            $talk->rating = $sum/(count($reviews));//average
+            $talk->update();
 
             return response()->json([
                 'success' => true,
