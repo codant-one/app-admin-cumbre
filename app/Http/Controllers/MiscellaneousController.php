@@ -1984,7 +1984,7 @@ class MiscellaneousController extends Controller
                 'data' => [
                     'link_es' => $translation->link_es,
                     'link_en' => $translation->link_en,
-                    'image' => env('APP_URL').'/storage/' . $translation->image
+                    'imagess' => $translation->image
                 ]
             ], 200);
 
