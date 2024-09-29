@@ -1977,14 +1977,14 @@ class MiscellaneousController extends Controller
     {
         try {
             
-            $translation = Translation::select(['link_es', 'link_en'])->first();
+            $translation = Translation::first();
 
             return response()->json([
                 'success' => true,
                 'data' => [
                     'link_es' => $translation->link_es,
                     'link_en' => $translation->link_en,
-                    'imagess' => $translation->image
+                    'image' => env('APP_URL').'/storage/' . $translation->image
                 ]
             ], 200);
 
