@@ -207,11 +207,16 @@ class ConfigController extends Controller
     {   
         $tokens = Token::select('token')->get()->pluck('token');
         $chunkSize = 50;
-        $groupedIds = $tokens->chunk($chunkSize)->toArray();
+        $groupedIds = $tokens->chunk($chunkSize);
 
-        foreach ($groupedIds as $tokens) {
+        $title = $request->title;
+        $body = $request->body;
+
+        foreach ($groupedIds as $tokens_) {
+            $cleanedTokens = Token::select('token')->whereIn('token', $tokens_)->pluck('token');
+
             $this->expoHost = new ExpoHost();
-            $this->expoHost->pushNotification($tokens, $request->title, $request->body);
+            $this->expoHost->pushNotification($cleanedTokens, $title, $body);
         }
 
         return redirect()->route('publicNotifications')->with([
