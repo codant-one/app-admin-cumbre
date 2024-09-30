@@ -858,6 +858,7 @@ class MiscellaneousController extends Controller
                         return [
                             'id' => $talk->id,
                             'schedule_id' => $talk->schedule_id,
+                            'is_sponsor' => $talk->is_sponsor,
                             'rating' => $talk->rating,
                             'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
                             'hour' => Carbon::createFromFormat('H:i:s', $talk->hour)->format('h:i A'),
@@ -960,6 +961,7 @@ class MiscellaneousController extends Controller
             $formattedTalk = [
                 'id' => $talk->id,
                 'schedule_id' => $talk->schedule_id,
+                'is_sponsor' => $talk->is_sponsor,
                 'rating' => $talk->rating,
                 'title' => ($lang === 'es') ? $talk->title_es : $talk->title_en,
                 'hour' => Carbon::createFromFormat('H:i:s', $talk->hour)->format('h:i A'),
