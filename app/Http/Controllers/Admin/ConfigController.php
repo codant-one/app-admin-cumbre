@@ -207,7 +207,7 @@ class ConfigController extends Controller
     {   
         $tokens = Token::select('token')->get()->pluck('token');
         $chunkSize = 50;
-        $groupedIds = $ids->chunk($chunkSize)->toArray();
+        $groupedIds = $tokens->chunk($chunkSize)->toArray();
 
         foreach ($groupedIds as $tokens) {
             $this->expoHost = new ExpoHost();
