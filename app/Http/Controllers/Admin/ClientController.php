@@ -297,6 +297,10 @@ class ClientController extends Controller
         $request->request->add(['password' => $request->password_hash]);
         $request->request->remove('password_hash');
         
+        $request->merge([
+            'email' => strtolower($request->email)
+        ]);
+
         return $request;
     }
 }

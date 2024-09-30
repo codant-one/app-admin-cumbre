@@ -27,7 +27,7 @@ class UserImport implements ToModel
         $user = new User;
         $user->name = $row[0];
         $user->last_name = $row[1];
-        $user->email = $row[2];
+        $user->email = strtolower($row[2]);
         $user->password = Hash::make($password);
         $user->save();
         $user->assignRole('App');
