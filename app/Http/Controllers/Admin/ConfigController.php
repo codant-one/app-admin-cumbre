@@ -16,6 +16,7 @@ use Validator;
 use App;
 
 use App\Services\ExpoHost;
+use App\Jobs\SendUserNotification;
 
 use App\Models\User;
 use App\Models\Map;
@@ -180,12 +181,20 @@ class ConfigController extends Controller
 
             }
 
+            // if($band) {
+            //     $title = ($user->lang === 'es') ? $request->title_es : $request->title_en;
+            //     $body = str_replace('{{user}}', $full_name, ($user->lang === 'es') ? $request->description_es : $request->description_en);
+
+            //     $this->expoHost = new ExpoHost();
+            //     $this->expoHost->pushNotification([$user->fcm_token], $title, $body);
+            // }
+
             if($band) {
                 $title = ($user->lang === 'es') ? $request->title_es : $request->title_en;
                 $body = str_replace('{{user}}', $full_name, ($user->lang === 'es') ? $request->description_es : $request->description_en);
 
-                $this->expoHost = new ExpoHost();
-                $this->expoHost->pushNotification([$user->fcm_token], $title, $body, $user);
+                // Enviar la notificaicion en segundo plano usando colas
+                SendUserNotification::dispatch($user->fcm_token, $title, $body)->delay(now()->addSeconds(1));
             }
         }
        
