@@ -64,7 +64,7 @@
                         <div class="col-xl-8 col-lg-7 order-2 order-lg-1">
                             <div class="tm-heroslider-content">
                                 <h1>Descubre la nueva App<br> de la VII Cumbre de Petróleo, Gas y Energía</h1>
-                                <p>Mantente informado, participa en tiempo de real y no te pierdas ningún detalle de uno de los eventos más importantes de la industria.</p>
+                                <p>Mantente informado, participa en tiempo real y no te pierdas ningún detalle de uno de los eventos más importantes de la industria.</p>
                                 <div class="tm-buttongroup">
                                     <a href="https://play.google.com/store/apps/details?id=com.codant.viicumbre" target="_blank" class="tm-button tm-button-lg tm-button-white tm-button-transparent">
                                         <i class="icon-app">

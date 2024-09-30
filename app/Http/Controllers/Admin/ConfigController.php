@@ -206,10 +206,14 @@ class ConfigController extends Controller
     public function publicNotificationsStore(Request $request)
     {   
         $tokens = Token::select('token')->get()->pluck('token');
-   
-        $this->expoHost = new ExpoHost();
-        $this->expoHost->pushNotification($tokens, $request->title, $request->body);
-               
+        $chunkSize = 50;
+        $groupedIds = $ids->chunk($chunkSize)->toArray();
+
+        foreach ($groupedIds as $tokens) {
+            $this->expoHost = new ExpoHost();
+            $this->expoHost->pushNotification($tokens, $request->title, $request->body);
+        }
+
         return redirect()->route('publicNotifications')->with([
             'feedback' => [
                 'type' => 'toastr',
