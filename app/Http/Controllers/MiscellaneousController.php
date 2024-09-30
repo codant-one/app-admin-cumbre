@@ -1681,7 +1681,10 @@ class MiscellaneousController extends Controller
 
             return response()->json([
                 'success' => true,
-                'data' => $review
+                'data' => [
+                    'review' => $review,
+                    'rating' => $talk->rating
+                ]
             ], 200);
 
         } catch(\Illuminate\Database\QueryException $ex) {
