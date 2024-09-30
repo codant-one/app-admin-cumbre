@@ -259,35 +259,54 @@ class ClientController extends Controller
     public function uploadPost(Request $request)
     {
 
-        $validate = Validator::make($request->all(),
-            [
-                'file' => 'required|mimes:xlsx,xls'
-            ],
-            [
-                'file.required' => 'El archivo es obligatorio',
-                'file.mimes' => 'El formato del archivo no es válido'
-            ]
-        );
+        try {
+            $validate = Validator::make($request->all(),
+                [
+                    'file' => 'required|mimes:xlsx,xls'
+                ],
+                [
+                    'file.required' => 'El archivo es obligatorio',
+                    'file.mimes' => 'El formato del archivo no es válido'
+                ]
+            );
 
-        if($validate->fails()){
+            if($validate->fails()){
+                return redirect()->route("clients.upload")->with([
+                    'feedback' => [
+                        'type' => 'toastr',
+                        'action' => 'error',
+                        'message' => $validate->errors()->first()
+                    ]
+                ]);
+            } 
+
+            Excel::import(new UserImport, $request->file('file'));
+            
+            return redirect()->route('clients.index')->with([
+                'feedback' => [
+                    'type' => 'toastr',
+                    'action' => 'success',
+                    'message' => 'Archivo Cargado Exitosamente.'
+                ]
+            ]);
+
+        } catch(\Illuminate\Database\QueryException $ex) {
             return redirect()->route("clients.upload")->with([
                 'feedback' => [
                     'type' => 'toastr',
                     'action' => 'error',
-                    'message' => $validate->errors()->first()
+                    'message' => $ex
                 ]
             ]);
-        } 
-
-        Excel::import(new UserImport, $request->file('file'));
-        
-        return redirect()->route('clients.index')->with([
-            'feedback' => [
-                'type' => 'toastr',
-                'action' => 'success',
-                'message' => 'Archivo Cargado Exitosamente.'
-            ]
-        ]);
+        } catch(\Exception $ex) {
+            return redirect()->route("clients.upload")->with([
+                'feedback' => [
+                    'type' => 'toastr',
+                    'action' => 'error',
+                    'message' => $ex
+                ]
+            ]);
+        }
     }
 
     private function prepareRequest(Request $request)
