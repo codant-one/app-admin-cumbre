@@ -847,9 +847,14 @@ class MiscellaneousController extends Controller
 
             $groupedTalks = $talks->groupBy(function($talk) {
                 return $talk->date;
-            })->mapWithKeys(function($talksByDate) use (&$dayCounter, $lang) {
-                $dayCounter++;
-                $dayKey = (($lang === 'es') ? 'Día ' : 'Day ' ). $dayCounter;
+            })->mapWithKeys(function($talksByDate) use ($lang) {
+
+                $date = Carbon::parse($talksByDate->first()->date);
+                $day = $date->format('d');
+                $month = $this->monthNames[$lang][$date->format('m')];
+                $year = $date->format('Y');
+                                   
+                $formattedDate = "{$day} {$month}";
 
                 $groupedByCategory = $talksByDate->groupBy(function($talk) use ($lang) {
                     return ($lang === 'es') ? $talk->category->name_es : $talk->category->name_en;
@@ -868,7 +873,7 @@ class MiscellaneousController extends Controller
                     });
                 });
 
-                 return [$dayKey => $groupedByCategory];
+                return [$formattedDate => $groupedByCategory];
             });
 
             return response()->json([
