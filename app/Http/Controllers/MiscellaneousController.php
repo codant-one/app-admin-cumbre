@@ -847,7 +847,7 @@ class MiscellaneousController extends Controller
 
             $groupedTalks = $talks->groupBy(function($talk) {
                 return $talk->date;
-            })->mapWithKeys(function($talksByDate) use ($dayCounter, $lang) {
+            })->mapWithKeys(function($talksByDate) use (&$dayCounter, $lang) {
                 $dayCounter++;
                 $dayKey = (($lang === 'es') ? 'Día ' : 'Day ' ). $dayCounter;
 
