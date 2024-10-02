@@ -24,32 +24,32 @@ class ExpoHost
         
         try {
             Log::info($fcmToken);
-            $headers = [
-                'Content-Type' => 'application/json',
-            ];
+            // $headers = [
+            //     'Content-Type' => 'application/json',
+            // ];
 
-            $client = new \GuzzleHttp\Client();
+            // $client = new \GuzzleHttp\Client();
 
-            $payload = [
-                'to' => $fcmToken,
-                'title' => $title, 
-                'body' => $body 
+            // $payload = [
+            //     'to' => $fcmToken,
+            //     'title' => $title, 
+            //     'body' => $body 
 
-            ];
+            // ];
 
-            $options = [
-                'headers' => $headers,
-                'json' => $payload,
-            ];
+            // $options = [
+            //     'headers' => $headers,
+            //     'json' => $payload,
+            // ];
 
-            $response = $client->post($this->url, $options);
-            $responseJson = json_decode($response->getBody(), true);
+            // $response = $client->post($this->url, $options);
+            // $responseJson = json_decode($response->getBody(), true);
 
-            Log::info($responseJson);
-            return [
-                'data' => $responseJson,
-                'success' => true
-            ];
+            // Log::info($responseJson);
+            // return [
+            //     'data' => $responseJson,
+            //     'success' => true
+            // ];
 
         } catch (RequestException $e) {
             Log::info('error '. $e);

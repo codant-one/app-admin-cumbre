@@ -1046,7 +1046,7 @@ class MiscellaneousController extends Controller
         try {
             
             $lang = $request->lang;
-            $speakers = Speaker::with(['position'])->get();
+            $speakers = Speaker::with(['position'])->orderBy('is_popular', 'desc') ->orderByRaw('order_id IS NULL, order_id ASC')->get();
 
             $groupedSpeakers = $speakers->map(function($speaker) use ($lang) {
                 return [
