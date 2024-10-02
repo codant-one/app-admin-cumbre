@@ -843,17 +843,17 @@ class MiscellaneousController extends Controller
                 ], 404);
 
             $talks = Talk::with(['category'])->where('schedule_id', $id)->orderBy('date')->orderBy('hour')->get();
-            $dayCounter = 0;
 
-            $groupedTalks = $talks->groupBy(function($talk) {
-                return $talk->date;
-            })->mapWithKeys(function($talksByDate) use (&$dayCounter, $lang) {
-                $dayCounter++;
-                $dayKey = (($lang === 'es') ? 'Día ' : 'Day ' ). $dayCounter;
+            $groupedTalks = $talks->groupBy(function($talk) use ($lang) {
+                $date = Carbon::parse($talk->date);
+                $day = $date->format('d');
+                $month = $this->monthNames[$lang][$date->format('m')];
+                $year = $date->format('Y');
 
-                $groupedByCategory = $talksByDate->groupBy(function($talk) use ($lang) {
-                    return ($lang === 'es') ? $talk->category->name_es : $talk->category->name_en;
-                })->map(function($talksGroup) use ($lang) {
+                $formattedDate = "{$day} {$month}";
+
+                return $formattedDate;
+            })->map(function($talksGroup) use ($lang) {
                     return $talksGroup->map(function($talk) use ($lang) {
                         return [
                             'id' => $talk->id,
@@ -867,9 +867,7 @@ class MiscellaneousController extends Controller
                         ];
                     });
                 });
-
-                 return [$dayKey => $groupedByCategory];
-            });
+          
 
             return response()->json([
                 'success' => true,
