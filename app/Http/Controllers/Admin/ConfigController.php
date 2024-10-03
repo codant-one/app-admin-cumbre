@@ -203,7 +203,7 @@ class ConfigController extends Controller
             'feedback' => [
                 'type' => 'toastr',
                 'action' => 'success',
-                'message' => 'Mensaje enviado'. $notification_user
+                'message' => 'Mensaje enviado'
             ]
         ]);
     }
